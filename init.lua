@@ -68,7 +68,7 @@ vim.o.hlsearch=true
 vim.o.wrap=true
 vim.o.linebreak=true
 vim.o.foldmethod="expr"
-vim.cmd([[set foldexpr=nvim_treesitter#foldexpr()]])
+vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
 
 -- Keymappings
 local opts = {noremap = true, silent = true} -- Convenient for a lot of mappings
