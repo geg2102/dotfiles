@@ -60,4 +60,4 @@ for file in $files; do
 done
 
 mkdir -p $HOME/.config/nvim && ln -sf $dir/init.lua $HOME/.config/nvim/init.lua
-
+mkdir -p ~/.ipython/profile_default && mv ipython_config.py.bak $HOME/.ipython/profile_default/ipython_config.py
