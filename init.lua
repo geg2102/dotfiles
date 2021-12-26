@@ -1,4 +1,5 @@
 -- Just easier to wrap vim-plug commands in vim.cmd
+-- In future, switch to packer
 vim.cmd([[
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
     silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
@@ -79,7 +80,11 @@ vim.api.nvim_set_keymap('n', "<leader>fh", "<cmd>Telescope oldfiles<CR>", opts)
 vim.api.nvim_set_keymap("n", "<leader>p", "<cmd>tabnew term://python3 -m pudb.run %<CR>", opts)
 vim.api.nvim_set_keymap("n", "<F1>", "<cmd>BufferPrevious<CR>", {})
 vim.api.nvim_set_keymap("n", "<F2>", "<cmd>BufferNext<CR>", {})
-vim.api.nvim_set_keymap("t", "<M-[>", "<C-\\><C-n>", {noremap=true})
+vim.api.nvim_set_keymap("t", "<A-[>", "<C-\\><C-n>", {noremap=true})
+vim.api.nvim_set_keymap("t", "<C-l>", "<C-\\><C-n><C-w>l", {noremap=true})
+vim.api.nvim_set_keymap("t", "<C-j>", "<C-\\><C-n><C-w>j", {noremap=true})
+vim.api.nvim_set_keymap("t", "<C-h>", "<C-\\><C-n><C-w>h", {noremap=true})
+vim.api.nvim_set_keymap("t", "<C-k>", "<C-\\><C-n><C-w>k", {noremap=true})
 vim.api.nvim_set_keymap("n", "<leader>w", "<cmd>HopWord<CR>", opts)
 vim.api.nvim_set_keymap("v", "<leader>c", ":OSCYank<CR>", {noremap=true})
 vim.api.nvim_set_keymap("n", "<leader>o", "<Plug>OSCYank", {})
