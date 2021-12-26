@@ -11,7 +11,7 @@ vim.cmd([[
 call plug#begin()
 "---------------------===Code navigation===---------------------"
 Plug 'rhysd/accelerated-jk'				    " Faster j/k when holding
-Plug 'easymotion/vim-easymotion'			" For jumping to particular places
+Plug 'phaazon/hop.nvim'			            " For jumping to particular places
 Plug 'psliwka/vim-smoothie'				    " For smooth scrolling
 Plug 'unblevable/quick-scope'               " For highlighting f spots
 Plug 'christoomey/vim-tmux-navigator'       " For navigating between tmux panes and vim splits
@@ -21,7 +21,7 @@ Plug 'nvim-lua/popup.nvim'				    " Dependency for telescope
 Plug 'nvim-lua/plenary.nvim'				" Dependency for telescope
 Plug 'kyazdani42/nvim-tree.lua'				" A file navigator window
 "---------------------===Appearance===---------------------"
-Plug 'geg2102/onedark.nvim'			        " Onedark theme
+Plug 'geg2102/onedark.nvim-1'			    " Onedark theme
 Plug 'kyazdani42/nvim-web-devicons'			" Icons 
 Plug 'ryanoasis/vim-devicons'				" More icons
 Plug 'hoob3rt/lualine.nvim'				    " Status line
@@ -46,7 +46,7 @@ Plug 'scrooloose/nerdcommenter'             " Easy code documentation
 Plug 'urbainvaes/vim-ripple'                " For easy access to REPL
 "---------------------===Other===---------------------"
 Plug 'gennaro-tedesco/nvim-peekup'          " Quickly examine registers
-Plug 'nvim-treesitter/playground'      " For examining things in treesitter
+Plug 'nvim-treesitter/playground'           " For examining things in treesitter
 call plug#end()
 ]])
 
@@ -79,10 +79,13 @@ vim.api.nvim_set_keymap("n", "<leader>p", "<cmd>tabnew term://python3 -m pudb.ru
 vim.api.nvim_set_keymap("n", "<F1>", "<cmd>BufferPrevious<CR>", {})
 vim.api.nvim_set_keymap("n", "<F2>", "<cmd>BufferNext<CR>", {})
 vim.api.nvim_set_keymap("t", "<M-[>", "<C-\\><C-n>", {noremap=true})
-vim.api.nvim_set_keymap("n", "<C-s>", "<Plug>(cokeline-pick-focus)", {})
+vim.api.nvim_set_keymap("n", "<leader>w", "<cmd>HopWord<CR>", opts)
 
 -- Colorscheme
-vim.cmd([[colorscheme onedark]])
+require("onedark").setup({
+})
+
+
 -- Lualine
 local lualine = require("lualine")
 lualine.setup {
@@ -208,5 +211,6 @@ require("nvim-tree").setup{
     }
 }
 
--- barbar
+-- hop
+require("hop").setup()
 
