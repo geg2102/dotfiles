@@ -45,3 +45,19 @@ conda init zsh
 conda install pip 
 pip install pynvim
 pip install neovim
+
+dir=$HOME/dotfiles
+files="zshrc tmux.conf" 
+
+if [[ ! -d $HOME/.oh-my-zsh/ ]]; then 
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
+
+cd $dir 
+
+for file in $files; do 
+    ln -sf $dir/$file $HOME/.$file
+done
+
+mkdir -p $HOME/.config/nvim && ln -sf $dir/init.lua $HOME/.config/nvim/init.lua
+
