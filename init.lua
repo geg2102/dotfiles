@@ -47,6 +47,7 @@ Plug 'urbainvaes/vim-ripple'                " For easy access to REPL
 "---------------------===Other===---------------------"
 Plug 'gennaro-tedesco/nvim-peekup'          " Quickly examine registers
 Plug 'nvim-treesitter/playground'           " For examining things in treesitter
+Plug 'ojroques/vim-oscyank'                 " Copying to clipboard over ssh
 call plug#end()
 ]])
 
@@ -80,6 +81,8 @@ vim.api.nvim_set_keymap("n", "<F1>", "<cmd>BufferPrevious<CR>", {})
 vim.api.nvim_set_keymap("n", "<F2>", "<cmd>BufferNext<CR>", {})
 vim.api.nvim_set_keymap("t", "<M-[>", "<C-\\><C-n>", {noremap=true})
 vim.api.nvim_set_keymap("n", "<leader>w", "<cmd>HopWord<CR>", opts)
+vim.api.nvim_set_keymap("v", "<leader>c", ":OSCYank<CR>", {noremap=true})
+vim.api.nvim_set_keymap("n", "<leader>o", "<Plug>OSCYank", {})
 
 -- Colorscheme
 require("onedark").setup({
