@@ -33,7 +33,7 @@ alias tpane='echo $TMUX_PANE'
 alias ev='vim ~/.vimrc'
 alias et='vim ~/.tmux.conf'
 alias ez='vim ~/.zshrc'
-alias ei='vim ~/dotfiles/init.vim'
+alias ei='vim ~/dotfiles/init.lua'
 alias ea='vim ~/.config/alacritty/alacritty.yml'
 
 # for suspend
