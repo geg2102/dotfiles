@@ -29,7 +29,7 @@ Plug 'hoob3rt/lualine.nvim'				    " Status line
 Plug 'thaerkh/vim-indentguides'             " Indent guides
 Plug 'p00f/nvim-ts-rainbow'                 " Rainbow Parentheses
 Plug 'machakann/vim-highlightedyank'        " Highlighted yanks
-Plug 'romgrk/barbar.nvim'                   " Buffer line
+Plug 'romgrk/barbar.nvim'                   " Tab line
 "---------------------===IDE Tools===---------------------"
 Plug 'nvim-treesitter/nvim-treesitter'		" Treesitter 
 Plug 'neovim/nvim-lspconfig'			    " LSP for neovim
@@ -90,11 +90,11 @@ vim.api.nvim_set_keymap("t", "<C-k>", "<C-\\><C-n><C-w>k", {noremap=true})
 vim.api.nvim_set_keymap("n", "<leader>w", "<cmd>HopWord<CR>", opts)
 vim.api.nvim_set_keymap("v", "<leader>c", ":OSCYank<CR>", {noremap=true})
 vim.api.nvim_set_keymap("n", "<leader>o", "<Plug>OSCYank", {})
+vim.api.nvim_set_keymap("n", "<Space>", "za", opts)
 
 -- Colorscheme
 require("onedark").setup({
 })
-
 
 -- Lualine
 local lualine = require("lualine")
@@ -166,7 +166,6 @@ cmp.setup.cmdline(':', {
 
 -- Lsp
 local nvim_lsp = require('lspconfig')
-local servers = { "jedi_language_server", "bashls", "ccls", "cmake"}
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 local on_attach = function(client, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -182,40 +181,37 @@ local on_attach = function(client, bufnr)
     buf_set_keymap("n", "<C-d>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<cr>", {})
 end
 
-for _, lsp in ipairs(servers) do
-    nvim_lsp[lsp].setup {
+-- nvim-lsp-installer
+local lsp_installer = require("nvim-lsp-installer")
+lsp_installer.on_server_ready(function(server)
+    local default_opts  = {
         capabilities = capabilities,
         on_attach = on_attach
     }
-end
 
-
--- Specific for Lua Language Server
-local runtime_path = vim.split(package.path, ';')
-table.insert(runtime_path, "lua/?.lua")
-table.insert(runtime_path, "lua/?/init.lua")
-
-nvim_lsp.sumneko_lua.setup {
-    capabilities = capabilities,
-    on_attach = on_attach,
-    settings = {
-        Lua = {
-            runtime = {
-                version = 'LuaJIT',
-                path = runtime_path,
-            },
-            diagnostics = {
-                globals = {'vim'},
-            },
-            workspace = {
-                library = vim.api.nvim_get_runtime_file("", true),
-            },
-            telemetry = {
-                enable = false,
-            },
-        },
-    },
-}
+    local server_opts = {
+    ["sumneko_lua"] = function()
+        default_opts.settings = {
+                Lua = {
+                    runtime = {
+                        version = 'LuaJIT',
+                    },
+                    diagnostics = {
+                        globals = {'vim'},
+                    },
+                    workspace = {
+                        library = vim.api.nvim_get_runtime_file("", true),
+                    },
+                    telemetry = {
+                        enable = false,
+                    },
+                },
+            }
+        end
+        }
+    local server_options = server_opts[server.name] and server_opts[server.name]() or default_opts
+    server:setup(server_options)
+end)
 
 -- nvim-tree
 require("nvim-tree").setup{
@@ -226,4 +222,5 @@ require("nvim-tree").setup{
 
 -- hop
 require("hop").setup()
+
 
