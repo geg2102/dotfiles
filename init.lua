@@ -1,5 +1,6 @@
 -- Just easier to wrap vim-plug commands in vim.cmd
 -- In future, switch to packer
+vim.cmd([[let $VIMRUNTIME='/usr/share/nvim/runtime']])
 vim.cmd([[
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
     silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
@@ -49,6 +50,7 @@ Plug 'urbainvaes/vim-ripple'                " For easy access to REPL
 Plug 'gennaro-tedesco/nvim-peekup'          " Quickly examine registers
 Plug 'nvim-treesitter/playground'           " For examining things in treesitter
 Plug 'ojroques/vim-oscyank'                 " Copying to clipboard over ssh
+Plug 'folke/lua-dev.nvim'                   " For plugin development
 call plug#end()
 ]])
 
@@ -56,19 +58,20 @@ call plug#end()
 vim.cmd([[autocmd FileType python,c,cpp,lua set colorcolumn=120]])
 
 -- Set options
-vim.o.number=true
-vim.o.relativenumber=true
-vim.o.tabstop=4
-vim.o.shiftwidth=4
-vim.o.smarttab=true
-vim.o.expandtab=true
-vim.o.clipboard='unnamed'
-vim.o.incsearch=true
-vim.o.hlsearch=true
-vim.o.wrap=true
-vim.o.linebreak=true
-vim.o.foldmethod="expr"
-vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.opt.number=true
+vim.opt.relativenumber=true
+vim.opt.tabstop=4
+vim.opt.shiftwidth=4
+vim.opt.smarttab=true
+vim.opt.expandtab=true
+vim.opt.clipboard='unnamed'
+vim.opt.incsearch=true
+vim.opt.hlsearch=true
+vim.opt.wrap=true
+vim.opt.linebreak=true
+vim.opt.foldmethod="expr"
+vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.opt.autoindent=true
 
 -- Keymappings
 local opts = {noremap = true, silent = true} -- Convenient for a lot of mappings
@@ -93,8 +96,7 @@ vim.api.nvim_set_keymap("n", "<leader>o", "<Plug>OSCYank", {})
 vim.api.nvim_set_keymap("n", "<Space>", "za", opts)
 
 -- Colorscheme
-require("onedark").setup({
-})
+require("onedark").setup()
 
 -- Lualine
 local lualine = require("lualine")
@@ -182,6 +184,11 @@ local on_attach = function(client, bufnr)
 end
 
 -- nvim-lsp-installer
+local path = {} --vim.split(package.path, ";")
+table.insert(path, "lua/?.lua")
+table.insert(path, "lua/?/init.lua")
+
+
 local lsp_installer = require("nvim-lsp-installer")
 lsp_installer.on_server_ready(function(server)
     local default_opts  = {
@@ -191,16 +198,19 @@ lsp_installer.on_server_ready(function(server)
 
     local server_opts = {
     ["sumneko_lua"] = function()
+        default_opts.cmd = {"lua-language-server"}--, "-E", "/home/geoffrey/.local/share/nvim/lsp_servers/sumneko_lua/extension/server/main.lua"}
         default_opts.settings = {
                 Lua = {
                     runtime = {
                         version = 'LuaJIT',
+                        path = path
                     },
                     diagnostics = {
                         globals = {'vim'},
                     },
                     workspace = {
                         library = vim.api.nvim_get_runtime_file("", true),
+                        --library = {[vim.fn.expand('$VIMRUNTIME/lua')] = true, [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true},
                     },
                     telemetry = {
                         enable = false,
@@ -222,5 +232,3 @@ require("nvim-tree").setup{
 
 -- hop
 require("hop").setup()
-
-
