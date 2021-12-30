@@ -61,7 +61,7 @@ call plug#end()
 vim.cmd([[autocmd FileType python,c,cpp,lua set colorcolumn=120]])
 
 -- Set options
-vim.cmd("filetype off")
+vim.cmd("filetype on")
 vim.opt.number=true
 vim.opt.relativenumber=true
 vim.opt.tabstop=4
