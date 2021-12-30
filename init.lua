@@ -51,6 +51,9 @@ Plug 'gennaro-tedesco/nvim-peekup'          " Quickly examine registers
 Plug 'nvim-treesitter/playground'           " For examining things in treesitter
 Plug 'ojroques/vim-oscyank'                 " Copying to clipboard over ssh
 Plug 'folke/lua-dev.nvim'                   " For plugin development
+Plug 'blackcauldron7/surround.nvim'         " For surrounding text
+Plug 'sudormrfbin/cheatsheet.nvim'          " For commands I forget
+Plug 'matze/vim-move'                       " For moving text around
 call plug#end()
 ]])
 
@@ -58,10 +61,12 @@ call plug#end()
 vim.cmd([[autocmd FileType python,c,cpp,lua set colorcolumn=120]])
 
 -- Set options
+vim.cmd("filetype off")
 vim.opt.number=true
 vim.opt.relativenumber=true
 vim.opt.tabstop=4
 vim.opt.shiftwidth=4
+vim.opt.autoindent=true
 vim.opt.smarttab=true
 vim.opt.expandtab=true
 vim.opt.clipboard='unnamed'
@@ -71,7 +76,6 @@ vim.opt.wrap=true
 vim.opt.linebreak=true
 vim.opt.foldmethod="expr"
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
-vim.opt.autoindent=true
 
 -- Keymappings
 local opts = {noremap = true, silent = true} -- Convenient for a lot of mappings
@@ -120,7 +124,7 @@ treesitter.setup {
         max_file_lines = nil,
     },
     indent = {
-        enable = true
+        enable = false
     }
 }
 
@@ -232,3 +236,5 @@ require("nvim-tree").setup{
 
 -- hop
 require("hop").setup()
+
+require("surround").setup{}
