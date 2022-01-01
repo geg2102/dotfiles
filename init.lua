@@ -28,9 +28,13 @@ Plug 'kyazdani42/nvim-web-devicons'			" Icons
 Plug 'ryanoasis/vim-devicons'				" More icons
 Plug 'hoob3rt/lualine.nvim'				    " Status line
 Plug 'thaerkh/vim-indentguides'             " Indent guides
+Plug 'windwp/nvim-autopairs' "Autopairs, integrates with both cmp and treesitter
+Plug 'numToStr/Comment.nvim'                " Quickly comment out lines
+Plug 'lukas-reineke/indent-blankline.nvim'  " For indent guides
 Plug 'p00f/nvim-ts-rainbow'                 " Rainbow Parentheses
 Plug 'machakann/vim-highlightedyank'        " Highlighted yanks
 Plug 'romgrk/barbar.nvim'                   " Tab line
+Plug 'onsails/lspkind-nvim'                 " For lspkind icons
 "---------------------===IDE Tools===---------------------"
 Plug 'nvim-treesitter/nvim-treesitter'		" Treesitter 
 Plug 'neovim/nvim-lspconfig'			    " LSP for neovim
@@ -44,38 +48,50 @@ Plug 'hrsh7th/cmp-vsnip'				    " Cmp dependency
 Plug 'hrsh7th/cmp-nvim-lsp-signature-help'	" Cmp show signature help while writing
 Plug 'williamboman/nvim-lsp-installer'      " For installing language servers easily
 Plug 'tami5/lspsaga.nvim'				    " Lsp plugin for performant UI
-Plug 'scrooloose/nerdcommenter'             " Easy code documentation
 Plug 'urbainvaes/vim-ripple'                " For easy access to REPL
+Plug 'romgrk/nvim-treesitter-context'       " What function am I in 
+Plug 'kkoomen/vim-doge', {'do': ':call doge#install'}
+Plug 'kristijanhusak/vim-dadbod', {'branch': 'async-query'}
+Plug 'kristijanhusak/vim-dadbod-ui'
+Plug 'kristijanhusak/vim-dadbod-completion'
+Plug 'sbdchd/neoformat'
+
 "---------------------===Other===---------------------"
 Plug 'gennaro-tedesco/nvim-peekup'          " Quickly examine registers
 Plug 'nvim-treesitter/playground'           " For examining things in treesitter
 Plug 'ojroques/vim-oscyank'                 " Copying to clipboard over ssh
 Plug 'folke/lua-dev.nvim'                   " For plugin development
+Plug 'rafamadriz/friendly-snippets'         " Snippets
 Plug 'blackcauldron7/surround.nvim'         " For surrounding text
 Plug 'sudormrfbin/cheatsheet.nvim'          " For commands I forget
 Plug 'matze/vim-move'                       " For moving text around
+Plug 'lewis6991/impatient.nvim'             " Quicker loading
+Plug 'moll/vim-bbye'                        " Better buffer delete
 call plug#end()
 ]])
 
 --Autocommands
 vim.cmd([[autocmd FileType python,c,cpp,lua set colorcolumn=120]])
+vim.cmd([[autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources= {{ name = 'vim-dadbod-completion' }} })]])
 
 -- Set options
-vim.cmd("filetype on")
 vim.opt.number=true
 vim.opt.relativenumber=true
 vim.opt.tabstop=4
 vim.opt.shiftwidth=4
-vim.opt.autoindent=true
 vim.opt.smarttab=true
 vim.opt.expandtab=true
 vim.opt.clipboard='unnamed'
+vim.opt.autoindent=true
 vim.opt.incsearch=true
 vim.opt.hlsearch=true
 vim.opt.wrap=true
 vim.opt.linebreak=true
 vim.opt.foldmethod="expr"
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.opt.pastetoggle = '<F10>'
+vim.g.db_ui_use_nerd_fonts = 1
+vim.cmd([[filetype plugin indent on]])
 
 -- Keymappings
 local opts = {noremap = true, silent = true} -- Convenient for a lot of mappings
@@ -98,6 +114,8 @@ vim.api.nvim_set_keymap("n", "<leader>w", "<cmd>HopWord<CR>", opts)
 vim.api.nvim_set_keymap("v", "<leader>c", ":OSCYank<CR>", {noremap=true})
 vim.api.nvim_set_keymap("n", "<leader>o", "<Plug>OSCYank", {})
 vim.api.nvim_set_keymap("n", "<Space>", "za", opts)
+vim.api.nvim_set_keymap("n", "<leader>du", ":DBUIToggle<CR>", opts)
+vim.api.nvim_set_keymap("n", "<F10>", ":set invpaste paste?<CR>", opts)
 
 -- Colorscheme
 require("onedark").setup()
@@ -171,7 +189,6 @@ cmp.setup.cmdline(':', {
 })
 
 -- Lsp
-local nvim_lsp = require('lspconfig')
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 local on_attach = function(client, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -214,18 +231,22 @@ lsp_installer.on_server_ready(function(server)
                     },
                     workspace = {
                         library = vim.api.nvim_get_runtime_file("", true),
-                        --library = {[vim.fn.expand('$VIMRUNTIME/lua')] = true, [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true},
                     },
                     telemetry = {
                         enable = false,
                     },
                 },
             }
-        end
+        end,
+    ["bashls"] = function()
+        default_opts.cmd = {"/usr/bin/bash-langauge-server"}
+    end
         }
+
     local server_options = server_opts[server.name] and server_opts[server.name]() or default_opts
     server:setup(server_options)
 end)
+
 
 -- nvim-tree
 require("nvim-tree").setup{
@@ -238,3 +259,32 @@ require("nvim-tree").setup{
 require("hop").setup()
 
 require("surround").setup{}
+
+-- ccls
+local nvim_lsp = require('lspconfig')
+nvim_lsp.ccls.setup{
+    on_attach = on_attach,
+    capabilities = capabilities,
+    init_options = {
+        compiliationDatabaseDirectory = "build";
+        index = {
+            threads = 0
+        };
+        clang = {
+          excludeArgs = { "-frounding-math"} ;
+        };
+    }
+}
+
+require('Comment').setup()
+
+
+vim.opt.list = true
+-- vim.opt.listchars:append("space:⋅")
+vim.opt.listchars:append("eol:↴")
+
+require("indent_blankline").setup {
+    -- space_char_blankline = " ",
+    show_current_context = true,
+    show_current_context_start = true,
+}
