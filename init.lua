@@ -1,7 +1,24 @@
 local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  packer_bootstrap = vim.fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    packer_bootstrap = vim.fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    print "Installing packer close and reopen Neovim..."
+    vim.cmd [[packadd packer.nvim]]
 end
+
+-- Use a protected call so we don't error out on first use
+local status_ok, packer = pcall(require, "packer")
+if not status_ok then
+  return
+end
+
+-- Have packer use a popup window
+packer.init {
+  display = {
+    open_fn = function()
+      return require("packer.util").float { border = "rounded" }
+    end,
+  },
+}
 
 local use = require('packer').use
 require('packer').startup(function()
@@ -88,6 +105,9 @@ vim.opt.linebreak=true
 vim.opt.foldmethod="expr"
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.opt.pastetoggle = '<F10>'
+vim.opt.completeopt = { "menuone", "noselect" } -- For cmp
+vim.opt.undofile = true -- Persistent undo
+vim.opt.scrolloff = 8
 vim.g.db_ui_use_nerd_fonts = 1
 vim.cmd([[filetype plugin indent on]])
 
@@ -163,7 +183,7 @@ cmp.setup({
             i = cmp.mapping.abort(),
             c = cmp.mapping.close(),
         }),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        ['<CR>'] = cmp.mapping.confirm({ select = false }),
     },
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
