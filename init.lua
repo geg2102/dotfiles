@@ -53,7 +53,7 @@ require('packer').startup(function()
 	use "tami5/lspsaga.nvim"                                               -- Lsp plugin for performant UI
 	use "urbainvaes/vim-ripple"                                            -- For easy access to REPL
 	use "romgrk/nvim-treesitter-context"                                   -- What function am I in
-	use {"kkoomen/vi-doge", run= function() vim.fn['doge#install']() end } -- For docstrings
+	use {"kkoomen/vim-doge", run= function() vim.fn['doge#install']() end } -- For docstrings
 	use {"kristijanhusak/vim-dadbod", branch="async-query"}                -- Interacting with sql databases
 	use "kristijanhusak/vim-dadbod-ui"                                     -- Better UI for dadbod
 	use "kristijanhusak/vim-dadbod-completion"                             -- Completion 
