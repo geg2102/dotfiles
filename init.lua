@@ -13,7 +13,7 @@ end
 
 local use = require('packer').use
 require('packer').startup(function()
-    use "wbthomason/packer.nvim"                                                              -- package manager
+    	use "wbthomason/packer.nvim"                                                              -- package manager
 	use "rhysd/accelerated-jk"                                                                -- Faster j/k when holding
 	use "phaazon/hop.nvim"                                                                    -- For jumping to particular places
 	use "psliwka/vim-smoothie"                                                                -- For smooth scrolling
@@ -30,7 +30,6 @@ require('packer').startup(function()
 	use "kyazdani42/nvim-web-devicons"                                                        -- Icons
 	use "ryanoasis/vim-devicons"                                                              -- More icons
 	use "hoob3rt/lualine.nvim"                                                                -- Status line
-	use "thaerkh/vim-indentguides"                                                            -- Indent guides
 	use "windwp/nvim-autopairs"                                                               --Autopairs, integrates with both cmp and treesitter
 	use "numToStr/Comment.nvim"                                                               -- Quickly comment out lines
 	use "lukas-reineke/indent-blankline.nvim"                                                 -- For indent guides
@@ -53,18 +52,18 @@ require('packer').startup(function()
 	use "williamboman/nvim-lsp-installer"                                                     -- For installing language servers easily
 	use "tami5/lspsaga.nvim"                                                                  -- Lsp plugin for performant UI
 	use "urbainvaes/vim-ripple"                                                               -- For easy access to REPL
-    use "geg2102/nvim-python-repl"                                                            -- My REPL plugin (see if good enough)
+    	use "geg2102/nvim-python-repl"                                                            -- My REPL plugin (see if good enough)
 	-- use "romgrk/nvim-treesitter-context"                                                   -- What function am I in
 	use {"kkoomen/vim-doge", run= function() vim.fn['doge#install']() end }                   -- For docstrings
 	use {"kristijanhusak/vim-dadbod", branch="async-query"}                                   -- Interacting with sql databases
 	use "geg2102/vim-dadbod-ui"                                                               -- Better UI for dadbod
 	use "kristijanhusak/vim-dadbod-completion"                                                -- Completion
 	use "sbdchd/neoformat"                                                                    -- Autoformat
-    use "averms/black-nvim"                                                                   -- Async black formatter for python
+    	use "averms/black-nvim"                                                                   -- Async black formatter for python
 	--"---------------------===Other===-------------------                                    --"
 	use "gennaro-tedesco/nvim-peekup"                                                         -- Quickly examine registers
 	use "nvim-treesitter/playground"                                                          -- For examining things in treesitter
-    use "folke/lua-dev.nvim"                                                                  -- For plugin development
+    	use "folke/lua-dev.nvim"                                                                  -- For plugin development
 	use "ojroques/vim-oscyank"                                                                -- Copying to clipboard over ssh
 	use "rafamadriz/friendly-snippets"                                                        -- Snippets
 	use "blackcauldron7/surround.nvim"                                                        -- For surrounding text
@@ -72,10 +71,9 @@ require('packer').startup(function()
 	use "matze/vim-move"                                                                      -- For moving text around
 	use "lewis6991/impatient.nvim"                                                            -- Quicker loading
 	use "moll/vim-bbye"                                                                       -- Better buffer delete
-    use "mg979/vim-visual-multi"                                                              -- Multi cursor support
-    use "jsborjesson/vim-uppercase-sql"                                                       -- Auto uppercase sql keywords
-    use "goolord/alpha-nvim"                                                                  -- Start screen
-
+    	use "mg979/vim-visual-multi"                                                              -- Multi cursor support
+    	use "jsborjesson/vim-uppercase-sql"                                                       -- Auto uppercase sql keywords
+    	use "goolord/alpha-nvim"                                                                  -- Start screen
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if packer_bootstrap then
@@ -140,6 +138,7 @@ vim.api.nvim_set_keymap("n", "<leader>q", ":BufferClose<CR>", opts)
 vim.api.nvim_set_keymap("n", "<leader>q!", ":BufferClose!<CR>", opts)
 vim.api.nvim_set_keymap("n", "<leader>b", ":BufferOrderByBufferNumber<CR>", opts)
 vim.api.nvim_set_keymap("n", "<leader>y", "<cmd>call Black()<CR>", opts)
+vim.api.nvim_set_keymap("n", "<C-p>", ":BufferPick<CR>", opts)
 
 -- Colorscheme
 require("onedark").setup()
@@ -319,4 +318,4 @@ require("nvim-python-repl")
 require("alpha").setup(require("alpha.themes.startify").opts)
 
 -- Telescope file browser
-require("telescope").load_extension "file_browswer"
+require("telescope").load_extension "file_browser"
