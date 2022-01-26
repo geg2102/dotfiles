@@ -6,70 +6,75 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 -- Use a protected call so we don't error out on first use
-local status_ok, packer = pcall(require, "packer")
+local status_ok, _ = pcall(require, "packer")
 if not status_ok then
   return
 end
 
 local use = require('packer').use
 require('packer').startup(function()
-    use "wbthomason/packer.nvim"                                           -- package manager
-	use "rhysd/accelerated-jk"                                             -- Faster j/k when holding
-	use "phaazon/hop.nvim"                                                 -- For jumping to particular places
-	use "psliwka/vim-smoothie"                                             -- For smooth scrolling
-	use "unblevable/quick-scope"                                           -- For highlighting f spots
-	use "christoomey/vim-tmux-navigator"                                   -- For navigating between tmux panes and vim splits
-	--"---------------------===Project navigation===-------------------    --"
-	use "nvim-telescope/telescope.nvim"                                    -- For looking through files
-	use "nvim-lua/popup.nvim"                                              -- Dependency for telescope
-	use "nvim-lua/plenary.nvim"                                            -- Dependency for telescope
-	use "kyazdani42/nvim-tree.lua"                                         -- A file navigator window
-	--"---------------------===Appearance===-------------------            --"
-	use "geg2102/onedark.nvim-1"                                           -- Onedark theme
-	use "kyazdani42/nvim-web-devicons"                                     -- Icons
-	use "ryanoasis/vim-devicons"                                           -- More icons
-	use "hoob3rt/lualine.nvim"                                             -- Status line
-	use "thaerkh/vim-indentguides"                                         -- Indent guides
-	use "windwp/nvim-autopairs"                                            --Autopairs, integrates with both cmp and treesitter
-	use "numToStr/Comment.nvim"                                            -- Quickly comment out lines
-	use "lukas-reineke/indent-blankline.nvim"                              -- For indent guides
-	use "p00f/nvim-ts-rainbow"                                             -- Rainbow Parentheses
-	use "machakann/vim-highlightedyank"                                    -- Highlighted yanks
-	use "romgrk/barbar.nvim"                                               -- Tab line
-	use "onsails/lspkind-nvim"                                             -- For lspkind icons
-	--"---------------------===IDE Tools===-------------------             --"
-	use "nvim-treesitter/nvim-treesitter"                                  -- Treesitter
-	use "neovim/nvim-lspconfig"                                            -- LSP for neovim
-	use "hrsh7th/vim-vsnip"                                                -- Snippet support
-	use "hrsh7th/cmp-nvim-lsp"                                             -- For completion
-	use "hrsh7th/cmp-buffer"                                               -- Cmp dependency
-	use "hrsh7th/cmp-path"                                                 -- Cmp dependency
-	use "hrsh7th/cmp-cmdline"                                              -- Cmp dependency
-	use "hrsh7th/nvim-cmp"                                                 -- Cmp dependency
-	use "hrsh7th/cmp-vsnip"                                                -- Cmp dependency
-	use "hrsh7th/cmp-nvim-lua"                                             -- Cmp dependency
-	use "hrsh7th/cmp-nvim-lsp-signature-help"                              -- Cmp show signature help while writing
-	use "williamboman/nvim-lsp-installer"                                  -- For installing language servers easily
-	use "tami5/lspsaga.nvim"                                               -- Lsp plugin for performant UI
-	use "urbainvaes/vim-ripple"                                            -- For easy access to REPL
-	use "romgrk/nvim-treesitter-context"                                   -- What function am I in
-	use {"kkoomen/vim-doge", run= function() vim.fn['doge#install']() end } -- For docstrings
-	use {"kristijanhusak/vim-dadbod", branch="async-query"}                -- Interacting with sql databases
-	use "kristijanhusak/vim-dadbod-ui"                                     -- Better UI for dadbod
-	use "kristijanhusak/vim-dadbod-completion"                             -- Completion 
-	use "sbdchd/neoformat"                                                 -- Autoformat
-	--"---------------------===Other===-------------------                 --"
-	use "gennaro-tedesco/nvim-peekup"                                      -- Quickly examine registers
-	use "nvim-treesitter/playground"                                       -- For examining things in treesitter
-    use "folke/lua-dev.nvim"                                               -- For plugin development
-	use "ojroques/vim-oscyank"                                             -- Copying to clipboard over ssh
-	use "rafamadriz/friendly-snippets"                                     -- Snippets
-	use "blackcauldron7/surround.nvim"                                     -- For surrounding text
-	use "sudormrfbin/cheatsheet.nvim"                                      -- For commands I forget
-	use "matze/vim-move"                                                   -- For moving text around
-	use "lewis6991/impatient.nvim"                                         -- Quicker loading
-	use "moll/vim-bbye"                                                    -- Better buffer delete
-    use "mg979/vim-visual-multi"                                           -- Multi cursor support
+    use "wbthomason/packer.nvim"                                                              -- package manager
+	use "rhysd/accelerated-jk"                                                                -- Faster j/k when holding
+	use "phaazon/hop.nvim"                                                                    -- For jumping to particular places
+	use "psliwka/vim-smoothie"                                                                -- For smooth scrolling
+	use "unblevable/quick-scope"                                                              -- For highlighting f spots
+	use "christoomey/vim-tmux-navigator"                                                      -- For navigating between tmux panes and vim splits
+	--"---------------------===Project navigation===-------------------                       --"
+	use "nvim-telescope/telescope.nvim"                                                       -- For looking through files
+	use "nvim-telescope/telescope-file-browser.nvim"                                          -- For looking through files
+	use "nvim-lua/popup.nvim"                                                                 -- Dependency for telescope
+	use "nvim-lua/plenary.nvim"                                                               -- Dependency for telescope
+	use "kyazdani42/nvim-tree.lua"                                                            -- A file navigator window
+	--"---------------------===Appearance===-------------------                               --"
+	use "geg2102/onedark.nvim-1"                                                              -- Onedark theme
+	use "kyazdani42/nvim-web-devicons"                                                        -- Icons
+	use "ryanoasis/vim-devicons"                                                              -- More icons
+	use "hoob3rt/lualine.nvim"                                                                -- Status line
+	use "thaerkh/vim-indentguides"                                                            -- Indent guides
+	use "windwp/nvim-autopairs"                                                               --Autopairs, integrates with both cmp and treesitter
+	use "numToStr/Comment.nvim"                                                               -- Quickly comment out lines
+	use "lukas-reineke/indent-blankline.nvim"                                                 -- For indent guides
+	use "p00f/nvim-ts-rainbow"                                                                -- Rainbow Parentheses
+	use "machakann/vim-highlightedyank"                                                       -- Highlighted yanks
+	use "romgrk/barbar.nvim"                                                                  -- Tab line
+	use "onsails/lspkind-nvim"                                                                -- For lspkind icons
+	--"---------------------===IDE Tools===-------------------                                --"
+	use {"nvim-treesitter/nvim-treesitter", run=":TSUpdate"}                                  -- Treesitter
+	use "neovim/nvim-lspconfig"                                                               -- LSP for neovim
+	use "hrsh7th/vim-vsnip"                                                                   -- Snippet support
+	use "hrsh7th/cmp-nvim-lsp"                                                                -- For completion
+	use "hrsh7th/cmp-buffer"                                                                  -- Cmp dependency
+	use "hrsh7th/cmp-path"                                                                    -- Cmp dependency
+	use "hrsh7th/cmp-cmdline"                                                                 -- Cmp dependency
+	use "hrsh7th/nvim-cmp"                                                                    -- Cmp dependency
+	use "hrsh7th/cmp-vsnip"                                                                   -- Cmp dependency
+	use "hrsh7th/cmp-nvim-lua"                                                                -- Cmp dependency
+	use "hrsh7th/cmp-nvim-lsp-signature-help"                                                 -- Cmp show signature help while writing
+	use "williamboman/nvim-lsp-installer"                                                     -- For installing language servers easily
+	use "tami5/lspsaga.nvim"                                                                  -- Lsp plugin for performant UI
+	use "urbainvaes/vim-ripple"                                                               -- For easy access to REPL
+    use "geg2102/nvim-python-repl"                                                            -- My REPL plugin (see if good enough)
+	-- use "romgrk/nvim-treesitter-context"                                                   -- What function am I in
+	use {"kkoomen/vim-doge", run= function() vim.fn['doge#install']() end }                   -- For docstrings
+	use {"kristijanhusak/vim-dadbod", branch="async-query"}                                   -- Interacting with sql databases
+	use "geg2102/vim-dadbod-ui"                                                               -- Better UI for dadbod
+	use "kristijanhusak/vim-dadbod-completion"                                                -- Completion
+	use "sbdchd/neoformat"                                                                    -- Autoformat
+    use "averms/black-nvim"                                                                   -- Async black formatter for python
+	--"---------------------===Other===-------------------                                    --"
+	use "gennaro-tedesco/nvim-peekup"                                                         -- Quickly examine registers
+	use "nvim-treesitter/playground"                                                          -- For examining things in treesitter
+    use "folke/lua-dev.nvim"                                                                  -- For plugin development
+	use "ojroques/vim-oscyank"                                                                -- Copying to clipboard over ssh
+	use "rafamadriz/friendly-snippets"                                                        -- Snippets
+	use "blackcauldron7/surround.nvim"                                                        -- For surrounding text
+	use "sudormrfbin/cheatsheet.nvim"                                                         -- For commands I forget
+	use "matze/vim-move"                                                                      -- For moving text around
+	use "lewis6991/impatient.nvim"                                                            -- Quicker loading
+	use "moll/vim-bbye"                                                                       -- Better buffer delete
+    use "mg979/vim-visual-multi"                                                              -- Multi cursor support
+    use "jsborjesson/vim-uppercase-sql"                                                       -- Auto uppercase sql keywords
+    use "goolord/alpha-nvim"                                                                  -- Start screen
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
@@ -101,7 +106,10 @@ vim.opt.pastetoggle = '<F10>'
 vim.opt.completeopt = { "menuone", "noselect" } -- For cmp
 vim.opt.undofile = true -- Persistent undo
 vim.opt.scrolloff = 8
+vim.opt.swapfile = false
 vim.g.db_ui_use_nerd_fonts = 1
+vim.g.mapleader = ","
+vim.g.indent_blankline_buftype_exclude={'terminal'}
 vim.cmd([[filetype plugin indent on]])
 
 -- Keymappings
@@ -111,7 +119,7 @@ vim.api.nvim_set_keymap('n', "j", "<Plug>(accelerated_jk_gj)", {})
 vim.api.nvim_set_keymap('n', "k", "<Plug>(accelerated_jk_gk)", {})
 vim.api.nvim_set_keymap('n', "<leader>ff", "<cmd>Telescope find_files<CR>", opts)
 vim.api.nvim_set_keymap('n', "<leader>fg", "<cmd>Telescope live_grep<CR>", opts)
-vim.api.nvim_set_keymap('n', "<leader>fb", "<cmd>Telescope buffers<CR>", opts)
+vim.api.nvim_set_keymap('n', "<leader>fb", "<cmd>Telescope file_browser<CR>", opts)
 vim.api.nvim_set_keymap('n', "<leader>fd", "<cmd>Telescope current_buffer_fuzzy_find<CR>", opts)
 vim.api.nvim_set_keymap('n', "<leader>fh", "<cmd>Telescope oldfiles<CR>", opts)
 vim.api.nvim_set_keymap("n", "<leader>p", "<cmd>tabnew term://python3 -m pudb.run %<CR>", opts)
@@ -128,7 +136,10 @@ vim.api.nvim_set_keymap("n", "<leader>o", "<Plug>OSCYank", {})
 vim.api.nvim_set_keymap("n", "<Space>", "za", opts)
 vim.api.nvim_set_keymap("n", "<leader>du", ":DBUIToggle<CR>", opts)
 vim.api.nvim_set_keymap("n", "<F10>", ":set invpaste paste?<CR>", opts)
-vim.api.nvim_set_keymap("n", "<leader>q", ":Bdelete<CR>", opts)
+vim.api.nvim_set_keymap("n", "<leader>q", ":BufferClose<CR>", opts)
+vim.api.nvim_set_keymap("n", "<leader>q!", ":BufferClose!<CR>", opts)
+vim.api.nvim_set_keymap("n", "<leader>b", ":BufferOrderByBufferNumber<CR>", opts)
+vim.api.nvim_set_keymap("n", "<leader>y", "<cmd>call Black()<CR>", opts)
 
 -- Colorscheme
 require("onedark").setup()
@@ -144,7 +155,7 @@ lualine.setup {
 -- Treesitter
 local treesitter = require("nvim-treesitter.configs")
 treesitter.setup {
-    ensure_installed = 'maintained',
+    ensure_installed = {'python', 'bash', 'yaml', 'lua'},
     highlight = {
         enable = true,
         disable = {"html"}
@@ -205,7 +216,7 @@ cmp.setup.cmdline(':', {
 
 -- Lsp
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-local on_attach = function(client, bufnr)
+local on_attach = function(_, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
     buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
     buf_set_keymap("n", "<leader>r", "<cmd>Lspsaga rename<cr>", opts)
@@ -301,3 +312,11 @@ require("indent_blankline").setup {
     show_current_context_start = true,
 }
 
+-- My REPL plugin
+require("nvim-python-repl")
+
+-- Alpha nvim (start screen)
+require("alpha").setup(require("alpha.themes.startify").opts)
+
+-- Telescope file browser
+require("telescope").load_extension "file_browswer"
