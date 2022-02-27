@@ -17,7 +17,7 @@ local use = require('packer').use
 require('packer').startup(function()
 	use "wbthomason/packer.nvim"                                                                   -- package manager
 	use "rhysd/accelerated-jk"                                                                     -- Faster j/k when holding
-	use {"phaazon/hop.nvim", config= function() require("hop").setup() end}                        -- For jumping to particular places
+	use "phaazon/hop.nvim"                                                                         -- For jumping to particular places
 	use "psliwka/vim-smoothie"                                                                     -- For smooth scrolling
 	use "unblevable/quick-scope"                                                                   -- For highlighting f spots
 	use "christoomey/vim-tmux-navigator"                                                           -- For navigating between tmux panes and vim splits
@@ -32,8 +32,8 @@ require('packer').startup(function()
 	use "kyazdani42/nvim-web-devicons"                                                             -- Icons
 	use "ryanoasis/vim-devicons"                                                                   -- More icons
 	use "hoob3rt/lualine.nvim"                                                                     -- Status line
-	use {"windwp/nvim-autopairs", config = function() require("nvim-autopairs").setup{} end}       --Autopairs, integrates with both cmp and treesitter
-	use {"numToStr/Comment.nvim", config = function() require('Comment').setup() end}              -- Quickly comment out lines
+	use {"windwp/nvim-autopairs"}                                                                  --Autopairs, integrates with both cmp and treesitter
+	use {"numToStr/Comment.nvim"}                                                                  -- Quickly comment out lines
 	use "lukas-reineke/indent-blankline.nvim"                                                      -- For indent guides
 	use "p00f/nvim-ts-rainbow"                                                                     -- Rainbow Parentheses
 	use "machakann/vim-highlightedyank"                                                            -- Highlighted yanks
@@ -53,21 +53,21 @@ require('packer').startup(function()
 	use "hrsh7th/cmp-nvim-lsp-signature-help"                                                      -- Cmp show signature help while writing
 	use "williamboman/nvim-lsp-installer"                                                          -- For installing language servers easily
 	use "tami5/lspsaga.nvim"                                                                       -- Lsp plugin for performant UI
-    use {"geg2102/nvim-python-repl", config=function() require("nvim-python-repl").setup() end}    -- My REPL plugin (see if good enough)
+    use {"geg2102/nvim-python-repl"}                                                               -- My REPL plugin
 	-- use "romgrk/nvim-treesitter-context"                                                        -- What function am I in
 	use {"kkoomen/vim-doge", run= function() vim.fn['doge#install']() end }                        -- For docstrings
 	use {"kristijanhusak/vim-dadbod", branch="async-query"}                                        -- Interacting with sql databases
 	use "geg2102/vim-dadbod-ui"                                                                    -- Better UI for dadbod
 	use "kristijanhusak/vim-dadbod-completion"                                                     -- Completion
-	use "sbdchd/neoformat"                                                                         -- Autoformat
    	use "averms/black-nvim"                                                                        -- Async black formatter for python
+    use "jose-elias-alvarez/null-ls.nvim"                                                          -- Formatting for LSP without it
 	--"---------------------===Other===-------------------                                         --"
 	use "gennaro-tedesco/nvim-peekup"                                                              -- Quickly examine registers
 	use "nvim-treesitter/playground"                                                               -- For examining things in treesitter
    	use "folke/lua-dev.nvim"                                                                       -- For plugin development
 	use "ojroques/vim-oscyank"                                                                     -- Copying to clipboard over ssh
 	use "rafamadriz/friendly-snippets"                                                             -- Snippets
-	use {"blackcauldron7/surround.nvim", config=function() require("surround").setup{} end}        -- For surrounding text
+	use {"ur4ltz/surround.nvim"}        -- For surrounding text
 	use "sudormrfbin/cheatsheet.nvim"                                                              -- For commands I forget
 	use "matze/vim-move"                                                                           -- For moving text around
 	use "lewis6991/impatient.nvim"                                                                 -- Quicker loading
@@ -77,6 +77,8 @@ require('packer').startup(function()
    	use "goolord/alpha-nvim"                                                                       -- Start screen
     use { "beauwilliams/focus.nvim", config = function() require("focus").setup() end }            -- Autoresizing
     use "RRethy/nvim-treesitter-textsubjects"                                                      -- Text subjects
+    use "sunjon/shade.nvim"                                                                        -- Shade inactive windows
+    use "tpope/vim-repeat"                                                                         -- Dot command for plugin maps
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if packer_bootstrap then
@@ -143,7 +145,8 @@ vim.api.nvim_set_keymap("n", "<leader>q!", ":BufferClose!<CR>", opts)
 vim.api.nvim_set_keymap("n", "<leader>b", ":BufferOrderByBufferNumber<CR>", opts)
 vim.api.nvim_set_keymap("n", "<leader>y", "<cmd>call Black()<CR>", opts)
 vim.api.nvim_set_keymap("n", "<C-p>", ":BufferPick<CR>", opts)
-
+vim.api.nvim_set_keymap("n", "<leader>h", ":noh<CR>", opts)
+vim.api.nvim_set_keymap("i", "<C-s>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
 -- Colorscheme
 require("onedark").setup{
     highlights = {
@@ -235,6 +238,7 @@ cmp.setup.cmdline(':', {
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 local on_attach = function(_, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+    buf_set_keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.formatting_sync()<CR>", opts)
     buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
     buf_set_keymap("n", "<leader>r", "<cmd>Lspsaga rename<cr>", opts)
     buf_set_keymap("n", "gx", "<cmd>Lspsaga code_action<cr>", opts)
@@ -324,6 +328,34 @@ require("alpha").setup(require("alpha.themes.startify").opts)
 -- Telescope file browser
 require("telescope").load_extension "file_browser"
 
+-- Hop
+require("hop").setup()
 
+-- autopairs
+require("nvim-autopairs").setup{}
 
+-- comment
+require('Comment').setup()
 
+-- my repl
+require("nvim-python-repl").setup()
+
+-- surround
+require("surround").setup{}
+
+-- null-ls
+require("null-ls").setup({
+    sources = {
+        require("null-ls").builtins.formatting.terraform_fmt
+    },
+    on_attach = function(client)
+        if client.resolved_capabilities.document_formatting then
+            vim.cmd([[
+            augroup LspFormatting
+            autocmd! * <buffer>
+            autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()
+            augroup END
+            ]])
+        end
+    end
+})
