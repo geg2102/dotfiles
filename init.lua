@@ -39,6 +39,7 @@ require('packer').startup(function()
 	use "machakann/vim-highlightedyank"                                                            -- Highlighted yanks
 	use "romgrk/barbar.nvim"                                                                       -- Tab line
 	use "onsails/lspkind-nvim"                                                                     -- For lspkind icons
+    use "rebelot/kanagawa.nvim"                                                                    -- Colorscheme
 	--"---------------------===IDE Tools===-------------------                                     --"
 	use {"nvim-treesitter/nvim-treesitter", run=":TSUpdate"}                                       -- Treesitter
 	use "neovim/nvim-lspconfig"                                                                    -- LSP for neovim
@@ -79,6 +80,7 @@ require('packer').startup(function()
     use "RRethy/nvim-treesitter-textsubjects"                                                      -- Text subjects
     use "sunjon/shade.nvim"                                                                        -- Shade inactive windows
     use "tpope/vim-repeat"                                                                         -- Dot command for plugin maps
+    use "simrat39/symbols-outline.nvim"                                                            -- Symbol navigator
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if packer_bootstrap then
@@ -117,7 +119,7 @@ vim.cmd([[filetype plugin indent on]])
 
 -- Keymappings
 local opts = {noremap = true, silent = true} -- Convenient for a lot of mappings
-vim.api.nvim_set_keymap('n', "'", "<cmd>NvimTreeToggle<CR>", opts)
+vim.api.nvim_set_keymap('n', "'", "<cmd>SymbolsOutline<CR>", opts)
 vim.api.nvim_set_keymap('n', "j", "<Plug>(accelerated_jk_gj)", {})
 vim.api.nvim_set_keymap('n', "k", "<Plug>(accelerated_jk_gk)", {})
 vim.api.nvim_set_keymap('n', "<leader>ff", "<cmd>Telescope find_files<CR>", opts)
@@ -147,6 +149,7 @@ vim.api.nvim_set_keymap("n", "<leader>y", "<cmd>call Black()<CR>", opts)
 vim.api.nvim_set_keymap("n", "<C-p>", ":BufferPick<CR>", opts)
 vim.api.nvim_set_keymap("n", "<leader>h", ":noh<CR>", opts)
 vim.api.nvim_set_keymap("i", "<C-s>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+
 -- Colorscheme
 require("onedark").setup{
     highlights = {
@@ -158,11 +161,13 @@ require("onedark").setup{
 }
 
 require("onedark").load()
+-- vim.cmd([[colorscheme kanagawa]])
 -- Lualine
 local lualine = require("lualine")
 lualine.setup {
 	options = {
-		theme="onedark"
+		-- theme="kanagawa"
+        theme="onedark"
 	}
 }
 
