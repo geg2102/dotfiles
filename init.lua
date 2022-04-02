@@ -364,3 +364,6 @@ require("null-ls").setup({
         end
     end
 })
+
+-- Shade setup
+require("shade").setup()
