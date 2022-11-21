@@ -18,7 +18,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 install_neovim () {
-	wget https://github.com/neovim/neovim/releases/download/v0.6.0/nvim.appimage
+	wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
 	chmod u+x nvim.appimage
     sudo mv nvim.appimage /usr/bin/nvim
 }
