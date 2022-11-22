@@ -67,6 +67,17 @@ function make_directories () {
     mkdir -p $1/src
 }
 
+vf() {
+    LAST_FILE="$(fzf --preview 'bat --style=numbers --color=always --line-range :500 {}')"
+    [[ -n $LAST_FILE ]] && echo "$LAST_FILE" && nvim "$LAST_FILE"
+}
+
+cf() {
+    _VAR =$(fzf)
+    _directory="$(dirname $_VAR)"
+    cd $directory
+}
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/geoffrey/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -81,3 +92,5 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -6,7 +6,14 @@ local ensure_packer = function()
     local fn = vim.fn
     local install_path = fn.stdpath("data") .. "site/pack/packer/start/packer.nvim"
     if fn.empty(fn.glob(install_path)) > 0 then
-        fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
+        fn.system({
+            "git",
+            "clone",
+            "--depth",
+            "1",
+            "https://github.com/wbthomason/packer.nvim",
+            install_path
+        })
         vim.cmd [[packadd packer.nvim]]
         return true
     end
@@ -647,6 +654,9 @@ require("packer").startup(function(use)
     use {
         "jsborjesson/vim-uppercase-sql"
     }
+    use {
+        "lervag/vimtex"
+    }
     if packer_bootstrap then
         require("packer").sync()
     end
@@ -746,7 +756,7 @@ vim.keymap.set("t", "<C-j>", "<C-\\><C-n><C-w>j")
 vim.keymap.set("t", "<C-k>", "<C-\\><C-n><C-w>k")
 
 vim.keymap.set("v", "<leader>c", ":OSCYank<CR>")
-vim.keymap.set("n", "<leader>o", "<Plug>OSCYank")
+vim.keymap.set("n", "<leader>c", "<Plug>OSCYank")
 
 vim.keymap.set("n", "<leader>du", ":DBUIToggle<CR>")
 -- =====================================================================================
@@ -758,7 +768,7 @@ vim.api.nvim_create_autocmd("FileType", {
     command = "silent! set colorcolumn=88",
     group = colorcolumn
 })
-local dadbodcompletion = vim.api.nvim_create_augroup("DadbodCompletion", { clear = true })
+local dadbodcompletion = vim.api.nvim_create_augroup("DBCompletion", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "sql", "psql", "plsql" },
     command = [[
