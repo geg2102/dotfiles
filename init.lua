@@ -37,7 +37,7 @@ require("packer").startup(function(use)
     }
     use {
         "akinsho/toggleterm.nvim",
-        tag = "v2.*",
+        tag = "*",
         config = function()
             require("toggleterm").setup({
                 open_mapping = [[<leader>t]],
@@ -92,7 +92,7 @@ require("packer").startup(function(use)
             local nvim_lsp = require("lspconfig")
             for _, server in ipairs(servers) do
                 nvim_lsp[server].setup {
-                    capabilities = capabilities
+                    capabilities = capabilities,
                 }
             end
             nvim_lsp.sumneko_lua.setup {
@@ -114,6 +114,18 @@ require("packer").startup(function(use)
                         },
                     },
                     capabilities = capabilities
+                }
+            }
+            nvim_lsp.ccls.setup {
+                capabilities = capabilities,
+                init_options = {
+                    compilationDatabaseDirectory = "root",
+                    index = {
+                        threads = 0
+                    },
+                    clang = {
+                        excludeArgs = {"-frounding-math"}
+                    }
                 }
             }
         end
@@ -246,6 +258,7 @@ require("packer").startup(function(use)
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-cmdline",
             "hrsh7th/cmp-nvim-lua",
+            "hrsh7th/cmp-vsnip",
             "hrsh7th/vim-vsnip-integ",
             "hrsh7th/cmp-nvim-lsp-signature-help",
             "tamago324/cmp-zsh",
@@ -295,7 +308,8 @@ require("packer").startup(function(use)
                     { name = "vsnip" },
                     { name = "nvim_lsp_signature_help" },
                     { name = "cmp-nvim-lua" },
-                    { name = "cmp-zsh" }
+                    { name = "cmp-zsh" },
+                    { name = "path"}
                 }, {
                     { name = "buffer" },
                 }),
@@ -656,6 +670,9 @@ require("packer").startup(function(use)
     use {
         "lervag/vimtex"
     }
+    use {
+        "/home/geoffrey/nvim-python-debug"
+    }
     if packer_bootstrap then
         require("packer").sync()
     end
@@ -757,9 +774,11 @@ vim.keymap.set("v", "<leader>c", ":OSCYank<CR>")
 vim.keymap.set("n", "<leader>c", "<Plug>OSCYank")
 
 vim.keymap.set("n", "<leader>du", ":DBUIToggle<CR>")
+
 -- =====================================================================================
 -- AUTOCOMMANDS
 -- =====================================================================================
+
 local colorcolumn = vim.api.nvim_create_augroup("ColorColumn", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "python", "c", "cpp", "h", "lua", "scala" },
@@ -782,3 +801,22 @@ vim.api.nvim_create_autocmd("FileType", {
     command = "silent! set conceallevel=0",
     group = jsonconceal
 })
+
+
+-- =====================================================================================
+-- CUSTOM FUNCTIONS
+-- =====================================================================================
+
+P = function(v)
+    print(vim.inspect(v))
+    return v
+end
+
+RELOAD = function(...)
+    return require("plenary.reload").reload_module(...)
+end
+
+R = function(name)
+    RELOAD(name)
+    return require(name)
+end
