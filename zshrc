@@ -47,6 +47,8 @@ alias halt="sudo systemctl halt"
 
 # jupyter remote
 alias jlremote='f(){ jupyter lab --ip 0.0.0.0 --port=$1}; f'
+alias addenv='f(){ python -m ipykernel install --user --name=$1}; f'
+
 bindkey '^P' up-history
 bindkey '^N' down-history
 bindkey '^?' backward-delete-char
