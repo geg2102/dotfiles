@@ -124,7 +124,7 @@ require("packer").startup(function(use)
                         threads = 0
                     },
                     clang = {
-                        excludeArgs = {"-frounding-math"}
+                        excludeArgs = { "-frounding-math" }
                     }
                 }
             }
@@ -188,7 +188,7 @@ require("packer").startup(function(use)
                 },
                 rainbow = {
                     enable = true,
-                    extended_mode=true,
+                    extended_mode = true,
                 },
                 autopairs = {
                     enable = true
@@ -309,7 +309,7 @@ require("packer").startup(function(use)
                     { name = "nvim_lsp_signature_help" },
                     { name = "cmp-nvim-lua" },
                     { name = "cmp-zsh" },
-                    { name = "path"}
+                    { name = "path" }
                 }, {
                     { name = "buffer" },
                 }),
@@ -383,8 +383,12 @@ require("packer").startup(function(use)
                 debug = true,
                 sources = {
                     require("null-ls").builtins.formatting.black.with({
-                        args = { "--experimental-sting-processing", "-l", "88", "$FILENAME" }
-                    })
+                        extra_args = { "--preview", "--line-length=88" }
+                    }),
+                    require("null-ls").builtins.formatting.prettier.with({
+                        filetypes = { "html", "json", "yaml", "graphql", "md", "txt", "css" }
+                    }),
+                    require("null-ls").builtins.formatting.fixjson.with({})
                 }
             })
         end
@@ -411,7 +415,7 @@ require("packer").startup(function(use)
     }
     use {
         "windwp/nvim-autopairs",
-         config=require("nvim-autopairs").setup({})
+        config = require("nvim-autopairs").setup({})
     }
     use {
         "p00f/nvim-ts-rainbow"

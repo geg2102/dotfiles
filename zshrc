@@ -45,6 +45,8 @@ alias ea='vim ~/.config/alacritty/alacritty.yml'
 alias sus="sudo systemctl suspend"
 alias halt="sudo systemctl halt"
 
+# jupyter remote
+alias jlremote='f(){ jupyter lab --ip 0.0.0.0 --port=$1}; f'
 bindkey '^P' up-history
 bindkey '^N' down-history
 bindkey '^?' backward-delete-char
@@ -65,6 +67,24 @@ function make_directories () {
     mkdir -p $1/build
     mkdir -p $1/include 
     mkdir -p $1/src
+}
+
+function cpp_project() {
+    pwd=$PWD
+    mkdir $1 
+    cd $1 
+    mkdir src include 
+    touch CMakeLists.txt
+    touch src/main.cpp
+    cat << EOF > CMakeLists.txt
+cmake_minimum_required(VERSION 3.17.5)
+project($1)
+set(CMAKE_CXX_STANDARD 17 VERSION 0.0.1 LANGUAGES CXX)
+set(SRC_FILES src/main.cpp)
+add_executable(${PROJECT_NAME} ${SRC_FILES})
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_BUILD_TYPE RelWithDebInfo)
+EOF
 }
 
 vf() {
