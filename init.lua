@@ -4,7 +4,7 @@
 
 local ensure_packer = function()
     local fn = vim.fn
-    local install_path = fn.stdpath("data") .. "site/pack/packer/start/packer.nvim"
+    local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
     if fn.empty(fn.glob(install_path)) > 0 then
         fn.system({
             "git",
@@ -415,7 +415,9 @@ require("packer").startup(function(use)
     }
     use {
         "windwp/nvim-autopairs",
-        config = require("nvim-autopairs").setup({})
+        config = function()
+            require("nvim-autopairs").setup({})
+        end
     }
     use {
         "p00f/nvim-ts-rainbow"
@@ -456,11 +458,54 @@ require("packer").startup(function(use)
     use {
         "scalameta/nvim-metals",
         config = function()
+            local metals_config = require("metals").bare_config()
+
+            metals_config.settings = {
+                showImplicitArguments = true,
+                excludedPackages = { "akka.actor.typed.javadsl", "com.github.swagger.akka.javadsl" },
+            }
+
+            -- *READ THIS*
+            -- I *highly* recommend setting statusBarProvider to true, however if you do,
+            -- you *have* to have a setting to display this in your statusline or else
+            -- you'll not see any messages from metals. There is more info in the help
+            -- docs about this
+            -- metals_config.init_options.statusBarProvider = "on"
+
+            -- Example if you are using cmp how to make sure the correct capabilities for snippets are set
+            metals_config.capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+            -- Debug settings if you're using nvim-dap
+            local dap = require("dap")
+
+            dap.configurations.scala = {
+                {
+                    type = "scala",
+                    request = "launch",
+                    name = "RunOrTest",
+                    metals = {
+                        runType = "runOrTestFile",
+                        --args = { "firstArg", "secondArg", "thirdArg" }, -- here just as an example
+                    },
+                },
+                {
+                    type = "scala",
+                    request = "launch",
+                    name = "Test Target",
+                    metals = {
+                        runType = "testTarget",
+                    },
+                },
+            }
+
+            metals_config.on_attach = function(client, bufnr)
+                require("metals").setup_dap()
+            end
             local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
             vim.api.nvim_create_autocmd("FileType", {
                 pattern = { "scala", "sbt", "java" },
                 callback = function()
-                    require("metals").initialize_or_attach({})
+                    require("metals").initialize_or_attach(metals_config)
                 end,
                 group = nvim_metals_group
             })
@@ -494,7 +539,7 @@ require("packer").startup(function(use)
 
             local hint = [[
  _n_: step over   _s_: Continue/Start   _b_: Breakpoint     _K_: Eval
- _i_: step into   _x_: Quit             ^ ^                 ^ ^
+ _i_: step into   _x_: Quit             _r_: Repl                 ^ ^
  _o_: step out    _X_: Stop             ^ ^
  _c_: to cursor   _C_: Close UI
  ^
@@ -520,6 +565,7 @@ require("packer").startup(function(use)
                     { 'o', dap.step_out, { silent = true } },
                     { 'c', dap.run_to_cursor, { silent = true } },
                     { 's', dap.continue, { silent = true } },
+                    { 'r', dap.repl.open, { silent = true } },
                     { 'x', ":lua require'dap'.disconnect({ terminateDebuggee = false })<CR>", { exit = true,
                         silent = true } },
                     { 'X', dap.close, { silent = true } },
