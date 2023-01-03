@@ -172,11 +172,13 @@ require("packer").startup(function(use)
     }
     use {
         "nvim-treesitter/nvim-treesitter",
-        run = ":TSUpdate",
+        run = function()
+            pcall(require("nvim-treesitter.install").update { with_sync = true })
+        end,
         config = function()
             local treesitter = require("nvim-treesitter.configs")
             treesitter.setup {
-                ensure_installed = { "python", "bash", "lua" },
+                ensure_installed = { "python", "bash", "lua", "scala", "c", "cpp", "vim", "help" },
                 highlight = {
                     enable = true,
                     disable = function(_, bufnr) -- Disable in large buffers
@@ -186,6 +188,15 @@ require("packer").startup(function(use)
                 indent = {
                     enable = false
                 },
+                incremental_selection = {
+                    enable = true,
+                    keymaps = {
+                        init_selection = "<c-space>",
+                        node_incremental = "<c-space>",
+                        scope_incremental = "<c-s>",
+                        node_decremental = "<c-backspace>"
+                    }
+                },
                 rainbow = {
                     enable = true,
                     extended_mode = true,
@@ -193,6 +204,50 @@ require("packer").startup(function(use)
                 autopairs = {
                     enable = true
                 },
+                textobjects = {
+                    select = {
+                        enable = true,
+                        lookahead = true,
+                        keymaps = {
+                            ["aa"] = "@parameter.outer",
+                            ["ia"] = "@parameter.inner",
+                            ["af"] = "@function.outer",
+                            ["if"] = "@function.inner",
+                            ["ac"] = "@class.outer",
+                            ["ic"] = "@class.inner",
+                        }
+                    },
+                    move = {
+                        enable = true,
+                        set_jumps = true,
+                        goto_next_start = {
+                            ["]m"] = "@function.outer",
+                            ["]]"] = "@class.outer",
+                        },
+                        goto_next_end = {
+                            ["]M"] = "@function.outer",
+                            ["]["] = "@class.outer",
+
+                        },
+                        goto_previous_start = {
+                            ["[m"] = "@function.outer",
+                            ["[["] = "@class.outer",
+                        },
+                        goto_previous_end = {
+                            ["[M"] = "@function.outer",
+                            ["[]"] = "@class.outer",
+                        },
+                    },
+                    swap = {
+                        enable = true,
+                        swap_next = {
+                            ["<leader>s"] = "@parameter.inner"
+                        },
+                        swap_previous = {
+                            ["<leader>S"] = "@parameter.inner"
+                        }
+                    }
+                }
             }
         end
     }
@@ -512,7 +567,8 @@ require("packer").startup(function(use)
         end
     }
     use {
-        "RRethy/nvim-treesitter-textsubjects"
+        "RRethy/nvim-treesitter-textsubjects",
+        after = "nvim-treesitter"
     }
     use {
         "rafamadriz/friendly-snippets"
@@ -723,11 +779,40 @@ require("packer").startup(function(use)
     use {
         "/home/geoffrey/nvim-python-debug"
     }
+    use {
+        "nvim-tree/nvim-tree.lua",
+        requires = {
+            "nvim-tree/nvim-web-devicons"
+        },
+        config = function()
+            require("nvim-tree").setup()
+            vim.g.loaded_netrw = 1
+            vim.g.loadednetrwPlugin = 1
+            vim.opt.termguicolors = true
+        end
+    }
+
     if packer_bootstrap then
         require("packer").sync()
     end
 end
 )
+
+if packer_bootstrap then
+    print "============================"
+    print "Plugins are being installed"
+    print "Wait until packer completes then restart"
+    print "============================"
+    return
+end
+
+-- Autorecompile when I save this file
+local packer_group = vim.api.nvim_create_augroup("Packer", { clear = true})
+vim.api.nvim_create_autocmd("BufWritePost", {
+    command = "source <afile> | silent! LspStop | silent! LspStart | PackerCompile",
+    group = packer_group,
+    pattern = vim.fn.expand "$MYVIMRC"
+})
 
 -- =====================================================================================
 -- VIM OPTIONS
@@ -736,6 +821,8 @@ end
 vim.cmd([[colorscheme kanagawa]])
 
 vim.opt.relativenumber = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 vim.opt.mouse = ""
 vim.opt.number = true
 vim.opt.tabstop = 4
@@ -766,16 +853,21 @@ vim.g.indent_blankline_buftype_exclude = { "terminal" }
 -- =====================================================================================
 -- KEYBINDINGS
 -- =====================================================================================
+vim.keymap.set("i", "<C-s>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
+
 vim.keymap.set("n", "j", "<Plug>(accelerated_jk_gj)", { noremap = false })
 vim.keymap.set("n", "k", "<Plug>(accelerated_jk_gk)", { noremap = false })
 
-vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<CR>")
-vim.keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<CR>")
-vim.keymap.set("n", "<leader>fb", "<cmd>Telescope file_browser<CR>")
-vim.keymap.set("n", "<leader>fh", "<cmd>Telescope oldfiles<CR>")
-vim.keymap.set("n", "<leader>fv", "<cmd>Telescope help_tags<CR>")
-vim.keymap.set("n", '""', "<cmd>Telescope registers<CR>")
-vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>")
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Goto definition" })
+vim.keymap.set("n", "gI", vim.lsp.buf.implementation, { desc = "Goto implementation" })
+
+vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "Fuzzy find files" })
+vim.keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "Live grep" })
+vim.keymap.set("n", "<leader>fb", "<cmd>Telescope file_browser<CR>", { desc = "File browser" })
+vim.keymap.set("n", "<leader>fh", "<cmd>Telescope oldfiles<CR>", { desc = "Old files" })
+vim.keymap.set("n", "<leader>fv", "<cmd>Telescope help_tags<CR>", { desc = "Help tags" })
+vim.keymap.set("n", '""', "<cmd>Telescope registers<CR>", { desc = "Search registers" })
+vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", { desc = "Lsp references" })
 
 vim.keymap.set("n", "<leader>w", "<cmd>HopWord<CR>")
 
@@ -787,8 +879,7 @@ vim.keymap.set("v", "gx", "<cmd>Lspsaga range_code_action<CR>")
 vim.keymap.set("n", "go", "<cmd>Lspsaga show_line_diagnostics<CR>")
 vim.keymap.set("n", "gj", "<cmd>Lspsaga diagnostic_jump_next<CR>")
 vim.keymap.set("n", "gk", "<cmd>Lspsaga diagnostic_jump_prev<CR>")
-vim.keymap.set("n", "gd", "<cmd>Lspsaga peek_definition<CR>")
-vim.keymap.set("n", "<leader>o", "<cmd>LSoutlineToggle<CR>")
+vim.keymap.set("n", "<leader>o", "<cmd>Lspsaga outline<CR>")
 
 vim.keymap.set("n", "<leader>gg", ":LazyGit<CR>")
 
