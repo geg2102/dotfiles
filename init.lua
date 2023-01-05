@@ -778,9 +778,6 @@ require("packer").startup(function(use)
         "lervag/vimtex"
     }
     use {
-        "/home/geoffrey/nvim-python-debug"
-    }
-    use {
         "nvim-tree/nvim-tree.lua",
         requires = {
             "nvim-tree/nvim-web-devicons"
