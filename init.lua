@@ -72,7 +72,7 @@ require("packer").startup(function(use)
         "williamboman/mason-lspconfig",
         config = function()
             require("mason-lspconfig").setup({
-                ensure_installed = { "bashls", "jedi_language_server", "sumneko_lua" },
+                ensure_installed = { "jedi_language_server", "sumneko_lua" },
                 automatic_installation = true
             })
         end
@@ -85,7 +85,6 @@ require("packer").startup(function(use)
             table.insert(path, "lua/?/init.lua")
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local servers = {
-                "bashls",
                 "jedi_language_server",
                 "sumneko_lua",
             }
@@ -107,7 +106,8 @@ require("packer").startup(function(use)
                             globals = { "vim" }
                         },
                         workspace = {
-                            library = vim.api.nvim_get_runtime_file("", true)
+                            library = vim.api.nvim_get_runtime_file("", true),
+                            checkThirdParty = false
                         },
                         telemetry = {
                             enable = false,
@@ -172,11 +172,13 @@ require("packer").startup(function(use)
     }
     use {
         "nvim-treesitter/nvim-treesitter",
-        run = ":TSUpdate",
+        run = function()
+            pcall(require("nvim-treesitter.install").update { with_sync = true })
+        end,
         config = function()
             local treesitter = require("nvim-treesitter.configs")
             treesitter.setup {
-                ensure_installed = { "python", "bash", "lua" },
+                ensure_installed = { "python", "bash", "lua" , "vim"},
                 highlight = {
                     enable = true,
                     disable = function(_, bufnr) -- Disable in large buffers
@@ -719,9 +721,6 @@ require("packer").startup(function(use)
     }
     use {
         "lervag/vimtex"
-    }
-    use {
-        "/home/geoffrey/nvim-python-debug"
     }
     if packer_bootstrap then
         require("packer").sync()
