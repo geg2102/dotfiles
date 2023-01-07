@@ -137,7 +137,10 @@ require("packer").startup(function(use)
     }
     use {
         "rcarriga/nvim-dap-ui",
-        requires = { "mfussenegger/nvim-dap" }
+        requires = { "mfussenegger/nvim-dap" },
+        config = function()
+            require("dapui").setup()
+        end
     }
     use {
         "jayp0521/mason-nvim-dap.nvim",
@@ -596,7 +599,7 @@ require("packer").startup(function(use)
 
             local hint = [[
  _n_: step over   _s_: Continue/Start   _b_: Breakpoint     _K_: Eval
- _i_: step into   _x_: Quit             _r_: Repl                 ^ ^
+ _i_: step into   _x_: Quit             _r_: Repl           _U_: UI
  _o_: step out    _X_: Stop             ^ ^
  _c_: to cursor   _C_: Close UI
  ^
@@ -626,6 +629,7 @@ require("packer").startup(function(use)
                     { 'x', ":lua require'dap'.disconnect({ terminateDebuggee = false })<CR>", { exit = true,
                         silent = true } },
                     { 'X', dap.close, { silent = true } },
+                    { 'U', ":lua require('dapui').open()<cr>", { silent = true } },
                     { 'C', ":lua require('dapui').close()<cr>:DapVirtualTextForceRefresh<CR>", { silent = true } },
                     { 'b', dap.toggle_breakpoint, { silent = true } },
                     { 'K', ":lua require('dap.ui.widgets').hover()<CR>", { silent = true } },
@@ -805,7 +809,7 @@ if packer_bootstrap then
 end
 
 -- Autorecompile when I save this file
-local packer_group = vim.api.nvim_create_augroup("Packer", { clear = true})
+local packer_group = vim.api.nvim_create_augroup("Packer", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePost", {
     command = "source <afile> | silent! LspStop | silent! LspStart | PackerCompile",
     group = packer_group,
