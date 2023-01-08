@@ -848,6 +848,7 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldlevelstart = 0
 vim.opt.foldenable = true
 vim.opt.completeopt = { "menuone", "noselect", "noinsert" }
+vim.opt.showmode = false
 vim.g.nvim_system_wide = 1
 vim.g.mapleader = ","
 vim.g.indent_blankline_buftype_exclude = { "terminal" }
