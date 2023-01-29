@@ -344,10 +344,18 @@ require("packer").startup(function(use)
         branch = "main",
         config = function()
             local saga = require("lspsaga")
-            saga.init_lsp_saga({
+            saga.setup({
                 symbol_in_winbar = {
                     enable = true,
                     in_custom = true
+                },
+                lightbulb = {
+                    enable = false,
+                    enable_in_insert = false
+                    
+                },
+                ui = {
+                    border = "double"
                 }
             })
         end,
