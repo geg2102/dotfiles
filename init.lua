@@ -72,7 +72,7 @@ require("packer").startup(function(use)
         "williamboman/mason-lspconfig",
         config = function()
             require("mason-lspconfig").setup({
-                ensure_installed = { "bashls", "jedi_language_server", "sumneko_lua" },
+                ensure_installed = { "jedi_language_server", "sumneko_lua" },
                 automatic_installation = true
             })
         end
@@ -85,7 +85,6 @@ require("packer").startup(function(use)
             table.insert(path, "lua/?/init.lua")
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local servers = {
-                "bashls",
                 "jedi_language_server",
                 "sumneko_lua",
             }
@@ -401,10 +400,18 @@ require("packer").startup(function(use)
         branch = "main",
         config = function()
             local saga = require("lspsaga")
-            saga.init_lsp_saga({
+            saga.setup({
                 symbol_in_winbar = {
                     enable = true,
                     in_custom = true
+                },
+                lightbulb = {
+                    enable = false,
+                    enable_in_insert = false
+                    
+                },
+                ui = {
+                    border = "double"
                 }
             })
         end,
