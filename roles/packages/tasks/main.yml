@@ -1,0 +1,56 @@
+---
+- name: install debian tools
+  become: yes
+  apt: 
+    name:
+      - bat
+      - curl
+      # - fd-find
+      - fzf
+      - htop
+      - jq
+      - nodejs
+      - ripgrep
+      - tmux
+      - wget
+      - zsh
+  when: ansible_os_family == "Debian"
+
+- name: install redhat tools
+  become: yes
+  yum: 
+    name:
+      - bat
+      - curl
+      - fd-find
+      - fzf
+      - htop
+      - jq
+      - nodejs
+      - ripgrep
+      - tmux
+      - wget
+      - zsh
+  when: ansible_os_family == "RedHat"
+
+- name: install neovim
+  become: yes
+  shell: | 
+    wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage 
+    chmod u+x nvim.appimage
+    mv nvim.appimage /usr/bin/nvim
+
+- name: install lazygit 
+  become: yes
+  shell: |
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+    tar xf lazygit.tar.gz lazygit
+    install lazygit /usr/local/bin
+
+- name: install miniconda
+  shell: |
+    curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o Miniconda3-latest-Linux-x86_64.sh
+    chmod 744 Miniconda3-latest-Linux-x86_64.sh
+    ./Miniconda3-latest-Linux-x86_64.sh -b
+    rm -f Miniconda3-latest-Linux-x86_64.sh

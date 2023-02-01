@@ -1,0 +1,36 @@
+- name: Find config files
+  find: 
+    paths: ~/dotfiles/config/
+    recurse: no
+    file_type: any
+    hidden: yes
+  register: dot_config
+
+- name: Check for oh-my-zsh installation
+  stat: "path=~/.oh-my-zsh"
+  register: oh_my_zsh_stat
+
+- name: Install oh-my-zsh
+  raw: "sh -c \"$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)\""
+  when: not oh_my_zsh_stat.stat.exists
+
+- name: Check for .zshrc
+  stat: path="{{dotfiles_user_home}}/.zshrc"
+  register: zshrc_stat
+
+- name: Symlink .zshrc
+  file:
+    src: "{{ dotfiles_home }}/config/zshrc"
+    dest: "{{ dotfiles_user_home }}/.zshrc"
+    state: link
+
+- name: Symlink tmux.conf
+  file:
+    src: "{{ dotfiles_home }}/config/tmux.conf"
+    dest: "{{ dotfiles_user_home }}/.tmux.conf"
+    state: link
+
+- name: Symlink init.lua
+  file: 
+    src: "{{ dotfiles_home }}/config/init.lua"
+    dest: "{{ dotfiles_user_home }}/.config/nvim/init.lua"
