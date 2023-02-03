@@ -49,12 +49,38 @@ require("packer").startup(function(use)
                     inc_rename = false, -- enables an input dialog for inc-rename.nvim
                     lsp_doc_border = false, -- add a border to hover docs and signature help
                 },
+                vim.keymap.set({ "n", "i", "s" }, "<c-f>", function()
+                    if not require("noice.lsp").scroll(4) then
+                        return "<c-f>"
+                    end
+                end, { silent = true, expr = true }),
+
+                vim.keymap.set({ "n", "i", "s" }, "<c-b>", function()
+                    if not require("noice.lsp").scroll(-4) then
+                        return "<c-b>"
+                    end
+                end, { silent = true, expr = true })
             })
         end,
         requires = {
             "MunifTanjim/nui.nvim",
             "rcarriga/nvim-notify"
         }
+    }
+    use {
+        "SmiteshP/nvim-navic",
+        requires = "neovim/nvim-lspconfig",
+        config = function()
+            require("nvim-navic").setup()
+        end
+    }
+    use {
+        "folke/trouble.nvim",
+        requires = "nvim-tree/nvim-web-devicons",
+        config = function()
+            require("trouble").setup {
+            }
+        end
     }
     use {
         "stevearc/dressing.nvim",
@@ -122,9 +148,15 @@ require("packer").startup(function(use)
                 "sumneko_lua",
             }
             local nvim_lsp = require("lspconfig")
+            local on_attach = function(client, bufnr)
+                if client.server_capabilities.documentSymbolProvider then
+                    require("nvim-navic").attach(client, bufnr)
+                end
+            end
             for _, server in ipairs(servers) do
                 nvim_lsp[server].setup {
                     capabilities = capabilities,
+                    on_attach = on_attach
                 }
             end
             nvim_lsp.sumneko_lua.setup {
@@ -334,10 +366,82 @@ require("packer").startup(function(use)
     use {
         "hoob3rt/lualine.nvim",
         config = function()
+            local icons = {
+                diagnostics = {
+                    Error = " ",
+                    Warn = " ",
+                    Hint = " ",
+                    Info = " ",
+                },
+                git = {
+                    added = " ",
+                    modified = " ",
+                    removed = " ",
+                }
+            }
+
+            local function fg(name)
+                return function()
+                    ---@type {foreground?:number}?
+                    local hl = vim.api.nvim_get_hl_by_name(name, true)
+                    return hl and hl.foreground and { fg = string.format("#%06x", hl.foreground) }
+                end
+            end
+
             require("lualine").setup {
                 options = {
-                    theme = "kanagawa"
+                    theme = "kanagawa",
+                    globalstatus = true,
+                },
+                sections = {
+                    lualine_a = { "mode" },
+                    lualine_b = { "branch" },
+                    lualine_c = {
+                        {
+                            "diagnostics",
+                            symbols = {
+                                error = icons.diagnostics.Error,
+                                warn = icons.diagnostics.Warn,
+                                info = icons.diagnostics.Info,
+                                hint = icons.diagnostics.Hint,
+                            },
+                        },
+                        { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+                        { "filename", path = 1, symbols = { modified = "  ", readonly = "", unnamed = "" } },
+                        -- stylua: ignore
+                        {
+                            function() return require("nvim-navic").get_location() end,
+                            cond = function() return package.loaded["nvim-navic"] and
+                                    require("nvim-navic").is_available()
+                            end,
+                        },
+                    },
+                    lualine_x = {
+                        -- stylua: ignore
+                        {
+                            function() return require("noice").api.status.command.get() end,
+                            cond = function() return package.loaded["noice"] and
+                                    require("noice").api.status.command.has()
+                            end,
+                            color = fg("Statement")
+                        },
+                        -- stylua: ignore
+                        {
+                            function() return require("noice").api.status.mode.get() end,
+                            cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
+                            color = fg("Constant"),
+                        },
+                        {
+                            "diff",
+                            symbols = {
+                                added = icons.git.added,
+                                modified = icons.git.modified,
+                                removed = icons.git.removed,
+                            },
+                        },
+                    },
                 }
+
             }
         end
     }
@@ -398,7 +502,7 @@ require("packer").startup(function(use)
                 sources = cmp.config.sources({
                     { name = "nvim_lsp" },
                     { name = "vsnip" },
-                    { name = "nvim_lsp_signature_help" },
+                    -- { name = "nvim_lsp_signature_help" },
                     { name = "cmp-nvim-lua" },
                     { name = "cmp-zsh" },
                     { name = "path" }
@@ -411,14 +515,29 @@ require("packer").startup(function(use)
                     { name = "buffer" }
                 }
             })
-            cmp.setup.cmdline(":", {
-                sources = cmp.config.sources({
-                    { name = "path" }
-                }, {
-                    { name = "cmdline" }
-                })
-            })
+            -- cmp.setup.cmdline(":", {
+            --     sources = cmp.config.sources({
+            --         { name = "path" }
+            --     }, {
+            --         { name = "cmdline" }
+            --     })
+            -- })
         end
+    }
+    use {
+        "folke/todo-comments.nvim",
+        requires = "nvim-lua/plenary.nvim",
+        config = function()
+            require("todo-comments").setup {
+            }
+        end,
+        vim.keymap.set("n", "]t", function()
+            require("todo-comments").jump_next()
+        end, { desc = "Next todo comment" }),
+
+        vim.keymap.set("n", "[t", function()
+            require("todo-comments").jump_prev()
+        end, { desc = "Previous todo comment" })
     }
     use {
         "psliwka/vim-smoothie"
@@ -839,7 +958,6 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 -- =====================================================================================
 -- VIM OPTIONS
 -- =====================================================================================
-
 vim.cmd([[colorscheme kanagawa]])
 
 vim.opt.relativenumber = true
@@ -916,6 +1034,9 @@ vim.keymap.set("i", "<leader>lf", "<cmd>lua vim.lsp.buf.format{async=true}<CR>")
 vim.keymap.set("n", "<leader>s", ":SymbolsOutline<CR>", { desc = "Symbol Outline" })
 
 vim.keymap.set("n", "<leader>S", "<cmd>lua require('spectre').open()<CR>", { desc = "Search and Replace" })
+
+vim.keymap.set("n", "<leader>xx", ":TroubleToggle<CR>", { desc = "Trouble" })
+vim.keymap.set("n", "<leader>xt", ":TroubleToggle<CR>", { desc = "Trouble" })
 
 vim.keymap.set("n", "<C-p>", "<cmd>BufferPick<CR>")
 vim.keymap.set("n", "[b", "<cmd>BufferPrevious<CR>")
