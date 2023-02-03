@@ -808,6 +808,12 @@ require("packer").startup(function(use)
     use {
         "windwp/nvim-spectre"
     }
+    use {
+        "RRethy/vim-illuminate",
+        config = function()
+            require("illuminate").configure({})
+        end
+    }
     if packer_bootstrap then
         require("packer").sync()
     end
