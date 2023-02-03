@@ -30,6 +30,39 @@ require("packer").startup(function(use)
         "wbthomason/packer.nvim"
     }
     use {
+        "folke/noice.nvim",
+        config = function()
+            require("noice").setup({
+                lsp = {
+                    -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+                    override = {
+                        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                        ["vim.lsp.util.stylize_markdown"] = true,
+                        ["cmp.entry.get_documentation"] = true,
+                    },
+                },
+                -- you can enable a preset for easier configuration
+                presets = {
+                    bottom_search = true, -- use a classic bottom cmdline for search
+                    command_palette = true, -- position the cmdline and popupmenu together
+                    long_message_to_split = true, -- long messages will be sent to a split
+                    inc_rename = false, -- enables an input dialog for inc-rename.nvim
+                    lsp_doc_border = false, -- add a border to hover docs and signature help
+                },
+            })
+        end,
+        requires = {
+            "MunifTanjim/nui.nvim",
+            "rcarriga/nvim-notify"
+        }
+    }
+    use {
+        "stevearc/dressing.nvim",
+        config = function()
+            require("dressing").setup({})
+        end
+    }
+    use {
         "ahmedkhalf/project.nvim",
         config = function()
             require("project_nvim").setup {}
@@ -181,7 +214,8 @@ require("packer").startup(function(use)
         config = function()
             local treesitter = require("nvim-treesitter.configs")
             treesitter.setup {
-                ensure_installed = { "python", "bash", "lua", "scala", "c", "cpp", "vim", "help" },
+                ensure_installed = { "python", "bash", "lua", "scala", "c", "cpp", "vim", "help", "yaml", "hcl",
+                    "terraform" },
                 highlight = {
                     enable = true,
                     disable = function(_, bufnr) -- Disable in large buffers
@@ -194,8 +228,8 @@ require("packer").startup(function(use)
                 incremental_selection = {
                     enable = true,
                     keymaps = {
-                        init_selection = "<c-space>",
-                        node_incremental = "<c-space>",
+                        init_selection = "<CR>",
+                        node_incremental = "<CR>",
                         scope_incremental = "<c-s>",
                         node_decremental = "<c-backspace>"
                     }
@@ -396,27 +430,6 @@ require("packer").startup(function(use)
         "rhysd/accelerated-jk"
     }
     use {
-        "glepnir/lspsaga.nvim",
-        branch = "main",
-        config = function()
-            local saga = require("lspsaga")
-            saga.setup({
-                symbol_in_winbar = {
-                    enable = true,
-                    in_custom = true
-                },
-                lightbulb = {
-                    enable = false,
-                    enable_in_insert = false
-                    
-                },
-                ui = {
-                    border = "double"
-                }
-            })
-        end,
-    }
-    use {
         "kdheepak/lazygit.nvim"
     }
     use {
@@ -461,20 +474,6 @@ require("packer").startup(function(use)
     }
     use {
         "fedepujol/move.nvim"
-    }
-    use {
-        "stevearc/aerial.nvim",
-        config = function()
-            require("aerial").setup({
-                on_attach = function(bufnr)
-                    vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>a", "<cmd>AerialToggle!<CR>", {})
-                    vim.api.nvim_buf_set_keymap(bufnr, "n", "{", "<cmd>AerialPrev<CR>", {})
-                    vim.api.nvim_buf_set_keymap(bufnr, "n", "}", "<cmd>AerialNext<CR>", {})
-                    vim.api.nvim_buf_set_keymap(bufnr, "n", "[[", "<cmd>AerialPrevUp<CR>", {})
-                    vim.api.nvim_buf_set_keymap(bufnr, "n", "]]", "<cmd>AerialNextUp<CR>", {})
-                end
-            })
-        end
     }
     use {
         "unblevable/quick-scope"
@@ -800,7 +799,12 @@ require("packer").startup(function(use)
             vim.opt.termguicolors = true
         end
     }
-
+    use {
+        "simrat39/symbols-outline.nvim",
+        config = function()
+            require("symbols-outline").setup()
+        end
+    }
     if packer_bootstrap then
         require("packer").sync()
     end
@@ -863,33 +867,34 @@ vim.g.indent_blankline_buftype_exclude = { "terminal" }
 -- =====================================================================================
 -- KEYBINDINGS
 -- =====================================================================================
-vim.keymap.set("i", "<C-s>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
 
 vim.keymap.set("n", "j", "<Plug>(accelerated_jk_gj)", { noremap = false })
 vim.keymap.set("n", "k", "<Plug>(accelerated_jk_gk)", { noremap = false })
 
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Goto definition" })
 vim.keymap.set("n", "gI", vim.lsp.buf.implementation, { desc = "Goto implementation" })
+vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, { desc = "Rename" })
+vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
+vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, { desc = "Signature Help" })
+vim.keymap.set("n", "gK", vim.lsp.buf.signature_help, { desc = "Signature Help" })
+vim.keymap.set("n", "gx", vim.lsp.buf.code_action, { desc = "Code action" })
+vim.keymap.set("v", "gx", vim.lsp.buf.code_action, { desc = "Code action" })
+vim.keymap.set("n", "go", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
+vim.keymap.set("n", "gj", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
+vim.keymap.set("n", "gk", vim.diagnostic.goto_prev, { desc = "Go to prev diagnostic" })
 
 vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "Fuzzy find files" })
 vim.keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "Live grep" })
 vim.keymap.set("n", "<leader>fb", "<cmd>Telescope file_browser<CR>", { desc = "File browser" })
 vim.keymap.set("n", "<leader>fh", "<cmd>Telescope oldfiles<CR>", { desc = "Old files" })
 vim.keymap.set("n", "<leader>fv", "<cmd>Telescope help_tags<CR>", { desc = "Help tags" })
+vim.keymap.set("n", "<leader>fk", "<cmd>Telescope keymaps<CR>", { desc = "Keymaps" })
+vim.keymap.set("n", "<leader>ld", "<cmd>Telescope diagnostics<CR>", { desc = "List diagnostics" })
+vim.keymap.set("n", "<leader>lb", "<cmd>Telescope buffers<CR>", { desc = "List buffers" })
 vim.keymap.set("n", '""', "<cmd>Telescope registers<CR>", { desc = "Search registers" })
 vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", { desc = "Lsp references" })
 
 vim.keymap.set("n", "<leader>w", "<cmd>HopWord<CR>")
-
-vim.keymap.set("n", "<leader>r", "<cmd>Lspsaga rename<CR>")
-vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>")
-vim.keymap.set("n", "gh", "<cmd>Lspsaga lsp_finder<CR>")
-vim.keymap.set("n", "gx", "<cmd>Lspsaga code_action<CR>")
-vim.keymap.set("v", "gx", "<cmd>Lspsaga range_code_action<CR>")
-vim.keymap.set("n", "go", "<cmd>Lspsaga show_line_diagnostics<CR>")
-vim.keymap.set("n", "gj", "<cmd>Lspsaga diagnostic_jump_next<CR>")
-vim.keymap.set("n", "gk", "<cmd>Lspsaga diagnostic_jump_prev<CR>")
-vim.keymap.set("n", "<leader>o", "<cmd>Lspsaga outline<CR>")
 
 vim.keymap.set("n", "<leader>gg", ":LazyGit<CR>")
 
@@ -899,10 +904,11 @@ vim.keymap.set("n", "<leader><Space>", "zA")
 vim.keymap.set("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format{async=true}<CR>")
 vim.keymap.set("i", "<leader>lf", "<cmd>lua vim.lsp.buf.format{async=true}<CR>")
 
+vim.keymap.set("n", "<leader>s", ":SymbolsOutline<CR>", { desc = "Symbol Outline" })
 
 vim.keymap.set("n", "<C-p>", "<cmd>BufferPick<CR>")
-vim.keymap.set("n", "<F1>", "<cmd>BufferPrevious<CR>")
-vim.keymap.set("n", "<F2>", "<cmd>BufferNext<CR>")
+vim.keymap.set("n", "[b", "<cmd>BufferPrevious<CR>")
+vim.keymap.set("n", "]b", "<cmd>BufferNext<CR>")
 vim.keymap.set("n", "<leader>q", "<cmd>BufferClose<CR>")
 vim.keymap.set("n", "<leader>q!", "<cmd>BufferClose!<CR>")
 
