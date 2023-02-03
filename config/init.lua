@@ -805,6 +805,9 @@ require("packer").startup(function(use)
             require("symbols-outline").setup()
         end
     }
+    use {
+        "windwp/nvim-spectre"
+    }
     if packer_bootstrap then
         require("packer").sync()
     end
@@ -905,6 +908,8 @@ vim.keymap.set("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format{async=true}<CR>")
 vim.keymap.set("i", "<leader>lf", "<cmd>lua vim.lsp.buf.format{async=true}<CR>")
 
 vim.keymap.set("n", "<leader>s", ":SymbolsOutline<CR>", { desc = "Symbol Outline" })
+
+vim.keymap.set("n", "<leader>S", "<cmd>lua require('spectre').open()<CR>", { desc = "Search and Replace" })
 
 vim.keymap.set("n", "<C-p>", "<cmd>BufferPick<CR>")
 vim.keymap.set("n", "[b", "<cmd>BufferPrevious<CR>")
