@@ -933,6 +933,18 @@ require("packer").startup(function(use)
             require("illuminate").configure({})
         end
     }
+    use({
+        "utilyre/barbecue.nvim",
+        tag = "*",
+        requires = {
+            "SmiteshP/nvim-navic",
+            "nvim-tree/nvim-web-devicons", -- optional dependency
+        },
+        after = "nvim-web-devicons", -- keep this if you're using NvChad
+        config = function()
+            require("barbecue").setup()
+        end,
+    })
     if packer_bootstrap then
         require("packer").sync()
     end
