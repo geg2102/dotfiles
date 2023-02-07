@@ -17,13 +17,12 @@
     params: 
       CMAKE_BUILD_TYPE=RelWithDebInfo
   register: neovim_build
-  when: neovim_cloned.stat.exists
+  when: neovim_cloned.stat.isdir is defined and neovim_cloned.stat.isdir
 
 - name: install neovim
   become: yes
   make:
     chdir: "{{ dotfiles_user_home }}/neovim"
     target: install
-  register: neovim_build
-  when: neovim_cloned.stat.exists
+  register: neovim_install
 
