@@ -1,0 +1,29 @@
+- name: check neovim installed
+  stat: path="/usr/bin/nvim"
+  register: bin_nvim 
+  changed_when: bin_nvim.stat.exists == False
+
+- name: clone neovim
+  git: 
+    repo: https://github.com/neovim/neovim.git
+    dest: "{{ dotfiles_user_home }}/neovim"
+    version: stable
+  register: neovim_cloned
+  when: not bin_nvim.stat.exists
+
+- name: build neovim
+  make:
+    chdir: "{{ dotfiles_user_home }}/neovim"
+    params: 
+      CMAKE_BUILD_TYPE=RelWithDebInfo
+  register: neovim_build
+  when: neovim_cloned.stat.exists
+
+- name: install neovim
+  become: yes
+  make:
+    chdir: "{{ dotfiles_user_home }}/neovim"
+    target: install
+  register: neovim_build
+  when: neovim_cloned.stat.exists
+

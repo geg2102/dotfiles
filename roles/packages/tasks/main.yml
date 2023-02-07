@@ -11,9 +11,21 @@
       - jq
       - nodejs
       - ripgrep
+      - tldr
       - tmux
       - wget
       - zsh
+      - ninja-build 
+      - gettext 
+      - libtool 
+      - libtool-bin 
+      - autoconf 
+      - automake 
+      - cmake 
+      - g++ 
+      - pkg-config 
+      - unzip 
+      - doxygen
   when: ansible_os_family == "Debian"
 
 - name: install redhat tools
@@ -31,30 +43,19 @@
       - tmux
       - wget
       - zsh
+      - ninja-build 
+      - libtool 
+      - autoconf 
+      - automake 
+      - cmake 
+      - gcc 
+      - gcc-c++ 
+      - make 
+      - pkgconfig 
+      - unzip 
+      - patch 
+      - gettext 
   when: ansible_os_family == "RedHat"
-
-- name: check neovim installed
-  stat: path="/usr/bin/nvim"
-  register: bin_nvim 
-  changed_when: bin_nvim.stat.exists == False
-
-- name: download neovim
-  get_url: 
-    url="https://github.com/neovim/neovim/releases/latest/download/nvim.appimage" 
-    dest="{{ dotfiles_user_home }}/nvim.appimage"
-    mode=0755
-  register: neovim_downloaded
-  when: not bin_nvim.stat.exists
-
-- name: check if downloaded image exists
-  stat: path="{{ dotfiles_user_home }}/nvim.appimage"
-  register: neovim_downloaded_image
-
-- name: move neovim to /usr/bin
-  become: yes
-  command: mv {{ dotfiles_user_home }}/nvim.appimage /usr/bin/nvim
-  register: neovim_moved
-  when: neovim_downloaded_image.stat.exists
 
 - name: install lazygit 
   become: yes
@@ -65,23 +66,4 @@
     install lazygit /usr/local/bin
     rm -rf lazygit*
 
-- name: check miniconda installed
-  stat: path="{{ miniconda_home }}/bin/conda"
-  register: bin_conda 
-  changed_when: bin_conda.stat.exists == False
 
-- name: download miniconda
-  get_url:
-    url="https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
-    dest="/tmp/miniconda.sh"
-    mode=0744
-  register: miniconda_downloaded
-  when: not bin_conda.stat.exists
-
-- name: install miniconda
-  shell: "/tmp/miniconda.sh -b -p {{ miniconda_home }} creates={{ miniconda_home }} executable=/bin/bash"
-  register: miniconda_installed
-  when: miniconda_downloaded is success or bin_conda.exists
-  notify: 
-    - remove miniconda script
-    - update conda to latest 

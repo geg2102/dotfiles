@@ -119,7 +119,6 @@ require("lazy").setup({
     },
     {
         "williamboman/mason-lspconfig",
-        dependencies = {"williamboman/mason", "neovim/nvim-lspconfig"},
         config = function()
             require("mason-lspconfig").setup({
                 ensure_installed = { "jedi_language_server", "sumneko_lua" },
@@ -198,8 +197,13 @@ require("lazy").setup({
         end
     },
     {
+        "mfussenegger/nvim-dap-python",
+        config = function()
+            require("dap-python").setup()
+        end
+    },
+    {
         "jayp0521/mason-nvim-dap.nvim",
-        dependencies = {"williamboman/mason", "mfussenegger/nvim-dap"},
         config = function()
             require("mason-nvim-dap").setup({
                 ensure_installed = {
@@ -935,7 +939,7 @@ require("lazy").setup({
             require("barbecue").setup()
         end,
     },
-},{lazy=true})
+}, { lazy = true })
 
 -- Autorecompile when I save this file
 local packer_group = vim.api.nvim_create_augroup("Packer", { clear = true })
