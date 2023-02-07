@@ -194,7 +194,8 @@ require("lazy").setup({
         dependencies = { "mfussenegger/nvim-dap" },
         config = function()
             require("dapui").setup()
-        end
+        end,
+        lazy = true
     },
     {
         "mfussenegger/nvim-dap-python",
@@ -219,7 +220,19 @@ require("lazy").setup({
         dependencies = { "nvim-lua/plenary.nvim", "nvim-lua/popup.nvim" },
         config = function()
             require("telescope").setup({})
-        end
+        end,
+        keys = {
+            { "<leader>ff", "<cmd>Telescope find_files<CR>", desc = "Fuzzy find files" },
+            { "<leader>fg", "<cmd>Telescope live_grep<CR>", desc = "Live grep" },
+            { "<leader>fb", "<cmd>Telescope file_browser<CR>", desc = "File browser" },
+            { "<leader>fh", "<cmd>Telescope oldfiles<CR>", desc = "Old files" },
+            { "<leader>fv", "<cmd>Telescope help_tags<CR>", desc = "Help tags" },
+            { "<leader>fk", "<cmd>Telescope keymaps<CR>", desc = "Keymaps" },
+            { "<leader>ld", "<cmd>Telescope diagnostics<CR>", desc = "List diagnostics" },
+            { "<leader>lb", "<cmd>Telescope buffers<CR>", desc = "List buffers" },
+            { '""', "<cmd>Telescope registers<CR>", desc = "Search registers" },
+            { "gr", "<cmd>Telescope lsp_references<CR>", desc = "Lsp references" },
+        }
     },
     {
         "nvim-telescope/telescope-file-browser.nvim",
@@ -903,6 +916,7 @@ require("lazy").setup({
     },
     {
         "nvim-tree/nvim-tree.lua",
+        cmd = "NvimTreeToggle",
         dependencies = {
             "nvim-tree/nvim-web-devicons"
         },
@@ -939,7 +953,7 @@ require("lazy").setup({
             require("barbecue").setup()
         end,
     },
-}, { lazy = true })
+})
 
 -- Autorecompile when I save this file
 local packer_group = vim.api.nvim_create_augroup("Packer", { clear = true })
@@ -1015,6 +1029,8 @@ vim.keymap.set("n", '""', "<cmd>Telescope registers<CR>", { desc = "Search regis
 vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", { desc = "Lsp references" })
 
 vim.keymap.set("n", "<leader>w", "<cmd>HopWord<CR>")
+
+vim.keymap.set("n", "'", "<cmd>NvimTreeToggle<CR>", { desc = "Lsp references" })
 
 vim.keymap.set("n", "<leader>gg", ":LazyGit<CR>")
 
