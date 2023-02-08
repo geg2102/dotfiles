@@ -23,18 +23,21 @@
     src: "{{ dotfiles_home }}/config/zshrc"
     dest: "{{ dotfiles_user_home }}/.zshrc"
     state: link
+    force: yes
 
 - name: Symlink p10k.zsh
   file:
     src: "{{ dotfiles_home }}/config/p10k.zsh"
     dest: "{{ dotfiles_user_home }}/.p10k.zsh"
     state: link
+    force: yes
 
 - name: Symlink tmux.conf
   file:
     src: "{{ dotfiles_home }}/config/tmux.conf"
     dest: "{{ dotfiles_user_home }}/.tmux.conf"
     state: link
+    force: yes
 
 - name: Check if nvim config directory exists
   stat: "path={{ dotfiles_user_home }}/.config/nvim"
@@ -51,8 +54,15 @@
   file: 
     src: "{{ dotfiles_home }}/config/init.lua"
     dest: "{{ dotfiles_user_home }}/.config/nvim/init.lua"
+    state: link
+    force: yes
 
-- name: Check if nvim config directory exists
+- name: Remove old ipython config
+  file: 
+    path: "{{ dotfiles_user_home }}/.ipython/profile_default/ipython_config.py"
+    state: absent
+
+- name: Check if ipython config directory exists
   stat: "path={{ dotfiles_user_home }}/.ipython/profile_default"
   register: ipython_config
 
@@ -63,9 +73,9 @@
     mode: 0755
   when: not ipython_config.stat.exists
 
-
 - name: Symlink ipython_config
   file: 
     src: "{{ dotfiles_home }}/config/ipython_config.py"
     dest: "{{ dotfiles_user_home }}/.ipython/profile_default/ipython_config.py"
     state: link
+    force: yes
