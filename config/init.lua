@@ -726,6 +726,10 @@ require("lazy").setup({
     {
         "anuvyklack/hydra.nvim",
         dependencies = "anuvyklack/keymap-layer.nvim",
+        keys = {
+            {"<leader>dh", "", {desc = "Dap Hydra"}},
+            {"<leader>g", "", {desc = "Git Hydra"}}
+        },
         config = function()
             local Hydra = require('hydra')
             local dap = require 'dap'
@@ -1028,9 +1032,9 @@ vim.keymap.set("n", "<leader>lb", "<cmd>Telescope buffers<CR>", { desc = "List b
 vim.keymap.set("n", '""', "<cmd>Telescope registers<CR>", { desc = "Search registers" })
 vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", { desc = "Lsp references" })
 
-vim.keymap.set("n", "<leader>w", "<cmd>HopWord<CR>")
+vim.keymap.set("n", "'", "<cmd>NvimTreeToggle<CR>", { desc = "File tree" })
 
-vim.keymap.set("n", "'", "<cmd>NvimTreeToggle<CR>", { desc = "Lsp references" })
+vim.keymap.set("n", "<leader>w", "<cmd>HopWord<CR>")
 
 vim.keymap.set("n", "<leader>gg", ":LazyGit<CR>")
 
@@ -1045,7 +1049,6 @@ vim.keymap.set("n", "<leader>s", ":SymbolsOutline<CR>", { desc = "Symbol Outline
 vim.keymap.set("n", "<leader>S", "<cmd>lua require('spectre').open()<CR>", { desc = "Search and Replace" })
 
 vim.keymap.set("n", "<leader>xx", ":TroubleToggle<CR>", { desc = "Trouble" })
-vim.keymap.set("n", "<leader>xt", ":TroubleToggle<CR>", { desc = "Trouble" })
 
 vim.keymap.set("n", "<C-p>", "<cmd>BufferPick<CR>")
 vim.keymap.set("n", "[b", "<cmd>BufferPrevious<CR>")
