@@ -341,7 +341,7 @@ require("lazy").setup({
         "geg2102/nvim-python-repl",
         config = function()
             require("nvim-python-repl").setup({
-                vsplit = true
+                vsplit = false,
             })
         end
     },
@@ -949,6 +949,7 @@ require("lazy").setup({
     {
         "utilyre/barbecue.nvim",
         version = "*",
+        branch = "fix/E36",
         dependencies = {
             "SmiteshP/nvim-navic",
             "nvim-tree/nvim-web-devicons", -- optional dependency
