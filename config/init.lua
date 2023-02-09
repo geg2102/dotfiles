@@ -352,7 +352,7 @@ require("lazy").setup({
         end
     },
     {
-        "ojroques/vim-oscyank"
+        "ojroques/nvim-osc52"
     },
     {
         "kylechui/nvim-surround",
@@ -981,7 +981,7 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.smarttab = true
 vim.opt.expandtab = true
-vim.opt.clipboard = "unnamed"
+vim.opt.clipboard = "unnamedplus"
 vim.opt.autoindent = true
 vim.opt.incsearch = true
 vim.opt.hlsearch = true
@@ -1071,8 +1071,9 @@ vim.keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h")
 vim.keymap.set("t", "<C-j>", "<C-\\><C-n><C-w>j")
 vim.keymap.set("t", "<C-k>", "<C-\\><C-n><C-w>k")
 
-vim.keymap.set("v", "<leader>c", ":OSCYank<CR>")
-vim.keymap.set("n", "<leader>c", "<Plug>OSCYank")
+vim.keymap.set('n', '<leader>c', require('osc52').copy_operator, {expr = true})
+vim.keymap.set('n', '<leader>cc', '<leader>c_', {remap = true})
+vim.keymap.set('x', '<leader>c', require('osc52').copy_visual)
 
 vim.keymap.set("n", "<leader>du", ":DBUIToggle<CR>")
 
