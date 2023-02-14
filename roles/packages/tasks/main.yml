@@ -32,10 +32,10 @@
   become: yes
   yum: 
     name:
-      - bat
+      # - bat
       - curl
-      - fd-find
-      - fzf
+      # - fd-find
+      # - fzf
       - htop
       - jq
       - nodejs
