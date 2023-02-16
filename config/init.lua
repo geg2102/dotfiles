@@ -37,7 +37,7 @@ require("lazy").setup({
                     command_palette = true, -- position the cmdline and popupmenu together
                     long_message_to_split = true, -- long messages will be sent to a split
                     inc_rename = false, -- enables an input dialog for inc-rename.nvim
-                    lsp_doc_border = false, -- add a border to hover docs and signature help
+                    lsp_doc_border = true, -- add a border to hover docs and signature help
                 },
                 vim.keymap.set({ "n", "i", "s" }, "<c-f>", function()
                     if not require("noice.lsp").scroll(4) then
@@ -486,6 +486,7 @@ require("lazy").setup({
                     end
                 },
                 mapping = {
+                    ["<C-e>"] = cmp.mapping.abort(),
                     ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
                     ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
                     ["<CR>"] = cmp.mapping.confirm({ select = false }),
@@ -521,7 +522,8 @@ require("lazy").setup({
             })
             cmp.setup.cmdline("/", {
                 sources = {
-                    { name = "buffer" }
+                    { name = "buffer" },
+                    { name = "cmdline" },
                 }
             })
             -- cmp.setup.cmdline(":", {
@@ -649,6 +651,7 @@ require("lazy").setup({
     },
     {
         "scalameta/nvim-metals",
+        ft = { "scala", "java", "sbt" },
         config = function()
             local metals_config = require("metals").bare_config()
 
@@ -720,8 +723,8 @@ require("lazy").setup({
         "anuvyklack/hydra.nvim",
         dependencies = "anuvyklack/keymap-layer.nvim",
         keys = {
-            {"<leader>dh", "", {desc = "Dap Hydra"}},
-            {"<leader>g", "", {desc = "Git Hydra"}}
+            { "<leader>dh", "", { desc = "Dap Hydra" } },
+            { "<leader>g", "", { desc = "Git Hydra" } }
         },
         config = function()
             local Hydra = require('hydra')
@@ -1065,8 +1068,8 @@ vim.keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h")
 vim.keymap.set("t", "<C-j>", "<C-\\><C-n><C-w>j")
 vim.keymap.set("t", "<C-k>", "<C-\\><C-n><C-w>k")
 
-vim.keymap.set('n', '<leader>c', require('osc52').copy_operator, {expr = true})
-vim.keymap.set('n', '<leader>cc', '<leader>c_', {remap = true})
+vim.keymap.set('n', '<leader>c', require('osc52').copy_operator, { expr = true })
+vim.keymap.set('n', '<leader>cc', '<leader>c_', { remap = true })
 vim.keymap.set('x', '<leader>c', require('osc52').copy_visual)
 
 vim.keymap.set("n", "<leader>du", ":DBUIToggle<CR>")
