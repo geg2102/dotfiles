@@ -121,7 +121,7 @@ require("lazy").setup({
         "williamboman/mason-lspconfig",
         config = function()
             require("mason-lspconfig").setup({
-                ensure_installed = { "jedi_language_server", "sumneko_lua" },
+                ensure_installed = { "jedi_language_server", "lua_ls" },
                 automatic_installation = true
             })
         end
@@ -135,7 +135,7 @@ require("lazy").setup({
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local servers = {
                 "jedi_language_server",
-                "sumneko_lua",
+                "lua_ls",
             }
             local nvim_lsp = require("lspconfig")
             local on_attach = function(client, bufnr)
@@ -149,7 +149,7 @@ require("lazy").setup({
                     on_attach = on_attach
                 }
             end
-            nvim_lsp.sumneko_lua.setup {
+            nvim_lsp.lua_ls.setup {
                 cmd = { "lua-language-server" },
                 settings = {
                     Lua = {
