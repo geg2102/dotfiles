@@ -467,6 +467,7 @@ require("lazy").setup({
             "hrsh7th/vim-vsnip-integ",
             "hrsh7th/cmp-nvim-lsp-signature-help",
             "tamago324/cmp-zsh",
+            "onsails/lspkind.nvim",
         },
         config = function()
             local has_words_before = function()
@@ -480,6 +481,17 @@ require("lazy").setup({
             end
             local cmp = require("cmp")
             cmp.setup({
+                confirm_opts = {
+                    behavior = cmp.ConfirmBehavior.Replace,
+                    select = true,
+                },
+                duplicates_default = 0,
+                window = {
+                    completion = cmp.config.window.bordered(),
+                    documentation = cmp.config.window.bordered(),
+                    hover = cmp.config.window.bordered(),
+                },
+
                 snippet = {
                     expand = function(args)
                         vim.fn["vsnip#anonymous"](args.body)
@@ -509,6 +521,12 @@ require("lazy").setup({
                         end
                     end, { "i", "s" }),
                 },
+                formatting = {
+                    format = require("lspkind").cmp_format({
+                        maxwidth = 50,
+                        ellipsis_char = "...",
+                    })
+                },
                 sources = cmp.config.sources({
                     { name = "nvim_lsp" },
                     { name = "vsnip" },
@@ -524,6 +542,7 @@ require("lazy").setup({
                 sources = {
                     { name = "buffer" },
                     { name = "cmdline" },
+                    { name = "path" },
                 }
             })
             -- cmp.setup.cmdline(":", {
@@ -651,6 +670,7 @@ require("lazy").setup({
     },
     {
         "scalameta/nvim-metals",
+        dependencies = "nvim-lua/plenary.nvim",
         ft = { "scala", "java", "sbt" },
         config = function()
             local metals_config = require("metals").bare_config()
@@ -954,14 +974,6 @@ require("lazy").setup({
             require("barbecue").setup()
         end,
     },
-})
-
--- Autorecompile when I save this file
-local packer_group = vim.api.nvim_create_augroup("Packer", { clear = true })
-vim.api.nvim_create_autocmd("BufWritePost", {
-    command = "source <afile> | silent! LspStop | silent! LspStart | PackerCompile",
-    group = packer_group,
-    pattern = vim.fn.expand "$MYVIMRC"
 })
 
 -- =====================================================================================
