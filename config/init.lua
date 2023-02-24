@@ -59,6 +59,7 @@ require("lazy").setup({
     },
     {
         "SmiteshP/nvim-navic",
+        ft = { "python", "sh", "lua", "scala", "c", "cpp", "yaml", "json", "r" },
         dependencies = "neovim/nvim-lspconfig",
         config = function()
             require("nvim-navic").setup()
@@ -121,7 +122,7 @@ require("lazy").setup({
         "williamboman/mason-lspconfig",
         config = function()
             require("mason-lspconfig").setup({
-                ensure_installed = { "jedi_language_server", "lua_ls" },
+                ensure_installed = { "jedi_language_server", "lua_ls", "bashls", "r_language_server" },
                 automatic_installation = true
             })
         end
@@ -136,6 +137,8 @@ require("lazy").setup({
             local servers = {
                 "jedi_language_server",
                 "lua_ls",
+                "bashls",
+                "r_language_server"
             }
             local nvim_lsp = require("lspconfig")
             local on_attach = function(client, bufnr)
@@ -192,6 +195,7 @@ require("lazy").setup({
     {
         "rcarriga/nvim-dap-ui",
         dependencies = { "mfussenegger/nvim-dap" },
+        ft = { "python", "sh", "lua", "scala", "c", "cpp", "yaml", "json", "r" },
         config = function()
             require("dapui").setup()
         end,
@@ -199,6 +203,7 @@ require("lazy").setup({
     },
     {
         "mfussenegger/nvim-dap-python",
+        ft = { "python" },
         config = function()
             require("dap-python").setup()
         end
@@ -252,11 +257,12 @@ require("lazy").setup({
         build = function()
             pcall(require("nvim-treesitter.install").update { with_sync = true })
         end,
+        ft = { "python", "sh", "lua", "scala", "c", "cpp", "yaml", "json", "r" },
         config = function()
             local treesitter = require("nvim-treesitter.configs")
             treesitter.setup {
                 ensure_installed = { "python", "bash", "lua", "scala", "c", "cpp", "vim", "help", "yaml", "hcl",
-                    "terraform" },
+                    "terraform", "r" },
                 highlight = {
                     enable = true,
                     disable = function(_, bufnr) -- Disable in large buffers
@@ -332,13 +338,25 @@ require("lazy").setup({
     {
         "rebelot/kanagawa.nvim",
         config = function()
+            vim.opt.laststatus = 3
+            vim.opt.fillchars:append({
+                horiz = '━',
+                horizup = '┻',
+                horizdown = '┳',
+                vert = '┃',
+                vertleft = '┨',
+                vertright = '┣',
+                verthoriz = '╋',
+            })
             require("kanagawa").setup({
+                globalStatus = true,
                 dimInactive = true
             })
         end
     },
     {
         "geg2102/nvim-python-repl",
+        ft = { "python", "lua", "scala" },
         config = function()
             require("nvim-python-repl").setup({
                 vsplit = false,
@@ -469,6 +487,7 @@ require("lazy").setup({
             "tamago324/cmp-zsh",
             "onsails/lspkind.nvim",
         },
+        ft = { "python", "lua", "sh", "r", "cpp" },
         config = function()
             local has_words_before = function()
                 local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -916,7 +935,7 @@ require("lazy").setup({
     },
     {
         "jalvesaq/Nvim-R",
-        branch = "oldstable"
+        branch = "stable"
     },
     {
         "sindrets/diffview.nvim",

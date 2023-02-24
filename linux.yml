@@ -1,8 +1,8 @@
 - name: Setup Linux Workstation
   hosts: local
   roles:
-    - packages
-    - fonts
+    # - packages
+    # - fonts
     - configs
-    - neovim
-    - miniconda
+    # - neovim
+    # - miniconda
