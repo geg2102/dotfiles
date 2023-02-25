@@ -6,7 +6,7 @@
       - bat
       - curl
       # - fd-find
-      - fzf
+      # - fzf
       - htop
       - jq
       - nodejs
@@ -27,6 +27,8 @@
       - unzip 
       - doxygen
   when: ansible_os_family == "Debian"
+  tags: 
+    - all packages
 
 - name: install redhat tools
   become: yes
@@ -56,6 +58,8 @@
       - patch 
       - gettext 
   when: ansible_os_family == "RedHat"
+  tags: 
+    - all packages
 
 - name: install lazygit 
   become: yes
@@ -65,5 +69,28 @@
     tar xf lazygit.tar.gz lazygit
     install lazygit /usr/local/bin
     rm -rf lazygit*
+  tags: 
+    - lazygit
+    - allpackages
 
+- name: download fzf 
+  become: yes 
+  git: 
+    repo: "https://github.com/junegunn/fzf.git"
+    dest: "{{ dotfiles_user_home }}/.fzf"
+    version: HEAD # latest
+  tags: 
+    - fzf
+    - allpackages
 
+- name: install fzf 
+  shell: "{{ dotfiles_user_home }}/.fzf/install --all"
+  tags: 
+    - fzf 
+    - allpackages
+
+- name: install zoxide
+  shell: "curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"
+  tags: 
+    - zoxide
+    - allpackages

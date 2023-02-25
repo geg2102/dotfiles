@@ -5,18 +5,34 @@
     file_type: any
     hidden: yes
   register: dot_config
+  tags: 
+    - allconfigs
+    - zsh
+    - tmux 
+    - neovim
+    - lazygit
+    - ipython
 
 - name: Check for oh-my-zsh installation
   stat: "path=~/.oh-my-zsh"
   register: oh_my_zsh_stat
+  tags: 
+    - allconfigs
+    - zsh
 
 - name: Install oh-my-zsh
   raw: "sh -c \"$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)\""
   when: not oh_my_zsh_stat.stat.exists
+  tags: 
+    - allconfigs
+    - zsh
 
 - name: Check for .zshrc
   stat: path="{{dotfiles_user_home}}/.zshrc"
   register: zshrc_stat
+  tags: 
+    - allconfigs
+    - zsh
 
 - name: Symlink .zshrc
   file:
@@ -24,6 +40,9 @@
     dest: "{{ dotfiles_user_home }}/.zshrc"
     state: link
     force: yes
+  tags: 
+    - allconfigs
+    - zsh
 
 - name: Symlink p10k.zsh
   file:
@@ -31,6 +50,9 @@
     dest: "{{ dotfiles_user_home }}/.p10k.zsh"
     state: link
     force: yes
+  tags: 
+    - allconfigs
+    - zsh
 
 - name: Symlink tmux.conf
   file:
@@ -38,10 +60,16 @@
     dest: "{{ dotfiles_user_home }}/.tmux.conf"
     state: link
     force: yes
+  tags: 
+    - allconfigs
+    - tmux
 
 - name: Check if nvim config directory exists
   stat: "path={{ dotfiles_user_home }}/.config/nvim"
   register: nvim_config
+  tags: 
+    - allconfigs
+    - neovim 
 
 - name: Create nvim config directory 
   file: 
@@ -49,6 +77,9 @@
     state: directory
     mode: 0755
   when: not nvim_config.stat.exists
+  tags: 
+    - allconfigs
+    - neovim 
 
 - name: Symlink init.lua
   file: 
@@ -56,15 +87,24 @@
     dest: "{{ dotfiles_user_home }}/.config/nvim/init.lua"
     state: link
     force: yes
+  tags: 
+    - allconfigs
+    - neovim 
 
 - name: Remove old ipython config
   file: 
     path: "{{ dotfiles_user_home }}/.ipython/profile_default/ipython_config.py"
     state: absent
+  tags: 
+    - allconfigs
+    - ipython 
 
 - name: Check if ipython config directory exists
   stat: "path={{ dotfiles_user_home }}/.ipython/profile_default"
   register: ipython_config
+  tags: 
+    - allconfigs
+    - ipython 
 
 - name: Create ipython config directory
   file: 
@@ -72,6 +112,9 @@
     state: directory
     mode: 0755
   when: not ipython_config.stat.exists
+  tags: 
+    - allconfigs
+    - ipython 
 
 - name: Symlink ipython_config
   file: 
@@ -79,3 +122,34 @@
     dest: "{{ dotfiles_user_home }}/.ipython/profile_default/ipython_config.py"
     state: link
     force: yes
+  tags: 
+    - allconfigs
+    - ipython 
+
+- name: Check if lazygit config directory exists
+  stat: "path={{ dotfiles_user_home }}/.config/lazygit"
+  register: lazygit_config
+  tags: 
+    - allconfigs
+    - lazygit 
+
+- name: Create lazygit config directory 
+  file: 
+    path: "{{ dotfiles_user_home }}/.config/lazygit"
+    state: directory
+    mode: 0755
+  when: not lazygit_config.stat.exists
+  tags: 
+    - allconfigs
+    - lazygit 
+
+- name: Symlink lazygit config
+  file: 
+    src: "{{ dotfiles_home }}/config/lazygit_config.yml"
+    dest: "{{ dotfiles_user_home }}/.config/lazygit/config.yml"
+    state: link
+    force: yes
+  tags: 
+    - allconfigs
+    - lazygit 
+

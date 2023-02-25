@@ -2,3 +2,4 @@
   command:
     cmd: fc-cache -v
     warn: true
+  tags: fonts

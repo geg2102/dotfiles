@@ -2,6 +2,7 @@
   file:
     path: ~/.local/share/fonts/{{item}}
     state: directory
+  tags: fonts
 
 - name: Installing {{item}}
   ansible.builtin.unarchive:
@@ -10,8 +11,10 @@
     creates: ~/.local/share/fonts/{{item}}/done
     remote_src: true
   notify: update font cache
+  tags: fonts
 
 - name: Installed {{item}}
   copy:
     dest: ~/.local/share/fonts/{{item}}/done
     content: ""
+  tags: fonts
