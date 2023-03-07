@@ -20,42 +20,54 @@ vim.g.mapleader = ","
 -- =====================================================================================
 require("lazy").setup({
     {
-        "folke/noice.nvim",
+        "folke/neodev.nvim",
         config = function()
-            require("noice").setup({
-                lsp = {
-                    -- override markdown rendering so that **cmp** and other plugins  **Treesitter**
-                    override = {
-                        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-                        ["vim.lsp.util.stylize_markdown"] = true,
-                        ["cmp.entry.get_documentation"] = true,
-                    },
-                },
-                -- you can enable a preset for easier configuration
-                presets = {
-                    bottom_search = true, --  a classic bottom cmdline for search
-                    command_palette = true, -- position the cmdline and popupmenu together
-                    long_message_to_split = true, -- long messages will be sent to a split
-                    inc_rename = false, -- enables an input dialog for inc-rename.nvim
-                    lsp_doc_border = true, -- add a border to hover docs and signature help
-                },
-                vim.keymap.set({ "n", "i", "s" }, "<c-f>", function()
-                    if not require("noice.lsp").scroll(4) then
-                        return "<c-f>"
-                    end
-                end, { silent = true, expr = true }),
-
-                vim.keymap.set({ "n", "i", "s" }, "<c-b>", function()
-                    if not require("noice.lsp").scroll(-4) then
-                        return "<c-b>"
-                    end
-                end, { silent = true, expr = true })
-            })
-        end,
-        dependencies = {
-            "MunifTanjim/nui.nvim",
-            "rcarriga/nvim-notify"
-        }
+            require("neodev").setup({})
+        end
+    },
+    -- {
+    --     "folke/noice.nvim",
+    --     config = function()
+    --         require("noice").setup({
+    --             lsp = {
+    --                 -- override markdown rendering so that **cmp** and other plugins  **Treesitter**
+    --                 override = {
+    --                     ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+    --                     ["vim.lsp.util.stylize_markdown"] = true,
+    --                     ["cmp.entry.get_documentation"] = true,
+    --                 },
+    --             },
+    --             -- you can enable a preset for easier configuration
+    --             presets = {
+    --                 bottom_search = true, --  a classic bottom cmdline for search
+    --                 command_palette = true, -- position the cmdline and popupmenu together
+    --                 long_message_to_split = true, -- long messages will be sent to a split
+    --                 inc_rename = false, -- enables an input dialog for inc-rename.nvim
+    --                 lsp_doc_border = true, -- add a border to hover docs and signature help
+    --             },
+    --             vim.keymap.set({ "n", "i", "s" }, "<c-f>", function()
+    --                 if not require("noice.lsp").scroll(4) then
+    --                     return "<c-f>"
+    --                 end
+    --             end, { silent = true, expr = true }),
+    --
+    --             vim.keymap.set({ "n", "i", "s" }, "<c-b>", function()
+    --                 if not require("noice.lsp").scroll(-4) then
+    --                     return "<c-b>"
+    --                 end
+    --             end, { silent = true, expr = true })
+    --         })
+    --     end,
+    --     dependencies = {
+    --         "MunifTanjim/nui.nvim",
+    --         "rcarriga/nvim-notify"
+    --     }
+    -- },
+    {
+        "levouh/tint.nvim",
+        config = function()
+            require("tint").setup()
+        end
     },
     {
         "SmiteshP/nvim-navic",
@@ -122,7 +134,7 @@ require("lazy").setup({
         "williamboman/mason-lspconfig",
         config = function()
             require("mason-lspconfig").setup({
-                ensure_installed = { "jedi_language_server", "lua_ls", "bashls", "r_language_server" },
+                ensure_installed = { "jedi_language_server", "lua_ls", "bashls"},
                 automatic_installation = true
             })
         end
@@ -130,15 +142,11 @@ require("lazy").setup({
     {
         "neovim/nvim-lspconfig",
         config = function()
-            local path = {}
-            table.insert(path, "lua/?.lua")
-            table.insert(path, "lua/?/init.lua")
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local servers = {
                 "jedi_language_server",
                 "lua_ls",
                 "bashls",
-                "r_language_server"
             }
             local nvim_lsp = require("lspconfig")
             local on_attach = function(client, bufnr)
@@ -158,7 +166,6 @@ require("lazy").setup({
                     Lua = {
                         runtime = {
                             version = "LuaJIT",
-                            path = path
                         },
                         diagnostics = {
                             globals = { "vim" }
@@ -169,6 +176,9 @@ require("lazy").setup({
                         },
                         telemetry = {
                             enable = false,
+                        },
+                        completion = {
+                            callSnippet = "Replace"
                         },
                     },
                     capabilities = capabilities
