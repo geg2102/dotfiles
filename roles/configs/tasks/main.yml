@@ -14,18 +14,40 @@
     - ipython
 
 - name: Check for oh-my-zsh installation
-  stat: "path=~/.oh-my-zsh"
+  stat: "path={{ dotfiles_user_home }}/.oh-my-zsh"
   register: oh_my_zsh_stat
   tags: 
     - allconfigs
     - zsh
 
 - name: Install oh-my-zsh
-  raw: "sh -c \"$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)\""
+  git: 
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: "{{ dotfiles_user_home }}/.oh-my-zsh"
   when: not oh_my_zsh_stat.stat.exists
   tags: 
     - allconfigs
     - zsh
+    - ohmyzsh
+
+- name: Zsh autosuggestions
+  git: 
+    repo: https://github.com/zsh-users/zsh-autosuggestions
+    dest: "{{ dotfiles_user_home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+  tags: 
+    - allconfigs
+    - zsh
+    - ohmyzsh
+
+- name: Zsh autosuggestions
+  git: 
+    repo: https://github.com/romkatv/powerlevel10k.git
+    dest: "{{ dotfiles_user_home }}/.oh-my-zsh/custom/themes/powerlevel10k"
+    depth: 1
+  tags: 
+    - allconfigs
+    - zsh
+    - ohmyzsh
 
 - name: Check for .zshrc
   stat: path="{{dotfiles_user_home}}/.zshrc"
