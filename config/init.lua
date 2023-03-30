@@ -25,44 +25,45 @@ require("lazy").setup({
             require("neodev").setup({})
         end
     },
-    -- {
-    --     "folke/noice.nvim",
-    --     config = function()
-    --         require("noice").setup({
-    --             lsp = {
-    --                 -- override markdown rendering so that **cmp** and other plugins  **Treesitter**
-    --                 override = {
-    --                     ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-    --                     ["vim.lsp.util.stylize_markdown"] = true,
-    --                     ["cmp.entry.get_documentation"] = true,
-    --                 },
-    --             },
-    --             -- you can enable a preset for easier configuration
-    --             presets = {
-    --                 bottom_search = true, --  a classic bottom cmdline for search
-    --                 command_palette = true, -- position the cmdline and popupmenu together
-    --                 long_message_to_split = true, -- long messages will be sent to a split
-    --                 inc_rename = false, -- enables an input dialog for inc-rename.nvim
-    --                 lsp_doc_border = true, -- add a border to hover docs and signature help
-    --             },
-    --             vim.keymap.set({ "n", "i", "s" }, "<c-f>", function()
-    --                 if not require("noice.lsp").scroll(4) then
-    --                     return "<c-f>"
-    --                 end
-    --             end, { silent = true, expr = true }),
-    --
-    --             vim.keymap.set({ "n", "i", "s" }, "<c-b>", function()
-    --                 if not require("noice.lsp").scroll(-4) then
-    --                     return "<c-b>"
-    --                 end
-    --             end, { silent = true, expr = true })
-    --         })
-    --     end,
-    --     dependencies = {
-    --         "MunifTanjim/nui.nvim",
-    --         "rcarriga/nvim-notify"
-    --     }
-    -- },
+    {
+        "folke/noice.nvim",
+        config = function()
+            require("noice").setup({
+                lsp = {
+                    -- override markdown rendering so that **cmp** and other plugins  **Treesitter**
+                    override = {
+                        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                        ["vim.lsp.util.stylize_markdown"] = true,
+                        ["cmp.entry.get_documentation"] = true,
+                    },
+                },
+                -- you can enable a preset for easier configuration
+                presets = {
+                    bottom_search = true, --  a classic bottom cmdline for search
+                    command_palette = true, -- position the cmdline and popupmenu together
+                    long_message_to_split = true, -- long messages will be sent to a split
+                    inc_rename = false, -- enables an input dialog for inc-rename.nvim
+                    lsp_doc_border = true, -- add a border to hover docs and signature help
+                },
+                messages = { enabled = false},
+                vim.keymap.set({ "n", "i", "s" }, "<c-f>", function()
+                    if not require("noice.lsp").scroll(4) then
+                        return "<c-f>"
+                    end
+                end, { silent = true, expr = true }),
+
+                vim.keymap.set({ "n", "i", "s" }, "<c-b>", function()
+                    if not require("noice.lsp").scroll(-4) then
+                        return "<c-b>"
+                    end
+                end, { silent = true, expr = true })
+            })
+        end,
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+            "rcarriga/nvim-notify"
+        }
+    },
     {
         "levouh/tint.nvim",
         config = function()
@@ -1090,7 +1091,8 @@ vim.keymap.set("n", "<leader><Space>", "zA")
 vim.keymap.set("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format{async=true}<CR>")
 vim.keymap.set("i", "<leader>lf", "<cmd>lua vim.lsp.buf.format{async=true}<CR>")
 
-vim.keymap.set("n", "<leader>s", ":SymbolsOutline<CR>", { desc = "Symbol Outline" })
+-- vim.keymap.set("n", "<leader>s", ":SymbolsOutline<CR>", { desc = "Symbol Outline" })
+vim.keymap.set("n", "<leader>s", ":Navbuddy<CR>", { desc = "Symbol Navbuddy"})
 
 vim.keymap.set("n", "<leader>S", "<cmd>lua require('spectre').open()<CR>", { desc = "Search and Replace" })
 
