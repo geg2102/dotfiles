@@ -7,17 +7,17 @@
 - name: clone neovim
   git: 
     repo: https://github.com/neovim/neovim.git
-    dest: "{{ dotfiles_user_home }}/neovim"
+    dest: "{{ user_home }}/neovim"
     version: stable
   register: neovim_cloned
   when: not bin_nvim.stat.exists
   tags: neovim
 
 - name: build neovim
-  make:
-    chdir: "{{ dotfiles_user_home }}/neovim"
-    params: 
-      CMAKE_BUILD_TYPE=RelWithDebInfo
+  make: 
+    chdir: "{{ user_home }}/neovim"
+    params:
+      CMAKE_BUILD_TYPE: RelWithDebInfo
   register: neovim_build
   when: neovim_cloned.stat.isdir is defined and neovim_cloned.stat.isdir
   tags: neovim
@@ -25,7 +25,7 @@
 - name: install neovim
   become: yes
   make:
-    chdir: "{{ dotfiles_user_home }}/neovim"
+    chdir: "{{ user_home }}/neovim"
     target: install
   register: neovim_install
   tags: neovim

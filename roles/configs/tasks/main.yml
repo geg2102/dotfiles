@@ -14,7 +14,7 @@
     - ipython
 
 - name: Check for oh-my-zsh installation
-  stat: "path={{ dotfiles_user_home }}/.oh-my-zsh"
+  stat: "path={{ user_home }}/.oh-my-zsh"
   register: oh_my_zsh_stat
   tags: 
     - allconfigs
@@ -23,7 +23,7 @@
 - name: Install oh-my-zsh
   git: 
     repo: https://github.com/ohmyzsh/ohmyzsh.git
-    dest: "{{ dotfiles_user_home }}/.oh-my-zsh"
+    dest: "{{ user_home }}/.oh-my-zsh"
   when: not oh_my_zsh_stat.stat.exists
   tags: 
     - allconfigs
@@ -33,7 +33,7 @@
 - name: Zsh autosuggestions
   git: 
     repo: https://github.com/zsh-users/zsh-autosuggestions
-    dest: "{{ dotfiles_user_home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    dest: "{{ user_home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
   tags: 
     - allconfigs
     - zsh
@@ -42,7 +42,7 @@
 - name: Zsh autosuggestions
   git: 
     repo: https://github.com/romkatv/powerlevel10k.git
-    dest: "{{ dotfiles_user_home }}/.oh-my-zsh/custom/themes/powerlevel10k"
+    dest: "{{ user_home }}/.oh-my-zsh/custom/themes/powerlevel10k"
     depth: 1
   tags: 
     - allconfigs
@@ -50,7 +50,7 @@
     - ohmyzsh
 
 - name: Check for .zshrc
-  stat: path="{{dotfiles_user_home}}/.zshrc"
+  stat: path="{{user_home}}/.zshrc"
   register: zshrc_stat
   tags: 
     - allconfigs
@@ -59,7 +59,7 @@
 - name: Symlink .zshrc
   file:
     src: "{{ dotfiles_home }}/config/zshrc"
-    dest: "{{ dotfiles_user_home }}/.zshrc"
+    dest: "{{ user_home }}/.zshrc"
     state: link
     force: yes
   tags: 
@@ -69,7 +69,7 @@
 - name: Symlink p10k.zsh
   file:
     src: "{{ dotfiles_home }}/config/p10k.zsh"
-    dest: "{{ dotfiles_user_home }}/.p10k.zsh"
+    dest: "{{ user_home }}/.p10k.zsh"
     state: link
     force: yes
   tags: 
@@ -79,7 +79,7 @@
 - name: Symlink tmux.conf
   file:
     src: "{{ dotfiles_home }}/config/tmux.conf"
-    dest: "{{ dotfiles_user_home }}/.tmux.conf"
+    dest: "{{ user_home }}/.tmux.conf"
     state: link
     force: yes
   tags: 
@@ -87,7 +87,7 @@
     - tmux
 
 - name: Check if nvim config directory exists
-  stat: "path={{ dotfiles_user_home }}/.config/nvim"
+  stat: "path={{ user_home }}/.config/nvim"
   register: nvim_config
   tags: 
     - allconfigs
@@ -95,7 +95,7 @@
 
 - name: Create nvim config directory 
   file: 
-    path: "{{ dotfiles_user_home }}/.config/nvim"
+    path: "{{ user_home }}/.config/nvim"
     state: directory
     mode: 0755
   when: not nvim_config.stat.exists
@@ -106,7 +106,7 @@
 - name: Symlink init.lua
   file: 
     src: "{{ dotfiles_home }}/config/init.lua"
-    dest: "{{ dotfiles_user_home }}/.config/nvim/init.lua"
+    dest: "{{ user_home }}/.config/nvim/init.lua"
     state: link
     force: yes
   tags: 
@@ -115,14 +115,14 @@
 
 - name: Remove old ipython config
   file: 
-    path: "{{ dotfiles_user_home }}/.ipython/profile_default/ipython_config.py"
+    path: "{{ user_home }}/.ipython/profile_default/ipython_config.py"
     state: absent
   tags: 
     - allconfigs
     - ipython 
 
 - name: Check if ipython config directory exists
-  stat: "path={{ dotfiles_user_home }}/.ipython/profile_default"
+  stat: "path={{ user_home }}/.ipython/profile_default"
   register: ipython_config
   tags: 
     - allconfigs
@@ -130,7 +130,7 @@
 
 - name: Create ipython config directory
   file: 
-    path: "{{ dotfiles_user_home }}/.ipython/profile_default"
+    path: "{{ user_home }}/.ipython/profile_default"
     state: directory
     mode: 0755
   when: not ipython_config.stat.exists
@@ -141,7 +141,7 @@
 - name: Symlink ipython_config
   file: 
     src: "{{ dotfiles_home }}/config/ipython_config.py"
-    dest: "{{ dotfiles_user_home }}/.ipython/profile_default/ipython_config.py"
+    dest: "{{ user_home }}/.ipython/profile_default/ipython_config.py"
     state: link
     force: yes
   tags: 
@@ -149,7 +149,7 @@
     - ipython 
 
 - name: Check if lazygit config directory exists
-  stat: "path={{ dotfiles_user_home }}/.config/lazygit"
+  stat: "path={{ user_home }}/.config/lazygit"
   register: lazygit_config
   tags: 
     - allconfigs
@@ -157,7 +157,7 @@
 
 - name: Create lazygit config directory 
   file: 
-    path: "{{ dotfiles_user_home }}/.config/lazygit"
+    path: "{{ user_home }}/.config/lazygit"
     state: directory
     mode: 0755
   when: not lazygit_config.stat.exists
@@ -168,7 +168,7 @@
 - name: Symlink lazygit config
   file: 
     src: "{{ dotfiles_home }}/config/lazygit_config.yml"
-    dest: "{{ dotfiles_user_home }}/.config/lazygit/config.yml"
+    dest: "{{ user_home }}/.config/lazygit/config.yml"
     state: link
     force: yes
   tags: 
