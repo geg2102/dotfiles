@@ -1003,7 +1003,7 @@ require("lazy").setup({
     {
         "utilyre/barbecue.nvim",
         version = "*",
-        branch = "fix/E36",
+        branch = "main",
         dependencies = {
             "SmiteshP/nvim-navic",
             "nvim-tree/nvim-web-devicons", -- optional dependency
