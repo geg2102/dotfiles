@@ -45,15 +45,14 @@ require("lazy").setup({
                     inc_rename = false, -- enables an input dialog for inc-rename.nvim
                     lsp_doc_border = true, -- add a border to hover docs and signature help
                 },
-                messages = { enabled = false},
+                messages = { enabled = false },
                 vim.keymap.set({ "n", "i", "s" }, "<c-f>", function()
                     if not require("noice.lsp").scroll(4) then
                         return "<c-f>"
                     end
                 end, { silent = true, expr = true }),
-
                 vim.keymap.set({ "n", "i", "s" }, "<c-b>", function()
-                    if not require("noice.lsp").scroll(-4) then
+                    if not require("noice.lsp").scroll( -4) then
                         return "<c-b>"
                     end
                 end, { silent = true, expr = true })
@@ -79,11 +78,11 @@ require("lazy").setup({
         end
     },
     {
-        "SmiteshP/nvim-navbuddy", 
+        "SmiteshP/nvim-navbuddy",
         ft = { "python", "sh", "lua", "scala", "c", "cpp", "yaml", "json", "r" },
-        dependencies = {"neovim/nvim-lspconfig", "SmiteshP/nvim-navic", "MunifTanjim/nui.nvim"}, 
+        dependencies = { "neovim/nvim-lspconfig", "SmiteshP/nvim-navic", "MunifTanjim/nui.nvim" },
         config = function()
-            require("nvim-navbuddy").setup{ window = { border = "double"}, lsp = { auto_attach = true}}
+            require("nvim-navbuddy").setup { window = { border = "double" }, lsp = { auto_attach = true } }
         end
     },
     {
@@ -143,7 +142,7 @@ require("lazy").setup({
         "williamboman/mason-lspconfig",
         config = function()
             require("mason-lspconfig").setup({
-                ensure_installed = { "jedi_language_server", "lua_ls", "bashls"},
+                ensure_installed = { "jedi_language_server", "lua_ls", "bashls" },
                 automatic_installation = true
             })
         end
@@ -246,16 +245,16 @@ require("lazy").setup({
             require("telescope").setup({})
         end,
         keys = {
-            { "<leader>ff", "<cmd>Telescope find_files<CR>", desc = "Fuzzy find files" },
-            { "<leader>fg", "<cmd>Telescope live_grep<CR>", desc = "Live grep" },
-            { "<leader>fb", "<cmd>Telescope file_browser<CR>", desc = "File browser" },
-            { "<leader>fh", "<cmd>Telescope oldfiles<CR>", desc = "Old files" },
-            { "<leader>fv", "<cmd>Telescope help_tags<CR>", desc = "Help tags" },
-            { "<leader>fk", "<cmd>Telescope keymaps<CR>", desc = "Keymaps" },
-            { "<leader>ld", "<cmd>Telescope diagnostics<CR>", desc = "List diagnostics" },
-            { "<leader>lb", "<cmd>Telescope buffers<CR>", desc = "List buffers" },
-            { '""', "<cmd>Telescope registers<CR>", desc = "Search registers" },
-            { "gr", "<cmd>Telescope lsp_references<CR>", desc = "Lsp references" },
+            { "<leader>ff", "<cmd>Telescope find_files<CR>",     desc = "Fuzzy find files" },
+            { "<leader>fg", "<cmd>Telescope live_grep<CR>",      desc = "Live grep" },
+            { "<leader>fb", "<cmd>Telescope file_browser<CR>",   desc = "File browser" },
+            { "<leader>fh", "<cmd>Telescope oldfiles<CR>",       desc = "Old files" },
+            { "<leader>fv", "<cmd>Telescope help_tags<CR>",      desc = "Help tags" },
+            { "<leader>fk", "<cmd>Telescope keymaps<CR>",        desc = "Keymaps" },
+            { "<leader>ld", "<cmd>Telescope diagnostics<CR>",    desc = "List diagnostics" },
+            { "<leader>lb", "<cmd>Telescope buffers<CR>",        desc = "List buffers" },
+            { '""',         "<cmd>Telescope registers<CR>",      desc = "Search registers" },
+            { "gr",         "<cmd>Telescope lsp_references<CR>", desc = "Lsp references" },
         }
     },
     {
@@ -452,12 +451,13 @@ require("lazy").setup({
                                 hint = icons.diagnostics.Hint,
                             },
                         },
-                        { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-                        { "filename", path = 1, symbols = { modified = "  ", readonly = "", unnamed = "" } },
+                        { "filetype", icon_only = true, separator = "",                                               padding = { left = 1, right = 0 } },
+                        { "filename", path = 1,         symbols = { modified = "  ", readonly = "", unnamed = "" } },
                         -- stylua: ignore
                         {
                             function() return require("nvim-navic").get_location() end,
-                            cond = function() return package.loaded["nvim-navic"] and
+                            cond = function()
+                                return package.loaded["nvim-navic"] and
                                     require("nvim-navic").is_available()
                             end,
                         },
@@ -466,7 +466,8 @@ require("lazy").setup({
                         -- stylua: ignore
                         {
                             function() return require("noice").api.status.command.get() end,
-                            cond = function() return package.loaded["noice"] and
+                            cond = function()
+                                return package.loaded["noice"] and
                                     require("noice").api.status.command.has()
                             end,
                             color = fg("Statement")
@@ -529,7 +530,6 @@ require("lazy").setup({
                     documentation = cmp.config.window.bordered(),
                     hover = cmp.config.window.bordered(),
                 },
-
                 snippet = {
                     expand = function(args)
                         vim.fn["vsnip#anonymous"](args.body)
@@ -537,7 +537,7 @@ require("lazy").setup({
                 },
                 mapping = {
                     ["<C-e>"] = cmp.mapping.abort(),
-                    ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
+                    ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs( -4), { "i", "c" }),
                     ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
                     ["<CR>"] = cmp.mapping.confirm({ select = false }),
                     ["<Tab>"] = cmp.mapping(function(fallback)
@@ -554,7 +554,7 @@ require("lazy").setup({
                     ["<S-Tab>"] = cmp.mapping(function()
                         if cmp.visible() then
                             cmp.select_prev_item()
-                        elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+                        elseif vim.fn["vsnip#jumpable"]( -1) == 1 then
                             feedkey("<Plug>(vsnip-jump-prev)", "")
                         end
                     end, { "i", "s" }),
@@ -782,7 +782,7 @@ require("lazy").setup({
         dependencies = "anuvyklack/keymap-layer.nvim",
         keys = {
             { "<leader>dh", "", { desc = "Dap Hydra" } },
-            { "<leader>g", "", { desc = "Git Hydra" } }
+            { "<leader>g",  "", { desc = "Git Hydra" } }
         },
         config = function()
             local Hydra = require('hydra')
@@ -811,20 +811,20 @@ require("lazy").setup({
                 mode = { 'n', 'x' },
                 body = '<leader>dh',
                 heads = {
-                    { 'n', dap.step_over, { silent = true } },
-                    { 'i', dap.step_into, { silent = true } },
-                    { 'o', dap.step_out, { silent = true } },
+                    { 'n', dap.step_over,     { silent = true } },
+                    { 'i', dap.step_into,     { silent = true } },
+                    { 'o', dap.step_out,      { silent = true } },
                     { 'c', dap.run_to_cursor, { silent = true } },
-                    { 's', dap.continue, { silent = true } },
-                    { 'r', dap.repl.open, { silent = true } },
+                    { 's', dap.continue,      { silent = true } },
+                    { 'r', dap.repl.open,     { silent = true } },
                     { 'x', ":lua require'dap'.disconnect({ terminateDebuggee = false })<CR>", { exit = true,
                         silent = true } },
-                    { 'X', dap.close, { silent = true } },
-                    { 'U', ":lua require('dapui').open()<cr>", { silent = true } },
+                    { 'X', dap.close,                                                          { silent = true } },
+                    { 'U', ":lua require('dapui').open()<cr>",                                 { silent = true } },
                     { 'C', ":lua require('dapui').close()<cr>:DapVirtualTextForceRefresh<CR>", { silent = true } },
-                    { 'b', dap.toggle_breakpoint, { silent = true } },
-                    { 'K', ":lua require('dap.ui.widgets').hover()<CR>", { silent = true } },
-                    { 'q', nil, { exit = true, nowait = true } },
+                    { 'b', dap.toggle_breakpoint,                                              { silent = true } },
+                    { 'K', ":lua require('dap.ui.widgets').hover()<CR>",                       { silent = true } },
+                    { 'q', nil,                                                                { exit = true, nowait = true } },
                 }
             })
             Hydra.spawn = function(head)
@@ -836,7 +836,7 @@ require("lazy").setup({
             local gitsigns = require('gitsigns')
             hint = [[
  _J_: next hunk   _s_: stage hunk        _d_: show deleted   _b_: blame line
- _K_: prev hunk   _u_: undo last stage   _p_: preview hunk   _B_: blame show full 
+ _K_: prev hunk   _u_: undo last stage   _p_: preview hunk   _B_: blame show full
  ^ ^              _S_: stage buffer      ^ ^                 _/_: show base file
  ^
  ^ ^              _<Enter>_: Lazygit              _q_: exit
@@ -885,16 +885,16 @@ require("lazy").setup({
                             return '<Ignore>'
                         end,
                         { expr = true, desc = 'prev hunk' } },
-                    { 's', ':Gitsigns stage_hunk<CR>', { silent = true, desc = 'stage hunk' } },
-                    { 'u', gitsigns.undo_stage_hunk, { desc = 'undo last stage' } },
-                    { 'S', gitsigns.stage_buffer, { desc = 'stage buffer' } },
-                    { 'p', gitsigns.preview_hunk, { desc = 'preview hunk' } },
-                    { 'd', gitsigns.toggle_deleted, { nowait = true, desc = 'toggle deleted' } },
-                    { 'b', gitsigns.blame_line, { desc = 'blame' } },
-                    { 'B', function() gitsigns.blame_line { full = true } end, { desc = 'blame show full' } },
-                    { '/', gitsigns.show, { exit = true, desc = 'show base file' } }, -- show the base of the file
-                    { '<Enter>', '<Cmd>LazyGit<CR>', { exit = true, desc = 'Neogit' } },
-                    { 'q', nil, { exit = true, nowait = true, desc = 'exit' } },
+                    { 's',       ':Gitsigns stage_hunk<CR>',                         { silent = true, desc = 'stage hunk' } },
+                    { 'u',       gitsigns.undo_stage_hunk,                           { desc = 'undo last stage' } },
+                    { 'S',       gitsigns.stage_buffer,                              { desc = 'stage buffer' } },
+                    { 'p',       gitsigns.preview_hunk,                              { desc = 'preview hunk' } },
+                    { 'd',       gitsigns.toggle_deleted,                            { nowait = true, desc = 'toggle deleted' } },
+                    { 'b',       gitsigns.blame_line,                                { desc = 'blame' } },
+                    { 'B',       function() gitsigns.blame_line { full = true } end, { desc = 'blame show full' } },
+                    { '/',       gitsigns.show,                                      { exit = true, desc = 'show base file' } }, -- show the base of the file
+                    { '<Enter>', '<Cmd>LazyGit<CR>',                                 { exit = true, desc = 'Neogit' } },
+                    { 'q',       nil,                                                { exit = true, nowait = true, desc = 'exit' } },
                 }
             })
 
@@ -907,7 +907,7 @@ require("lazy").setup({
   🭅█ ▁     █🭐
   ██🬿      🭊██   _r_: resume      _u_: undotree
  🭋█🬝🮄🮄🮄🮄🮄🮄🮄🮄🬆█🭀  _h_: vim help    _c_: execute command
- 🭤🭒🬺🬹🬱🬭🬭🬭🬭🬵🬹🬹🭝🭙  _k_: keymaps     _;_: commands history 
+ 🭤🭒🬺🬹🬱🬭🬭🬭🬭🬵🬹🬹🭝🭙  _k_: keymaps     _;_: commands history
                  _O_: options     _?_: search history
  ^
                  _<Enter>_: Telescope           _<Esc>_
@@ -927,26 +927,24 @@ require("lazy").setup({
                 mode = 'n',
                 body = '<Leader>f',
                 heads = {
-                    { 'f', cmd 'Telescope find_files' },
-                    { 'g', cmd 'Telescope live_grep' },
-                    { 'o', cmd 'Telescope oldfiles', { desc = 'recently opened files' } },
-                    { 'h', cmd 'Telescope help_tags', { desc = 'vim help' } },
-                    { 'm', cmd 'MarksListBuf', { desc = 'marks' } },
-                    { 'k', cmd 'Telescope keymaps' },
-                    { 'O', cmd 'Telescope vim_options' },
-                    { 'r', cmd 'Telescope resume' },
-                    { 'p', cmd 'Telescope projects', { desc = 'projects' } },
-                    { '/', cmd 'Telescope current_buffer_fuzzy_find', { desc = 'search in file' } },
-                    { '?', cmd 'Telescope search_history', { desc = 'search history' } },
-                    { ';', cmd 'Telescope command_history', { desc = 'command-line history' } },
-                    { 'c', cmd 'Telescope commands', { desc = 'execute command' } },
-                    { 'u', cmd 'silent! %foldopen! | UndotreeToggle', { desc = 'undotree' } },
-                    { '<Enter>', cmd 'Telescope', { exit = true, desc = 'list all pickers' } },
-                    { '<Esc>', nil, { exit = true, nowait = true } },
+                    { 'f',       cmd 'Telescope find_files' },
+                    { 'g',       cmd 'Telescope live_grep' },
+                    { 'o',       cmd 'Telescope oldfiles',                  { desc = 'recently opened files' } },
+                    { 'h',       cmd 'Telescope help_tags',                 { desc = 'vim help' } },
+                    { 'm',       cmd 'MarksListBuf',                        { desc = 'marks' } },
+                    { 'k',       cmd 'Telescope keymaps' },
+                    { 'O',       cmd 'Telescope vim_options' },
+                    { 'r',       cmd 'Telescope resume' },
+                    { 'p',       cmd 'Telescope projects',                  { desc = 'projects' } },
+                    { '/',       cmd 'Telescope current_buffer_fuzzy_find', { desc = 'search in file' } },
+                    { '?',       cmd 'Telescope search_history',            { desc = 'search history' } },
+                    { ';',       cmd 'Telescope command_history',           { desc = 'command-line history' } },
+                    { 'c',       cmd 'Telescope commands',                  { desc = 'execute command' } },
+                    { 'u',       cmd 'silent! %foldopen! | UndotreeToggle', { desc = 'undotree' } },
+                    { '<Enter>', cmd 'Telescope',                           { exit = true, desc = 'list all pickers' } },
+                    { '<Esc>',   nil,                                       { exit = true, nowait = true } },
                 }
             })
-
-
         end
     },
     {
@@ -1092,7 +1090,7 @@ vim.keymap.set("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format{async=true}<CR>")
 vim.keymap.set("i", "<leader>lf", "<cmd>lua vim.lsp.buf.format{async=true}<CR>")
 
 -- vim.keymap.set("n", "<leader>s", ":SymbolsOutline<CR>", { desc = "Symbol Outline" })
-vim.keymap.set("n", "<leader>s", ":Navbuddy<CR>", { desc = "Symbol Navbuddy"})
+vim.keymap.set("n", "<leader>s", ":Navbuddy<CR>", { desc = "Symbol Navbuddy" })
 
 vim.keymap.set("n", "<leader>S", "<cmd>lua require('spectre').open()<CR>", { desc = "Search and Replace" })
 
@@ -1139,8 +1137,8 @@ local dadbodcompletion = vim.api.nvim_create_augroup("DBCompletion", { clear = t
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "sql", "psql", "plsql" },
     command = [[
-        lua require("cmp").setup.buffer({ 
-            sources = { { name = "vim-dadbod-completion" } } 
+        lua require("cmp").setup.buffer({
+            sources = { { name = "vim-dadbod-completion" } }
         })
         ]],
     group = dadbodcompletion
