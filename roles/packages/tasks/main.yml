@@ -84,6 +84,7 @@
     - allpackages
 
 - name: install fzf 
+  become: yes
   shell: "{{ user_home }}/.fzf/install --all"
   tags: 
     - fzf 
