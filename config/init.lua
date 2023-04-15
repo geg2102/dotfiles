@@ -26,6 +26,9 @@ require("lazy").setup({
         end
     },
     {
+        dir = "/home/geoffrey/nvim-jupyter-client",
+    },
+    {
         "folke/noice.nvim",
         config = function()
             require("noice").setup({
@@ -213,7 +216,7 @@ require("lazy").setup({
     {
         "rcarriga/nvim-dap-ui",
         dependencies = { "mfussenegger/nvim-dap" },
-        ft = { "python", "sh", "lua", "scala", "c", "cpp", "yaml", "json", "r" },
+        ft = { "python", "sh", "lua", "scala", "c", "cpp", "yaml", "r" },
         config = function()
             require("dapui").setup()
         end,
@@ -284,7 +287,7 @@ require("lazy").setup({
                 highlight = {
                     enable = true,
                     disable = function(_, bufnr) -- Disable in large buffers
-                        return vim.api.nvim_buf_line_count(bufnr) > 5000
+                        return vim.api.nvim_buf_line_count(bufnr) >= 5000
                     end,
                 },
                 indent = {
@@ -304,6 +307,7 @@ require("lazy").setup({
                     extended_mode = true,
                 },
                 autopairs = {
+                    enable = true,
                     enable = true
                 },
                 textobjects = {
@@ -343,10 +347,10 @@ require("lazy").setup({
                     swap = {
                         enable = true,
                         swap_next = {
-                            ["<leader>s"] = "@parameter.inner"
+                            ["<leader>b"] = "@parameter.inner"
                         },
                         swap_previous = {
-                            ["<leader>S"] = "@parameter.inner"
+                            ["<leader>B"] = "@parameter.inner"
                         }
                     }
                 }
@@ -1045,7 +1049,7 @@ vim.opt.foldenable = true
 vim.opt.completeopt = { "menuone", "noselect", "noinsert" }
 vim.opt.showmode = false
 vim.g.nvim_system_wide = 1
-vim.g.indent_blankline_buftype_exclude = { "terminal" }
+vim.g.indent_blankline_buftype_exclude = { "terminal", "json" }
 
 -- =====================================================================================
 -- KEYBINDINGS
@@ -1097,8 +1101,8 @@ vim.keymap.set("n", "<leader>S", "<cmd>lua require('spectre').open()<CR>", { des
 vim.keymap.set("n", "<leader>xx", ":TroubleToggle<CR>", { desc = "Trouble" })
 
 vim.keymap.set("n", "<C-p>", "<cmd>BufferPick<CR>")
-vim.keymap.set("n", "[b", "<cmd>BufferPrevious<CR>")
-vim.keymap.set("n", "]b", "<cmd>BufferNext<CR>")
+vim.keymap.set("n", "<leader>,", "<cmd>BufferPrevious<CR>")
+vim.keymap.set("n", "<leader>.", "<cmd>BufferNext<CR>")
 vim.keymap.set("n", "<leader>q", "<cmd>BufferClose<CR>")
 vim.keymap.set("n", "<leader>q!", "<cmd>BufferClose!<CR>")
 
@@ -1168,3 +1172,36 @@ R = function(name)
     RELOAD(name)
     return require(name)
 end
+
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+    pattern = "*.lua",
+    group = vim.api.nvim_create_augroup("luabuffer", { clear = true }),
+    callback = function()
+        vim.keymap.set("n", "<leader>zz", function() R("nvim-jupyter-client") end, { desc = "Reload Lua File" })
+    end
+}
+)
+
+vim.api.nvim_create_autocmd(    { "BufEnter" },
+    {
+      pattern = "*",
+      desc = "Disable syntax highlighting in files larger than 1MB",
+      callback = function(args)
+        local highlighter = require "vim.treesitter.highlighter"
+        local ts_was_active = highlighter.active[args.buf]
+        local file_size = vim.fn.getfsize(args.file)
+        if (file_size > 1024 * 1024) then
+          vim.cmd("TSBufDisable highlight")
+          -- vim.cmd("syntax off")
+          -- vim.cmd("syntax clear")
+          vim.cmd("IlluminatePauseBuf")
+          vim.cmd("IndentBlanklineDisable")
+          vim.cmd("NoMatchParen")
+          if (ts_was_active) then
+            vim.notify("File larger than 1MB, turned off syntax highlighting")
+          end
+        end
+
+      end
+    })
+  
