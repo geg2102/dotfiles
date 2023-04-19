@@ -26,6 +26,9 @@ require("lazy").setup({
         end
     },
     {
+        "milisims/nvim-luaref",
+    },
+    {
         dir = "/home/geoffrey/nvim-jupyter-client",
     },
     {
@@ -173,6 +176,7 @@ require("lazy").setup({
             end
             nvim_lsp.lua_ls.setup {
                 cmd = { "lua-language-server" },
+                single_file_support = true,
                 settings = {
                     Lua = {
                         runtime = {
@@ -1127,6 +1131,7 @@ vim.keymap.set('x', '<leader>c', require('osc52').copy_visual)
 
 vim.keymap.set("n", "<leader>du", ":DBUIToggle<CR>")
 
+vim.keymap.set("n", "<leader>p", "<Plug>PlenaryTestFile", { desc = "Run test file you are in"})
 -- =====================================================================================
 -- AUTOCOMMANDS
 -- =====================================================================================
@@ -1204,4 +1209,4 @@ vim.api.nvim_create_autocmd(    { "BufEnter" },
 
       end
     })
-  
+
