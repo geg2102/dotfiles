@@ -14,7 +14,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = ","
-
 -- =====================================================================================
 -- PLUGINS
 -- =====================================================================================
@@ -187,7 +186,7 @@ require("lazy").setup({
                         },
                         workspace = {
                             library = vim.api.nvim_get_runtime_file("", true),
-                            checkThirdParty = false
+                            -- checkThirdParty = false
                         },
                         telemetry = {
                             enable = false,
