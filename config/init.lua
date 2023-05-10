@@ -44,11 +44,11 @@ require("lazy").setup({
                 },
                 -- you can enable a preset for easier configuration
                 presets = {
-                    bottom_search = true, --  a classic bottom cmdline for search
-                    command_palette = true, -- position the cmdline and popupmenu together
+                    bottom_search = true,         --  a classic bottom cmdline for search
+                    command_palette = true,       -- position the cmdline and popupmenu together
                     long_message_to_split = true, -- long messages will be sent to a split
-                    inc_rename = false, -- enables an input dialog for inc-rename.nvim
-                    lsp_doc_border = true, -- add a border to hover docs and signature help
+                    inc_rename = false,           -- enables an input dialog for inc-rename.nvim
+                    lsp_doc_border = true,        -- add a border to hover docs and signature help
                 },
                 messages = { enabled = false },
                 vim.keymap.set({ "n", "i", "s" }, "<c-f>", function()
@@ -57,7 +57,7 @@ require("lazy").setup({
                     end
                 end, { silent = true, expr = true }),
                 vim.keymap.set({ "n", "i", "s" }, "<c-b>", function()
-                    if not require("noice.lsp").scroll( -4) then
+                    if not require("noice.lsp").scroll(-4) then
                         return "<c-b>"
                     end
                 end, { silent = true, expr = true })
@@ -77,7 +77,7 @@ require("lazy").setup({
     {
         "SmiteshP/nvim-navic",
         ft = { "python", "sh", "lua", "scala", "c", "cpp", "yaml", "json", "r" },
-        dependencies = "neovim/nvim-lspconfig",
+        -- dependencies = "neovim/nvim-lspconfig",
         config = function()
             require("nvim-navic").setup()
         end
@@ -145,21 +145,33 @@ require("lazy").setup({
     },
     {
         "williamboman/mason-lspconfig",
+        dependencies = "williamboman/mason.nvim",
         config = function()
             require("mason-lspconfig").setup({
-                ensure_installed = { "jedi_language_server", "lua_ls", "bashls" },
+                ensure_installed = { "jedi_language_server", "lua_ls", },
                 automatic_installation = true
             })
         end
     },
     {
         "neovim/nvim-lspconfig",
+        dependencies = {
+            {
+                "SmiteshP/nvim-navbuddy",
+                dependencies = {
+                    "neovim/nvim-lspconfig",
+                    "SmiteshP/nvim-navic",
+                    "MunifTanjim/nui.nvim"
+                },
+                opts = { lsp = { auto_attach = true } }
+            }
+        },
         config = function()
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local servers = {
                 "jedi_language_server",
                 "lua_ls",
-                "bashls",
+                -- "bashls",
             }
             local nvim_lsp = require("lspconfig")
             local on_attach = function(client, bufnr)
@@ -185,7 +197,8 @@ require("lazy").setup({
                             globals = { "vim" }
                         },
                         workspace = {
-                            -- library = vim.api.nvim_get_runtime_file("", true),
+                            --
+                            library = vim.api.nvim_get_runtime_file("", true),
                             checkThirdParty = false
                         },
                         telemetry = {
@@ -281,11 +294,11 @@ require("lazy").setup({
         build = function()
             pcall(require("nvim-treesitter.install").update { with_sync = true })
         end,
-        ft = { "python", "sh", "lua", "scala", "c", "cpp", "yaml", "json", "r" },
+        ft = { "python", "sh", "lua", "scala", "c", "cpp", "yaml", "json", "r", "vim" },
         config = function()
             local treesitter = require("nvim-treesitter.configs")
             treesitter.setup {
-                ensure_installed = { "python", "bash", "lua", "scala", "c", "cpp", "vim", "help", "yaml", "hcl",
+                ensure_installed = { "python", "bash", "lua", "scala", "c", "cpp", "vim", "yaml", "hcl",
                     "terraform", "r" },
                 highlight = {
                     enable = true,
@@ -307,10 +320,10 @@ require("lazy").setup({
                 },
                 rainbow = {
                     enable = true,
-                    extended_mode = true,
+                    query = 'rainbow-parens',
+                    strategy = require("ts-rainbow").strategy.global,
                 },
                 autopairs = {
-                    enable = true,
                     enable = true
                 },
                 textobjects = {
@@ -458,7 +471,8 @@ require("lazy").setup({
                                 hint = icons.diagnostics.Hint,
                             },
                         },
-                        { "filetype", icon_only = true, separator = "",                                               padding = { left = 1, right = 0 } },
+                        { "filetype", icon_only = true, separator = "",                                               padding = {
+                            left = 1, right = 0 } },
                         { "filename", path = 1,         symbols = { modified = "  ", readonly = "", unnamed = "" } },
                         -- stylua: ignore
                         {
@@ -544,7 +558,7 @@ require("lazy").setup({
                 },
                 mapping = {
                     ["<C-e>"] = cmp.mapping.abort(),
-                    ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs( -4), { "i", "c" }),
+                    ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
                     ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
                     ["<CR>"] = cmp.mapping.confirm({ select = false }),
                     ["<Tab>"] = cmp.mapping(function(fallback)
@@ -561,7 +575,7 @@ require("lazy").setup({
                     ["<S-Tab>"] = cmp.mapping(function()
                         if cmp.visible() then
                             cmp.select_prev_item()
-                        elseif vim.fn["vsnip#jumpable"]( -1) == 1 then
+                        elseif vim.fn["vsnip#jumpable"](-1) == 1 then
                             feedkey("<Plug>(vsnip-jump-prev)", "")
                         end
                     end, { "i", "s" }),
@@ -678,7 +692,8 @@ require("lazy").setup({
         end
     },
     {
-        "p00f/nvim-ts-rainbow"
+        "HiPhish/nvim-ts-rainbow2",
+        dependencies = "nvim-treesitter"
     },
     {
         "lukas-reineke/indent-blankline.nvim",
@@ -824,14 +839,17 @@ require("lazy").setup({
                     { 'c', dap.run_to_cursor, { silent = true } },
                     { 's', dap.continue,      { silent = true } },
                     { 'r', dap.repl.open,     { silent = true } },
-                    { 'x', ":lua require'dap'.disconnect({ terminateDebuggee = false })<CR>", { exit = true,
-                        silent = true } },
+                    { 'x', ":lua require'dap'.disconnect({ terminateDebuggee = false })<CR>", {
+                        exit = true,
+                        silent = true
+                    } },
                     { 'X', dap.close,                                                          { silent = true } },
                     { 'U', ":lua require('dapui').open()<cr>",                                 { silent = true } },
                     { 'C', ":lua require('dapui').close()<cr>:DapVirtualTextForceRefresh<CR>", { silent = true } },
                     { 'b', dap.toggle_breakpoint,                                              { silent = true } },
                     { 'K', ":lua require('dap.ui.widgets').hover()<CR>",                       { silent = true } },
-                    { 'q', nil,                                                                { exit = true, nowait = true } },
+                    { 'q', nil,                                                                { exit = true,
+                        nowait = true } },
                 }
             })
             Hydra.spawn = function(head)
@@ -896,12 +914,15 @@ require("lazy").setup({
                     { 'u',       gitsigns.undo_stage_hunk,                           { desc = 'undo last stage' } },
                     { 'S',       gitsigns.stage_buffer,                              { desc = 'stage buffer' } },
                     { 'p',       gitsigns.preview_hunk,                              { desc = 'preview hunk' } },
-                    { 'd',       gitsigns.toggle_deleted,                            { nowait = true, desc = 'toggle deleted' } },
+                    { 'd',       gitsigns.toggle_deleted,                            { nowait = true,
+                        desc = 'toggle deleted' } },
                     { 'b',       gitsigns.blame_line,                                { desc = 'blame' } },
                     { 'B',       function() gitsigns.blame_line { full = true } end, { desc = 'blame show full' } },
-                    { '/',       gitsigns.show,                                      { exit = true, desc = 'show base file' } }, -- show the base of the file
+                    { '/',       gitsigns.show,                                      { exit = true,
+                        desc = 'show base file' } },                                                                             -- show the base of the file
                     { '<Enter>', '<Cmd>LazyGit<CR>',                                 { exit = true, desc = 'Neogit' } },
-                    { 'q',       nil,                                                { exit = true, nowait = true, desc = 'exit' } },
+                    { 'q',       nil,                                                { exit = true, nowait = true,
+                        desc = 'exit' } },
                 }
             })
 
@@ -1053,6 +1074,7 @@ vim.opt.completeopt = { "menuone", "noselect", "noinsert" }
 vim.opt.showmode = false
 vim.g.nvim_system_wide = 1
 vim.g.indent_blankline_buftype_exclude = { "terminal", "json" }
+vim.g.vimtex_view_method = "skim"
 
 -- =====================================================================================
 -- KEYBINDINGS
@@ -1130,7 +1152,7 @@ vim.keymap.set('x', '<leader>c', require('osc52').copy_visual)
 
 vim.keymap.set("n", "<leader>du", ":DBUIToggle<CR>")
 
-vim.keymap.set("n", "<leader>p", "<Plug>PlenaryTestFile", { desc = "Run test file you are in"})
+vim.keymap.set("n", "<leader>p", "<Plug>PlenaryTestFile", { desc = "Run test file you are in" })
 -- =====================================================================================
 -- AUTOCOMMANDS
 -- =====================================================================================
@@ -1186,26 +1208,24 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 }
 )
 
-vim.api.nvim_create_autocmd(    { "BufEnter" },
+vim.api.nvim_create_autocmd({ "BufEnter" },
     {
-      pattern = "*",
-      desc = "Disable syntax highlighting in files larger than 1MB",
-      callback = function(args)
-        local highlighter = require "vim.treesitter.highlighter"
-        local ts_was_active = highlighter.active[args.buf]
-        local file_size = vim.fn.getfsize(args.file)
-        if (file_size > 1024 * 1024) then
-          vim.cmd("TSBufDisable highlight")
-          -- vim.cmd("syntax off")
-          -- vim.cmd("syntax clear")
-          vim.cmd("IlluminatePauseBuf")
-          vim.cmd("IndentBlanklineDisable")
-          vim.cmd("NoMatchParen")
-          if (ts_was_active) then
-            vim.notify("File larger than 1MB, turned off syntax highlighting")
-          end
+        pattern = "*",
+        desc = "Disable syntax highlighting in files larger than 1MB",
+        callback = function(args)
+            local highlighter = require "vim.treesitter.highlighter"
+            local ts_was_active = highlighter.active[args.buf]
+            local file_size = vim.fn.getfsize(args.file)
+            if (file_size > 1024 * 1024) then
+                vim.cmd("TSBufDisable highlight")
+                -- vim.cmd("syntax off")
+                -- vim.cmd("syntax clear")
+                vim.cmd("IlluminatePauseBuf")
+                vim.cmd("IndentBlanklineDisable")
+                vim.cmd("NoMatchParen")
+                if (ts_was_active) then
+                    vim.notify("File larger than 1MB, turned off syntax highlighting")
+                end
+            end
         end
-
-      end
     })
-
