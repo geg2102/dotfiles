@@ -430,6 +430,7 @@ require("lazy").setup({
     },
     {
         "hoob3rt/lualine.nvim",
+        dependencies = "nvim-tree/nvim-web-devicons",
         config = function()
             local icons = {
                 diagnostics = {
