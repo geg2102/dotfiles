@@ -53,8 +53,8 @@ scrolling:
 font:
   normal:
     # Font family
-    #family: "JetBrains Mono"
-    family: "DejaVuSansMono Nerd Font Mono"
+    family: "JetBrains Mono"
+    # family: "DejaVuSansMono Nerd Font Mono"
     #family: "MesloLGS NF"
     style: Regular
 

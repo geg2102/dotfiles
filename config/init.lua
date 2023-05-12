@@ -148,7 +148,7 @@ require("lazy").setup({
         dependencies = "williamboman/mason.nvim",
         config = function()
             require("mason-lspconfig").setup({
-                ensure_installed = { "jedi_language_server", "lua_ls", },
+                ensure_installed = { "jedi_language_server", "lua_ls", "texlab" },
                 automatic_installation = true
             })
         end
@@ -172,6 +172,7 @@ require("lazy").setup({
                 "jedi_language_server",
                 "lua_ls",
                 -- "bashls",
+                "texlab"
             }
             local nvim_lsp = require("lspconfig")
             local on_attach = function(client, bufnr)
@@ -529,7 +530,7 @@ require("lazy").setup({
             "tamago324/cmp-zsh",
             "onsails/lspkind.nvim",
         },
-        ft = { "python", "lua", "sh", "r", "cpp" },
+        ft = { "python", "lua", "sh", "r", "cpp", "tex" },
         config = function()
             local has_words_before = function()
                 local line, col = unpack(vim.api.nvim_win_get_cursor(0))
