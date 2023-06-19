@@ -17,7 +17,4 @@
   shell: "/tmp/miniconda.sh -b -p {{ miniconda_home }} creates={{ miniconda_home }} executable=/bin/bash"
   register: miniconda_installed
   when: miniconda_downloaded is success or bin_conda.exists
-  notify: 
-    - remove miniconda script
-    - update conda to latest 
   tags: miniconda
