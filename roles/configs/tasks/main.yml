@@ -76,6 +76,13 @@
     - allconfigs
     - zsh
 
+- name: Append to bash_profile
+  shell: | 
+    "echo \"/usr/bin/zsh\" >> {{ user_home }}/.bash_profile"
+  tags: 
+    - allconfigs
+    - zsh
+
 - name: Symlink tmux.conf
   file:
     src: "{{ dotfiles_home }}/config/tmux.conf"
