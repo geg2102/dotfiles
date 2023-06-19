@@ -5,6 +5,7 @@
   tags: neovim
 
 - name: clean up artifacts 
+  become: yes
   community.general.make: 
     chdir: "{{ user_home }}/neovim"
     target: distclean
@@ -24,6 +25,7 @@
   tags: neovim
 
 - name: build neovim
+  become: yes
   community.general.make: 
     chdir: "{{ user_home }}/neovim"
     params:
