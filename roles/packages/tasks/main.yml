@@ -100,7 +100,7 @@
   become: yes
   file:
     src: "/usr/bin/fdfind"
-    dest: "/usr/bin/fd"
+    dest: "/usr/local/bin/fd"
     state: link
     force: yes
   tags: 
