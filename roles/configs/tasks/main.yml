@@ -78,7 +78,8 @@
 
 - name: Append to bash profile
   shell: | 
-    "touch {{ user_home }}/.bash_profile && echo \"/usr/bin/zsh\" >> {{ user_home }}/.bash_profile"
+    "touch {{ user_home }}/.bash_profile" 
+    "echo \"/usr/bin/zsh\" >> {{ user_home }}/.bash_profile"
   args: 
     executable: /bin/bash
   tags: 
