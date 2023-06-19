@@ -74,7 +74,7 @@
     - allpackages
 
 - name: download fzf 
-  become: yes 
+  # become: yes 
   git: 
     repo: "https://github.com/junegunn/fzf.git"
     dest: "{{ user_home }}/.fzf"
@@ -84,7 +84,7 @@
     - allpackages
 
 - name: install fzf 
-  become: yes
+  # become: yes
   shell: "{{ user_home }}/.fzf/install --all"
   tags: 
     - fzf 
