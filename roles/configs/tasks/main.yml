@@ -76,9 +76,9 @@
     - allconfigs
     - zsh
 
-- name: Append to bash_profile
+- name: Append to bashrc
   shell: | 
-    "echo \"/usr/bin/zsh\" >> {{ user_home }}/.bash_profile"
+    "echo \"/usr/bin/zsh\" >> {{ user_home }}/.bashrc"
   tags: 
     - allconfigs
     - zsh
