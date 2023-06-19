@@ -96,13 +96,24 @@
     - zoxide
     - allpackages
 
+- name: link fdfind to fd
+  become: yes
+  file:
+    src: "/usr/bin/fdfind"
+    dest: "/usr/bin/fd"
+    state: link
+    force: yes
+  tags: 
+    - allpackages
+    - fd
+
 - name: download fd-find
   get_url: 
     url: https://github.com/sharkdp/fd/releases/download/v8.3.1/fd-v8.3.1-x86_64-unknown-linux-musl.tar.gz
     dest: "{{ user_home }}/fd-v8.3.1-x86_64-unknown-linux-musl.tar.gz"
   tags: 
     # - allpackages
-    - fd
+    - fd-source
 
 - name: install fd-find
   shell: |
@@ -111,4 +122,6 @@
     rm -rf {{ user_home }}/fd-v8*
   tags: 
     # - allpackages
-    - fd
+    - fd-source
+
+
