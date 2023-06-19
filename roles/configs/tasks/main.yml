@@ -77,11 +77,10 @@
     - zsh
 
 - name: Append to bash profile
-  shell: | 
-    "touch {{ user_home }}/.bash_profile" 
-    "echo \"/usr/bin/zsh\" >> {{ user_home }}/.bash_profile"
-  args: 
-    executable: /bin/bash
+  lineinfile:
+    path: "{{ user_home}}/.bash_profile"
+    line: "/usr/bin/zsh"
+    create: yes
   tags: 
     - allconfigs
     - zsh
