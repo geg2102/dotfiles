@@ -19,7 +19,7 @@
     version: stable
     clone: yes
     update: yes
-    fore: yes
+    force: yes
   register: neovim_cloned
   when: not bin_nvim.stat.exists
   tags: neovim
