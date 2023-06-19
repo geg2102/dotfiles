@@ -33,7 +33,6 @@
     target: install
     make: "/usr/bin/make"
   register: neovim_build
-  when: neovim_cloned.stat.isdir is defined and neovim_cloned.stat.isdir
   tags: neovim
 
 - name: install neovim
