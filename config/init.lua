@@ -139,6 +139,15 @@ require("lazy").setup({
     },
     {
         "williamboman/mason.nvim",
+        build = ":MasonUpdate",
+        opts = {
+            ensure_installed = {
+                "black",
+                "debugpy",
+                "mypy",
+                "ruff",
+            }
+        },
         config = function()
             require("mason").setup()
         end
@@ -148,7 +157,7 @@ require("lazy").setup({
         dependencies = "williamboman/mason.nvim",
         config = function()
             require("mason-lspconfig").setup({
-                ensure_installed = { "jedi_language_server", "lua_ls", "texlab" },
+                ensure_installed = { "pylsp", "lua_ls", "texlab" },
                 automatic_installation = true
             })
         end
@@ -169,7 +178,7 @@ require("lazy").setup({
         config = function()
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local servers = {
-                "jedi_language_server",
+                -- "pylsp",
                 "lua_ls",
                 -- "bashls",
                 "texlab"
@@ -186,6 +195,19 @@ require("lazy").setup({
                     on_attach = on_attach
                 }
             end
+
+            nvim_lsp.pylsp.setup {
+                on_attach = on_attach,
+                settings = {
+                    -- liniting and type checking in null-ls
+                    pylsp = {
+                        plugins = {
+                            pyflakes = { enabled = false },
+                            pylint = { enabled = false },
+                        },
+                    },
+                },
+            }
             nvim_lsp.lua_ls.setup {
                 cmd = { "lua-language-server" },
                 single_file_support = true,
@@ -260,9 +282,16 @@ require("lazy").setup({
     },
     {
         "nvim-telescope/telescope.nvim",
+        -- commit = "4226740",
         dependencies = { "nvim-lua/plenary.nvim", "nvim-lua/popup.nvim" },
         config = function()
-            require("telescope").setup({})
+            require("telescope").setup({
+                extensions = {
+                    file_browser = {
+                        hijack_netrw = true,
+                    }
+                }
+            })
         end,
         keys = {
             { "<leader>ff", "<cmd>Telescope find_files<CR>",     desc = "Fuzzy find files" },
@@ -279,6 +308,7 @@ require("lazy").setup({
     },
     {
         "nvim-telescope/telescope-file-browser.nvim",
+        dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
         config = function()
             require("telescope").load_extension("file_browser")
         end
@@ -473,9 +503,14 @@ require("lazy").setup({
                                 hint = icons.diagnostics.Hint,
                             },
                         },
-                        { "filetype", icon_only = true, separator = "",                                               padding = {
-                            left = 1, right = 0 } },
-                        { "filename", path = 1,         symbols = { modified = "  ", readonly = "", unnamed = "" } },
+                        {
+                            "filetype",
+                            icon_only = true,
+                            separator = "",
+                            padding = {
+                                left = 1, right = 0 }
+                        },
+                        { "filename", path = 1, symbols = { modified = "  ", readonly = "", unnamed = "" } },
                         -- stylua: ignore
                         {
                             function() return require("nvim-navic").get_location() end,
@@ -673,6 +708,9 @@ require("lazy").setup({
                     require("null-ls").builtins.formatting.black.with({
                         extra_args = { "--preview", "--line-length=88" }
                     }),
+                    require("null-ls").builtins.diagnostics.mypy.with({}),
+                    require("null-ls").builtins.diagnostics.ruff.with({}),
+                    require("null-ls").builtins.formatting.isort.with({}),
                     require("null-ls").builtins.formatting.prettier.with({
                         filetypes = { "html", "json", "yaml", "graphql", "md", "txt", "css" }
                     }),
@@ -850,8 +888,10 @@ require("lazy").setup({
                     { 'C', ":lua require('dapui').close()<cr>:DapVirtualTextForceRefresh<CR>", { silent = true } },
                     { 'b', dap.toggle_breakpoint,                                              { silent = true } },
                     { 'K', ":lua require('dap.ui.widgets').hover()<CR>",                       { silent = true } },
-                    { 'q', nil,                                                                { exit = true,
-                        nowait = true } },
+                    { 'q', nil, {
+                        exit = true,
+                        nowait = true
+                    } },
                 }
             })
             Hydra.spawn = function(head)
@@ -912,19 +952,26 @@ require("lazy").setup({
                             return '<Ignore>'
                         end,
                         { expr = true, desc = 'prev hunk' } },
-                    { 's',       ':Gitsigns stage_hunk<CR>',                         { silent = true, desc = 'stage hunk' } },
-                    { 'u',       gitsigns.undo_stage_hunk,                           { desc = 'undo last stage' } },
-                    { 'S',       gitsigns.stage_buffer,                              { desc = 'stage buffer' } },
-                    { 'p',       gitsigns.preview_hunk,                              { desc = 'preview hunk' } },
-                    { 'd',       gitsigns.toggle_deleted,                            { nowait = true,
-                        desc = 'toggle deleted' } },
-                    { 'b',       gitsigns.blame_line,                                { desc = 'blame' } },
-                    { 'B',       function() gitsigns.blame_line { full = true } end, { desc = 'blame show full' } },
-                    { '/',       gitsigns.show,                                      { exit = true,
-                        desc = 'show base file' } },                                                                             -- show the base of the file
-                    { '<Enter>', '<Cmd>LazyGit<CR>',                                 { exit = true, desc = 'Neogit' } },
-                    { 'q',       nil,                                                { exit = true, nowait = true,
-                        desc = 'exit' } },
+                    { 's', ':Gitsigns stage_hunk<CR>', { silent = true, desc = 'stage hunk' } },
+                    { 'u', gitsigns.undo_stage_hunk,   { desc = 'undo last stage' } },
+                    { 'S', gitsigns.stage_buffer,      { desc = 'stage buffer' } },
+                    { 'p', gitsigns.preview_hunk,      { desc = 'preview hunk' } },
+                    { 'd', gitsigns.toggle_deleted, {
+                        nowait = true,
+                        desc = 'toggle deleted'
+                    } },
+                    { 'b', gitsigns.blame_line,                                { desc = 'blame' } },
+                    { 'B', function() gitsigns.blame_line { full = true } end, { desc = 'blame show full' } },
+                    { '/', gitsigns.show, {
+                        exit = true,
+                        desc = 'show base file'
+                    } }, -- show the base of the file
+                    { '<Enter>', '<Cmd>LazyGit<CR>', { exit = true, desc = 'Neogit' } },
+                    { 'q', nil, {
+                        exit = true,
+                        nowait = true,
+                        desc = 'exit'
+                    } },
                 }
             })
 
