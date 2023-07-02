@@ -139,15 +139,7 @@ require("lazy").setup({
     },
     {
         "williamboman/mason.nvim",
-        build = ":MasonUpdate",
-        opts = {
-            ensure_installed = {
-                "black",
-                "debugpy",
-                "mypy",
-                "ruff",
-            }
-        },
+        build = {":MasonUpdate", ":MasonInstall black debugpy mypy ruff isort"},
         config = function()
             require("mason").setup()
         end
