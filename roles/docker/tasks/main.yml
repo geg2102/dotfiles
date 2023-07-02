@@ -1,0 +1,46 @@
+- name: Install required system packages
+  become: yes
+  apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+      - python3-pip
+      - virtualenv
+      - python3-setuptools
+    state: latest
+    update_cache: true
+  tags: docker
+
+- name: Add Docker GPG apt Key
+  become: yes
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  tags: docker
+
+- name: Add Docker Repository
+  become: yes
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release | lower }} stable
+    state: present
+  tags: docker
+
+- name: Update apt and install docker-ce
+  become: yes
+  apt:
+    name: docker-ce
+    state: latest
+    update_cache: true
+  tags: docker
+
+- name: Install docker plugins
+  become: yes
+  apt:
+    pkg:
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+  tags: docker
