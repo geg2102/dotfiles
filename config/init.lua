@@ -149,7 +149,7 @@ require("lazy").setup({
         dependencies = "williamboman/mason.nvim",
         config = function()
             require("mason-lspconfig").setup({
-                ensure_installed = { "pylsp", "lua_ls", "texlab" },
+                ensure_installed = { "jedi_language_server", "pylsp", "lua_ls", "texlab" },
                 automatic_installation = true
             })
         end
@@ -171,6 +171,7 @@ require("lazy").setup({
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local servers = {
                 -- "pylsp",
+                -- "jedi_language_server",
                 "lua_ls",
                 -- "bashls",
                 "texlab"
@@ -195,7 +196,12 @@ require("lazy").setup({
                     pylsp = {
                         plugins = {
                             pyflakes = { enabled = false },
+                            yapf = { enabled = false },
+                            flake8 = {enabled = false},
+                            -- autopep8 = {enabled = false},
                             pylint = { enabled = false },
+                            -- mccabe = { enabled = false },
+                            pycodestyle = { enabled = false}
                         },
                     },
                 },
@@ -709,7 +715,7 @@ require("lazy").setup({
                     require("null-ls").builtins.formatting.black.with({
                         extra_args = { "--preview", "--line-length=88" }
                     }),
-                    require("null-ls").builtins.diagnostics.mypy.with({}),
+                    -- require("null-ls").builtins.diagnostics.mypy.with({}),
                     require("null-ls").builtins.diagnostics.ruff.with({}),
                     require("null-ls").builtins.formatting.isort.with({}),
                     require("null-ls").builtins.formatting.prettier.with({
