@@ -139,9 +139,34 @@ require("lazy").setup({
     },
     {
         "williamboman/mason.nvim",
-        build = {":MasonUpdate", ":MasonInstall black debugpy mypy ruff isort"},
+        build = { ":MasonUpdate", ":MasonInstall debugpy" },
         config = function()
             require("mason").setup()
+            local mason_post_install = function()
+                local venv = vim.fn.stdpath("data") .. "/mason/packages/python-lsp-server/venv"
+                local job = require("plenary.job")
+
+                job:new({
+                    command = venv .. "/bin/pip",
+                    args = {
+                        "install",
+                        "-U",
+                        "--disable-pip-version-check",
+                        "pylsp-mypy",
+                        "python-lsp-ruff",
+                        "python-lsp-black"
+                    },
+                    cwd = venv,
+                    env = { VIRTUAL_ENV = venv },
+                    -- on_exit = function()
+                    --     vim.notify("Finished installing pylsp modules.")
+                    -- end,
+                    on_start = function()
+                        vim.notify("Installing pylsp modules...")
+                    end,
+                }):start()
+            end
+            mason_post_install()
         end
     },
     {
@@ -149,7 +174,7 @@ require("lazy").setup({
         dependencies = "williamboman/mason.nvim",
         config = function()
             require("mason-lspconfig").setup({
-                ensure_installed = { "jedi_language_server", "pylsp", "lua_ls", "texlab" },
+                ensure_installed = { "pylsp", "lua_ls", "texlab" },
                 automatic_installation = true
             })
         end
@@ -195,13 +220,16 @@ require("lazy").setup({
                     -- liniting and type checking in null-ls
                     pylsp = {
                         plugins = {
+                            ruff = { enabled = true },
+                            black = { enabled = true, override = {"--line-length=88"}},
+                            pylsp_mypy = { enabled = true, overrides = { "--ignore-missing-imports", true} },
                             pyflakes = { enabled = false },
                             yapf = { enabled = false },
-                            flake8 = {enabled = false},
-                            -- autopep8 = {enabled = false},
+                            flake8 = { enabled = false },
+                            autopep8 = {enabled = false},
                             pylint = { enabled = false },
-                            -- mccabe = { enabled = false },
-                            pycodestyle = { enabled = false}
+                            mccabe = { enabled = false },
+                            pycodestyle = { enabled = false }
                         },
                     },
                 },
@@ -712,12 +740,12 @@ require("lazy").setup({
             require("null-ls").setup({
                 debug = true,
                 sources = {
-                    require("null-ls").builtins.formatting.black.with({
-                        extra_args = { "--preview", "--line-length=88" }
-                    }),
-                    -- require("null-ls").builtins.diagnostics.mypy.with({}),
-                    require("null-ls").builtins.diagnostics.ruff.with({}),
-                    require("null-ls").builtins.formatting.isort.with({}),
+                    -- require("null-ls").builtins.formatting.black.with({
+                    --     extra_args = { "--preview", "--line-length=88" }
+                    -- }),
+                    -- require("null-ls").builtins.diagnostics.mypy.with({ extra_args = "--ignore-missing-imports" }),
+                    -- require("null-ls").builtins.diagnostics.ruff.with({}),
+                    -- require("null-ls").builtins.formatting.isort.with({}),
                     require("null-ls").builtins.formatting.prettier.with({
                         filetypes = { "html", "json", "yaml", "graphql", "md", "txt", "css" }
                     }),
