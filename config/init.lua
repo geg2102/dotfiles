@@ -221,12 +221,15 @@ require("lazy").setup({
                     pylsp = {
                         plugins = {
                             ruff = { enabled = true },
-                            black = { enabled = true, override = {"--line-length=88"}},
-                            pylsp_mypy = { enabled = true, overrides = { "--ignore-missing-imports", true} },
+                            black = { enabled = true, override = { "--line-length=88" } },
+                            pylsp_mypy = {
+                                enabled = true,
+                                overrides = { "--ignore-missing-imports", true }
+                            },
                             pyflakes = { enabled = false },
                             yapf = { enabled = false },
                             flake8 = { enabled = false },
-                            autopep8 = {enabled = false},
+                            autopep8 = { enabled = false },
                             pylint = { enabled = false },
                             mccabe = { enabled = false },
                             pycodestyle = { enabled = false }
@@ -1121,6 +1124,12 @@ require("lazy").setup({
         config = function()
             require("barbecue").setup()
         end,
+    },
+    {
+        "andrewferrier/wrapping.nvim",
+        config = function()
+            require("wrapping").setup()
+        end
     },
 })
 
