@@ -28,7 +28,7 @@ require("lazy").setup({
         "milisims/nvim-luaref",
     },
     {
-        dir = "/home/geoffrey/nvim-jupyter-client",
+        dir = "/Users/geoffrey/nvim-jupyter-client",
     },
     {
         "folke/noice.nvim",
@@ -354,6 +354,9 @@ require("lazy").setup({
         build = function()
             pcall(require("nvim-treesitter.install").update { with_sync = true })
         end,
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter-textobjects',
+        },
         ft = { "python", "sh", "lua", "scala", "c", "cpp", "yaml", "json", "r", "vim" },
         config = function()
             local treesitter = require("nvim-treesitter.configs")
@@ -1131,6 +1134,17 @@ require("lazy").setup({
             require("wrapping").setup()
         end
     },
+    -- Remove the `use` here if you're using folke/lazy.nvim.
+    {
+        'Exafunction/codeium.vim',
+        config = function()
+            -- Change '<C-g>' here to any keycode you like.
+            vim.keymap.set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end, { expr = true })
+            vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
+            vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
+            vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
+        end
+    }
 })
 
 -- =====================================================================================
@@ -1199,7 +1213,7 @@ vim.keymap.set("n", "<leader>lb", "<cmd>Telescope buffers<CR>", { desc = "List b
 vim.keymap.set("n", '""', "<cmd>Telescope registers<CR>", { desc = "Search registers" })
 vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", { desc = "Lsp references" })
 
-vim.keymap.set("n", "'", "<cmd>NvimTreeToggle<CR>", { desc = "File tree" })
+vim.keymap.set("n", "<leader>nt", "<cmd>NvimTreeToggle<CR>", { desc = "File tree" })
 
 vim.keymap.set("n", "<leader>w", "<cmd>HopWord<CR>")
 
