@@ -28,6 +28,15 @@ require("lazy").setup({
         "milisims/nvim-luaref",
     },
     {
+        'stevearc/oil.nvim',
+        opts = {},
+        -- Optional dependencies
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        config = function()
+            require("oil").setup()
+        end
+    },
+    {
         dir = "/Users/geoffrey/nvim-jupyter-client",
     },
     {
@@ -502,11 +511,15 @@ require("lazy").setup({
         event = "VeryLazy",
         opts = {},
         keys = {
-            { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-            { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+            { "s",     mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+            { "S",     mode = { "n", "o", "x" }, function() require("flash").treesitter() end,        desc =
+            "Flash Treesitter" },
             -- { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-            { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-            { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+            { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end,
+                                                                                                          desc =
+                "Treesitter Search" },
+            { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc =
+            "Toggle Flash Search" },
         },
     },
     {
@@ -1247,8 +1260,7 @@ vim.keymap.set("n", "<leader>xx", ":TroubleToggle<CR>", { desc = "Trouble" })
 vim.keymap.set("n", "<C-p>", "<cmd>BufferPick<CR>")
 vim.keymap.set("n", "<leader>,", "<cmd>BufferPrevious<CR>")
 vim.keymap.set("n", "<leader>.", "<cmd>BufferNext<CR>")
-vim.keymap.set("n", "<leader>q", "<cmd>BufferClose<CR>")
-vim.keymap.set("n", "<leader>q!", "<cmd>BufferClose!<CR>")
+vim.keymap.set("n", "<leader>q", "<cmd>BufferClose!<CR>")
 
 vim.keymap.set("n", "<A-j>", ":MoveLine(1)<CR>")
 vim.keymap.set("n", "<A-k>", ":MoveLine(-1)<CR>")
