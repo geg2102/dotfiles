@@ -338,6 +338,7 @@ require("lazy").setup({
             { "<leader>fh", "<cmd>Telescope oldfiles<CR>",       desc = "Old files" },
             { "<leader>fv", "<cmd>Telescope help_tags<CR>",      desc = "Help tags" },
             { "<leader>fk", "<cmd>Telescope keymaps<CR>",        desc = "Keymaps" },
+            { "<leader>fc", "<cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Current buffer fuzzy find" },
             { "<leader>ld", "<cmd>Telescope diagnostics<CR>",    desc = "List diagnostics" },
             { "<leader>lb", "<cmd>Telescope buffers<CR>",        desc = "List buffers" },
             { '""',         "<cmd>Telescope registers<CR>",      desc = "Search registers" },
@@ -910,7 +911,8 @@ require("lazy").setup({
         dependencies = "anuvyklack/keymap-layer.nvim",
         keys = {
             { "<leader>dh", "", { desc = "Dap Hydra" } },
-            { "<leader>g",  "", { desc = "Git Hydra" } }
+            { "<leader>g",  "", { desc = "Git Hydra" } },
+            { "<leader>ht", "", { desc = "Telescope Hydra" } }
         },
         config = function()
             local Hydra = require('hydra')
@@ -1068,7 +1070,7 @@ require("lazy").setup({
                     },
                 },
                 mode = 'n',
-                body = '<Leader>f',
+                body = '<leader>ht',
                 heads = {
                     { 'f',       cmd 'Telescope find_files' },
                     { 'g',       cmd 'Telescope live_grep' },
