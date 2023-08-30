@@ -284,6 +284,13 @@ require("lazy").setup({
                     }
                 }
             }
+            nvim_lsp.rust_analyzer.setup {
+                capabilities = capabilities,
+                on_attach = on_attach,
+                cmd = {
+                    "rustup", "run", "stable", "rust-analyzer"
+                }
+            }
         end
 
     },
@@ -1178,6 +1185,7 @@ require("lazy").setup({
 -- VIM OPTIONS
 -- =====================================================================================
 vim.cmd([[colorscheme kanagawa]])
+vim.diagnostic.config({severity_sort = true})
 
 vim.opt.relativenumber = true
 vim.opt.ignorecase = true
