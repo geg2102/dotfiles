@@ -37,7 +37,7 @@ require("lazy").setup({
         end
     },
     {
-        dir = "/Users/geoffrey/nvim-jupyter-client",
+        dir = "/home/geoff/jupyter-devel",
     },
     {
         "folke/noice.nvim",
@@ -183,7 +183,7 @@ require("lazy").setup({
         dependencies = "williamboman/mason.nvim",
         config = function()
             require("mason-lspconfig").setup({
-                ensure_installed = { "pylsp", "lua_ls", "texlab" },
+                ensure_installed = { "bashls", "pylsp", "lua_ls", "texlab" },
                 automatic_installation = true
             })
         end
@@ -222,7 +222,7 @@ require("lazy").setup({
                     on_attach = on_attach
                 }
             end
-
+            nvim_lsp.bashls.setup {}
             nvim_lsp.pylsp.setup {
                 on_attach = on_attach,
                 settings = {
@@ -339,17 +339,17 @@ require("lazy").setup({
             })
         end,
         keys = {
-            { "<leader>ff", "<cmd>Telescope find_files<CR>",     desc = "Fuzzy find files" },
-            { "<leader>fg", "<cmd>Telescope live_grep<CR>",      desc = "Live grep" },
-            { "<leader>fb", "<cmd>Telescope file_browser<CR>",   desc = "File browser" },
-            { "<leader>fh", "<cmd>Telescope oldfiles<CR>",       desc = "Old files" },
-            { "<leader>fv", "<cmd>Telescope help_tags<CR>",      desc = "Help tags" },
-            { "<leader>fk", "<cmd>Telescope keymaps<CR>",        desc = "Keymaps" },
+            { "<leader>ff", "<cmd>Telescope find_files<CR>",                desc = "Fuzzy find files" },
+            { "<leader>fg", "<cmd>Telescope live_grep<CR>",                 desc = "Live grep" },
+            { "<leader>fb", "<cmd>Telescope file_browser<CR>",              desc = "File browser" },
+            { "<leader>fh", "<cmd>Telescope oldfiles<CR>",                  desc = "Old files" },
+            { "<leader>fv", "<cmd>Telescope help_tags<CR>",                 desc = "Help tags" },
+            { "<leader>fk", "<cmd>Telescope keymaps<CR>",                   desc = "Keymaps" },
             { "<leader>fc", "<cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Current buffer fuzzy find" },
-            { "<leader>ld", "<cmd>Telescope diagnostics<CR>",    desc = "List diagnostics" },
-            { "<leader>lb", "<cmd>Telescope buffers<CR>",        desc = "List buffers" },
-            { '""',         "<cmd>Telescope registers<CR>",      desc = "Search registers" },
-            { "gr",         "<cmd>Telescope lsp_references<CR>", desc = "Lsp references" },
+            { "<leader>ld", "<cmd>Telescope diagnostics<CR>",               desc = "List diagnostics" },
+            { "<leader>lb", "<cmd>Telescope buffers<CR>",                   desc = "List buffers" },
+            { '""',         "<cmd>Telescope registers<CR>",                 desc = "Search registers" },
+            { "gr",         "<cmd>Telescope lsp_references<CR>",            desc = "Lsp references" },
         }
     },
     {
@@ -477,7 +477,7 @@ require("lazy").setup({
         ft = { "python", "lua", "scala" },
         config = function()
             require("nvim-python-repl").setup({
-                vsplit = false,
+                vsplit = true,
             })
         end,
         vim.keymap.set("n", "<leader>n", function() require('nvim-python-repl').send_statement_definition() end,
@@ -519,15 +519,29 @@ require("lazy").setup({
         event = "VeryLazy",
         opts = {},
         keys = {
-            { "s",     mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
-            { "S",     mode = { "n", "o", "x" }, function() require("flash").treesitter() end,        desc =
-            "Flash Treesitter" },
+            { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+            {
+                "S",
+                mode = { "n", "o", "x" },
+                function() require("flash").treesitter() end,
+                desc =
+                "Flash Treesitter"
+            },
             -- { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-            { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end,
-                                                                                                          desc =
-                "Treesitter Search" },
-            { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc =
-            "Toggle Flash Search" },
+            {
+                "R",
+                mode = { "o", "x" },
+                function() require("flash").treesitter_search() end,
+                desc =
+                "Treesitter Search"
+            },
+            {
+                "<c-s>",
+                mode = { "c" },
+                function() require("flash").toggle() end,
+                desc =
+                "Toggle Flash Search"
+            },
         },
     },
     {
@@ -699,6 +713,7 @@ require("lazy").setup({
                 },
                 sources = cmp.config.sources({
                     { name = "nvim_lsp" },
+		    { name = "copilot"},
                     { name = "vsnip" },
                     -- { name = "nvim_lsp_signature_help" },
                     { name = "cmp-nvim-lua" },
@@ -1169,23 +1184,42 @@ require("lazy").setup({
         end
     },
     -- Remove the `use` here if you're using folke/lazy.nvim.
+    -- {
+    --     'Exafunction/codeium.vim',
+    --     config = function()
+    --         -- Change '<C-g>' here to any keycode you like.
+    --         vim.keymap.set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end, { expr = true })
+    --         vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
+    --         vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
+    --         vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
+    --     end
+    -- },
     {
-        'Exafunction/codeium.vim',
+        'chentoast/marks.nvim',
         config = function()
-            -- Change '<C-g>' here to any keycode you like.
-            vim.keymap.set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end, { expr = true })
-            vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
-            vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
-            vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
+            require('marks').setup {}
+        end
+    },
+    {
+        "zbirenbaum/copilot.lua",
+        config = function()
+            require("copilot").setup()
+        end
+    },
+    {
+        "zbirenbaum/copilot-cmp",
+        config = function()
+            require("copilot_cmp").setup()
         end
     }
+
 })
 
 -- =====================================================================================
 -- VIM OPTIONS
 -- =====================================================================================
 vim.cmd([[colorscheme kanagawa]])
-vim.diagnostic.config({severity_sort = true})
+vim.diagnostic.config({ severity_sort = true })
 
 vim.opt.relativenumber = true
 vim.opt.ignorecase = true
@@ -1217,6 +1251,8 @@ vim.opt.showmode = false
 vim.g.nvim_system_wide = 1
 vim.g.indent_blankline_buftype_exclude = { "terminal", "json" }
 vim.g.vimtex_view_method = "skim"
+vim.g.db_ui_winwidth = 60
+vim.g.db_ui_use_nerd_fonts = 1
 
 -- =====================================================================================
 -- KEYBINDINGS
