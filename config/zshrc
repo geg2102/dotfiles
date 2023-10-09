@@ -108,18 +108,29 @@ cf() {
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/geoffrey/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/geoff/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/geoffrey/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/geoffrey/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/geoff/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/geoff/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/home/geoffrey/miniconda3/bin:$PATH"
+        export PATH="/home/geoff/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
-
+export PATH="$PATH:/opt/mssql-tools18/bin"
+#
+# export PYENV_ROOT="$HOME/.pyenv"
+# command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init -)"
+#
+#
+act() {
+    conda activate $1
+    poetry config virtualenvs.path $(which python)
+}
