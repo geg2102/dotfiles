@@ -132,5 +132,5 @@ export PATH="$PATH:/opt/mssql-tools18/bin"
 #
 act() {
     conda activate $1
-    poetry config virtualenvs.path $(which python)
+    poetry config virtualenvs.path $(which python | sed 's|/bin/python||')
 }
