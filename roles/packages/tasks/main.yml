@@ -91,7 +91,7 @@
     - allpackages
 
 - name: install zoxide
-  shell: "curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh"
+  shell: "curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"
   tags: 
     - zoxide
     - allpackages
@@ -117,7 +117,6 @@
   tags: 
     - allpackages
     - bat
-
 
 - name: download fd-find
   get_url: 

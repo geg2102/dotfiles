@@ -60,6 +60,7 @@ require("lazy").setup({
                     lsp_doc_border = true,        -- add a border to hover docs and signature help
                 },
                 messages = { enabled = false },
+                notify = { enabled = false },
                 vim.keymap.set({ "n", "i", "s" }, "<c-f>", function()
                     if not require("noice.lsp").scroll(4) then
                         return "<c-f>"
@@ -124,7 +125,7 @@ require("lazy").setup({
         version = "*",
         config = function()
             require("toggleterm").setup({
-                open_mapping = [[<leader>t]],
+                open_mapping = [[<leader>tt]],
                 direction = "float",
                 size = function(term)
                     if term.direction == "horizontal" then
@@ -136,7 +137,8 @@ require("lazy").setup({
                 float_opts = {
                     border = "double"
                 },
-                persist_size = false
+                persist_size = false,
+                shell = "zsh"
             })
         end
     },
@@ -175,7 +177,7 @@ require("lazy").setup({
                     end,
                 }):start()
             end
-            mason_post_install()
+            -- mason_post_install()
         end
     },
     {
@@ -183,7 +185,7 @@ require("lazy").setup({
         dependencies = "williamboman/mason.nvim",
         config = function()
             require("mason-lspconfig").setup({
-                ensure_installed = { "bashls", "pylsp", "lua_ls", "texlab" },
+                ensure_installed = { "bashls", "pylsp", "lua_ls", "texlab", "jedi_language_server", "ruff_lsp" },
                 automatic_installation = true
             })
         end
@@ -205,9 +207,10 @@ require("lazy").setup({
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local servers = {
                 -- "pylsp",
-                -- "jedi_language_server",
+                "jedi_language_server",
                 "lua_ls",
                 -- "bashls",
+                "ruff_lsp",
                 "texlab"
             }
             local nvim_lsp = require("lspconfig")
@@ -223,29 +226,29 @@ require("lazy").setup({
                 }
             end
             nvim_lsp.bashls.setup {}
-            nvim_lsp.pylsp.setup {
-                on_attach = on_attach,
-                settings = {
-                    -- liniting and type checking in null-ls
-                    pylsp = {
-                        plugins = {
-                            ruff = { enabled = true },
-                            black = { enabled = true, override = { "--line-length=88" } },
-                            pylsp_mypy = {
-                                enabled = true,
-                                overrides = { "--ignore-missing-imports", true }
-                            },
-                            pyflakes = { enabled = false },
-                            yapf = { enabled = false },
-                            flake8 = { enabled = false },
-                            autopep8 = { enabled = false },
-                            pylint = { enabled = false },
-                            mccabe = { enabled = false },
-                            pycodestyle = { enabled = false }
-                        },
-                    },
-                },
-            }
+            -- nvim_lsp.pylsp.setup {
+            --     on_attach = on_attach,
+            --     settings = {
+            --         -- liniting and type checking in null-ls
+            --         pylsp = {
+            --             plugins = {
+            --                 ruff = { enabled = true },
+            --                 black = { enabled = true, override = { "--line-length=88" } },
+            --                 pylsp_mypy = {
+            --                     enabled = true,
+            --                     overrides = { "--ignore-missing-imports", true }
+            --                 },
+            --                 pyflakes = { enabled = false },
+            --                 yapf = { enabled = false },
+            --                 flake8 = { enabled = false },
+            --                 autopep8 = { enabled = false },
+            --                 pylint = { enabled = false },
+            --                 mccabe = { enabled = false },
+            --                 pycodestyle = { enabled = false }
+            --             },
+            --         },
+            --     },
+            -- }
             nvim_lsp.lua_ls.setup {
                 cmd = { "lua-language-server" },
                 single_file_support = true,
@@ -713,7 +716,7 @@ require("lazy").setup({
                 },
                 sources = cmp.config.sources({
                     { name = "nvim_lsp" },
-		    { name = "copilot"},
+                    { name = "copilot" },
                     { name = "vsnip" },
                     -- { name = "nvim_lsp_signature_help" },
                     { name = "cmp-nvim-lua" },
@@ -789,17 +792,34 @@ require("lazy").setup({
         "lewis6991/impatient.nvim"
     },
     {
-        "jose-elias-alvarez/null-ls.nvim",
+        "nvimtools/none-ls.nvim",
         config = function()
+            local os = require("os")
+            function os.capture(cmd, raw)
+                local f = assert(io.popen(cmd, 'r'))
+                local s = assert(f:read('*a'))
+                f:close()
+                if raw then return s end
+                s = string.gsub(s, '^%s+', '')
+                s = string.gsub(s, '%s+$', '')
+                s = string.gsub(s, '[\n\r]+', ' ')
+                return s
+            end
+
             require("null-ls").setup({
                 debug = true,
                 sources = {
-                    -- require("null-ls").builtins.formatting.black.with({
-                    --     extra_args = { "--preview", "--line-length=88" }
-                    -- }),
-                    -- require("null-ls").builtins.diagnostics.mypy.with({ extra_args = "--ignore-missing-imports" }),
+                    require("null-ls").builtins.formatting.black.with({
+                        extra_args = { "--preview", "--line-length=88" }
+                    }),
+                    require("null-ls").builtins.diagnostics.mypy.with({
+                        extra_args = function()
+                            local virtual = os.capture("which python", false)
+                            return { "--python-executable", virtual, "--install-types", "--non-interactive", "--ignore-missing-imports" }
+                        end,
+                    }), --extra_args = "--ignore-missing-imports" }),
                     -- require("null-ls").builtins.diagnostics.ruff.with({}),
-                    -- require("null-ls").builtins.formatting.isort.with({}),
+                    require("null-ls").builtins.formatting.isort.with({}),
                     require("null-ls").builtins.formatting.prettier.with({
                         filetypes = { "html", "json", "yaml", "graphql", "md", "txt", "css" }
                     }),
@@ -826,10 +846,12 @@ require("lazy").setup({
     },
     {
         "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
         config = function()
-            require("indent_blankline").setup {
-                show_current_context = true,
-                show_current_context_start = true,
+            require("ibl").setup {
+                exclude = {
+                    buftypes = { "terminal", "json" }
+                }
             }
         end
     },
@@ -1249,7 +1271,7 @@ vim.opt.foldenable = true
 vim.opt.completeopt = { "menuone", "noselect", "noinsert" }
 vim.opt.showmode = false
 vim.g.nvim_system_wide = 1
-vim.g.indent_blankline_buftype_exclude = { "terminal", "json" }
+-- vim.g.indent_blankline_buftype_exclude = { "terminal", "json" }
 vim.g.vimtex_view_method = "skim"
 vim.g.db_ui_winwidth = 60
 vim.g.db_ui_use_nerd_fonts = 1
