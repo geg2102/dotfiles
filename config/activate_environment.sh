@@ -1,6 +1,9 @@
 #!/bin/bash
 # List python environments
-CONDA_ENVS=$(conda env list | grep -E '^[^#]' | awk '{print $1}' | tr '\n' ' ')
+CONDA_ENVS=()
+while IFS= read -r line; do
+    CONDA_ENVS+=("$line")
+done < <(conda env list | grep -E '^[^#]' | awk '{print $1}')
 
 
 # determine if the tmux server is running
@@ -25,20 +28,17 @@ fi
 
 act() {
     conda activate $1
-    echo "Activated"
     poetry config virtualenvs.path $(which python | sed 's|/bin/python||')
 }
 
 check_name_against_envs() {
     local NAME_TO_CHECK=$1
-    local IFS=' '
-    for env in $CONDA_ENVS; do
-        echo "Debug: NAME_TO_CHECK=$NAME_TO_CHECK, env=$env"
+    for env in "${CONDA_ENVS[@]}"; do
         if [ "$NAME_TO_CHECK" = "$env" ]; then
-            # echo "Match found: $NAME_TO_CHECK matches a Conda environment!"
             return 0
         fi
     done
+    IFS="$OLD_IFS"
     return 1
 }
 

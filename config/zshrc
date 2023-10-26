@@ -147,6 +147,4 @@ export PATH=$HOME/.tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
 export PATH=$HOME/.config/tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
 
 # Check if inside tmux
-# if [ "$TMUX" ]; then
-#     $HOME/dotfiles/config/activate_environment.sh
-# fi
+source $HOME/dotfiles/config/activate_environment.sh
