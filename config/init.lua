@@ -20,12 +20,14 @@ vim.g.mapleader = ","
 require("lazy").setup({
     {
         "folke/neodev.nvim",
+        ft = "lua",
         config = function()
             require("neodev").setup({})
         end
     },
     {
         "milisims/nvim-luaref",
+        ft = "lua"
     },
     {
         'stevearc/oil.nvim',
@@ -123,6 +125,9 @@ require("lazy").setup({
     {
         "akinsho/toggleterm.nvim",
         version = "*",
+        keys = {
+            {"<leader>tt", "<cmd>ToggleTerm<cr>", desc="Terminal"}
+        },
         config = function()
             require("toggleterm").setup({
                 open_mapping = [[<leader>tt]],
@@ -151,6 +156,7 @@ require("lazy").setup({
     {
         "williamboman/mason.nvim",
         build = { ":MasonUpdate", ":MasonInstall debugpy" },
+        lazy = true, 
         config = function()
             require("mason").setup()
             local mason_post_install = function()
@@ -332,6 +338,7 @@ require("lazy").setup({
         "nvim-telescope/telescope.nvim",
         -- commit = "4226740",
         dependencies = { "nvim-lua/plenary.nvim", "nvim-lua/popup.nvim" },
+        lazy = true,
         config = function()
             require("telescope").setup({
                 extensions = {
@@ -358,6 +365,7 @@ require("lazy").setup({
     {
         "nvim-telescope/telescope-file-browser.nvim",
         dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+        lazy = true,
         config = function()
             require("telescope").load_extension("file_browser")
         end
@@ -365,6 +373,7 @@ require("lazy").setup({
     {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "make",
+        lazy = true,
         config = function()
             require("telescope").load_extension("fzf")
         end
@@ -682,6 +691,7 @@ require("lazy").setup({
                 snippet = {
                     expand = function(args)
                         vim.fn["vsnip#anonymous"](args.body)
+                        -- require("luasnip").lsp_expand(args.body)
                     end
                 },
                 mapping = {
@@ -716,8 +726,8 @@ require("lazy").setup({
                 },
                 sources = cmp.config.sources({
                     { name = "nvim_lsp" },
-                    { name = "copilot" },
                     { name = "vsnip" },
+                    { name = "copilot" },
                     -- { name = "nvim_lsp_signature_help" },
                     { name = "cmp-nvim-lua" },
                     { name = "cmp-zsh" },
@@ -745,6 +755,7 @@ require("lazy").setup({
     {
         "folke/todo-comments.nvim",
         dependencies = "nvim-lua/plenary.nvim",
+        lazy = true,
         config = function()
             require("todo-comments").setup {
             }
@@ -815,7 +826,8 @@ require("lazy").setup({
                     require("null-ls").builtins.diagnostics.mypy.with({
                         extra_args = function()
                             local virtual = os.capture("which python", false)
-                            return { "--python-executable", virtual, "--install-types", "--non-interactive", "--ignore-missing-imports" }
+                            return { "--python-executable", virtual, "--install-types", "--non-interactive",
+                                "--ignore-missing-imports" }
                         end,
                     }), --extra_args = "--ignore-missing-imports" }),
                     -- require("null-ls").builtins.diagnostics.ruff.with({}),
@@ -871,10 +883,12 @@ require("lazy").setup({
         "kristijanhusak/vim-dadbod-completion"
     },
     {
-        "folke/lua-dev.nvim"
+        "folke/lua-dev.nvim",
+        ft = {"lua"}
     },
     {
-        "nvim-treesitter/playground"
+        "nvim-treesitter/playground",
+        lazy = true
     },
     {
         "tpope/vim-scriptease"
@@ -1141,7 +1155,8 @@ require("lazy").setup({
     },
     {
         "jalvesaq/Nvim-R",
-        branch = "stable"
+        branch = "stable",
+        ft = { "r", "rmd" },
     },
     {
         "sindrets/diffview.nvim",
@@ -1154,23 +1169,12 @@ require("lazy").setup({
         end
     },
     {
-        "jsborjesson/vim-uppercase-sql"
+        "jsborjesson/vim-uppercase-sql",
+        ft = { "sql" }
     },
     {
-        "lervag/vimtex"
-    },
-    {
-        "nvim-tree/nvim-tree.lua",
-        cmd = "NvimTreeToggle",
-        dependencies = {
-            "nvim-tree/nvim-web-devicons"
-        },
-        config = function()
-            require("nvim-tree").setup()
-            vim.g.loaded_netrw = 1
-            vim.g.loadednetrwPlugin = 1
-            vim.opt.termguicolors = true
-        end
+        "lervag/vimtex",
+        ft = { "tex", "bib" },
     },
     {
         "simrat39/symbols-outline.nvim",
@@ -1205,17 +1209,6 @@ require("lazy").setup({
             require("wrapping").setup()
         end
     },
-    -- Remove the `use` here if you're using folke/lazy.nvim.
-    -- {
-    --     'Exafunction/codeium.vim',
-    --     config = function()
-    --         -- Change '<C-g>' here to any keycode you like.
-    --         vim.keymap.set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end, { expr = true })
-    --         vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
-    --         vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
-    --         vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
-    --     end
-    -- },
     {
         'chentoast/marks.nvim',
         config = function()
@@ -1225,7 +1218,10 @@ require("lazy").setup({
     {
         "zbirenbaum/copilot.lua",
         config = function()
-            require("copilot").setup()
+            require("copilot").setup({
+                suggestion = { enabled = false },
+                panel = { enabled = false }
+            })
         end
     },
     {
@@ -1233,8 +1229,21 @@ require("lazy").setup({
         config = function()
             require("copilot_cmp").setup()
         end
+    },
+    {
+        "jackMort/ChatGPT.nvim",
+        event = "VeryLazy",
+        config = function()
+            require("chatgpt").setup({
+            api_key_cmd = "gpg --decrypt " .. vim.fn.expand("$HOME") .. "/secret.txt.gpg"
+    })
+        end,
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim"
+        }
     }
-
 })
 
 -- =====================================================================================
