@@ -126,7 +126,7 @@ require("lazy").setup({
         "akinsho/toggleterm.nvim",
         version = "*",
         keys = {
-            {"<leader>tt", "<cmd>ToggleTerm<cr>", desc="Terminal"}
+            { "<leader>tt", "<cmd>ToggleTerm<cr>", desc = "Terminal" }
         },
         config = function()
             require("toggleterm").setup({
@@ -156,7 +156,7 @@ require("lazy").setup({
     {
         "williamboman/mason.nvim",
         build = { ":MasonUpdate", ":MasonInstall debugpy" },
-        lazy = true, 
+        lazy = true,
         config = function()
             require("mason").setup()
             local mason_post_install = function()
@@ -841,9 +841,6 @@ require("lazy").setup({
         end
     },
     {
-        "fedepujol/move.nvim"
-    },
-    {
         "unblevable/quick-scope"
     },
     {
@@ -881,10 +878,6 @@ require("lazy").setup({
     },
     {
         "kristijanhusak/vim-dadbod-completion"
-    },
-    {
-        "folke/lua-dev.nvim",
-        ft = {"lua"}
     },
     {
         "nvim-treesitter/playground",
@@ -1235,15 +1228,15 @@ require("lazy").setup({
         event = "VeryLazy",
         config = function()
             require("chatgpt").setup({
-            api_key_cmd = "gpg --decrypt " .. vim.fn.expand("$HOME") .. "/secret.txt.gpg"
-    })
+                api_key_cmd = "gpg --decrypt " .. vim.fn.expand("$HOME") .. "/secret.txt.gpg"
+            })
         end,
         dependencies = {
             "MunifTanjim/nui.nvim",
             "nvim-lua/plenary.nvim",
             "nvim-telescope/telescope.nvim"
         }
-    }
+    },
 })
 
 -- =====================================================================================
@@ -1338,15 +1331,6 @@ vim.keymap.set("n", "<C-p>", "<cmd>BufferPick<CR>")
 vim.keymap.set("n", "<leader>,", "<cmd>BufferPrevious<CR>")
 vim.keymap.set("n", "<leader>.", "<cmd>BufferNext<CR>")
 vim.keymap.set("n", "<leader>q", "<cmd>BufferClose!<CR>")
-
-vim.keymap.set("n", "<A-j>", ":MoveLine(1)<CR>")
-vim.keymap.set("n", "<A-k>", ":MoveLine(-1)<CR>")
-vim.keymap.set("n", "<A-h>", ":MoveHChar(-1)<CR>")
-vim.keymap.set("n", "<A-l>", ":MoveHChar(1)<CR>")
-vim.keymap.set("v", "<A-j>", ":MoveBlock(1)<CR>")
-vim.keymap.set("v", "<A-k>", ":MoveBlock(-1)<CR>")
-vim.keymap.set("v", "<A-h>", ":MoveHBlock(-1)<CR>")
-vim.keymap.set("v", "<A-l>", ":MoveHBlock(1)<CR>")
 
 vim.keymap.set("t", "<A-[>", "<C-\\><C-n>")
 vim.keymap.set("t", "<C-l>", "<C-\\><C-n><C-w>l")
