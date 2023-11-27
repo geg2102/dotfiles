@@ -26,6 +26,10 @@ if [ "$TMUX_RUNNING" -eq 0 ]; then
 	fi
 fi
 
+revert_to_base() {
+    conda activate base
+}
+
 act() {
     conda activate $1
     poetry config virtualenvs.path $(which python | sed 's|/bin/python||')
@@ -38,7 +42,6 @@ check_name_against_envs() {
             return 0
         fi
     done
-    IFS="$OLD_IFS"
     return 1
 }
 
@@ -47,13 +50,12 @@ case $T_RUNTYPE in
         SESSION_NAME=$(tmux display-message -p '#{session_name}')
         PANE_NAME="$(tmux display-message -p '#{pane_title}')"
 
-        
         if check_name_against_envs "$SESSION_NAME"; then
             act "$SESSION_NAME"
         elif check_name_against_envs "$PANE_NAME"; then
             act "$PANE_NAME"
         else
-            :
+            revert_to_base
         fi
         ;;
 esac

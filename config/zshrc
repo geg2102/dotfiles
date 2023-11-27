@@ -139,6 +139,17 @@ act() {
     poetry config virtualenvs.path $(which python | sed 's|/bin/python||')
 }
 
+cpgg() {
+    BASE_DIR="/mnt/datascience-team-fileshare/Team/GG"
+
+    if [ -n "$2" ]; then
+        mkdir -p "${BASE_DIR}/$2"
+        cp "$1" "${BASE_DIR}/$2"
+    else
+        cp "$1" "${BASE_DIR}"
+    fi
+}
+
 eval "$(zoxide init zsh)"
 
 # ~/.tmux/plugins

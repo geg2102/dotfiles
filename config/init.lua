@@ -726,15 +726,15 @@ require("lazy").setup({
                     })
                 },
                 sources = cmp.config.sources({
-                    { name = "nvim_lsp" },
-                    { name = "vsnip" },
-                    { name = "copilot" },
+                    { name = "nvim_lsp", group_index=2 },
+                    { name = "vsnip", group_index=2 },
+                    { name = "copilot", group_index=2 },
                     -- { name = "nvim_lsp_signature_help" },
-                    { name = "cmp-nvim-lua" },
-                    { name = "cmp-zsh" },
-                    { name = "path" }
+                    { name = "cmp-nvim-lua", group_index=2 },
+                    { name = "cmp-zsh", group_index=2 },
+                    { name = "path", group_index=2 }
                 }, {
-                    { name = "buffer" },
+                    { name = "buffer", group_index=2 },
                 }),
             })
             cmp.setup.cmdline("/", {
@@ -1221,7 +1221,11 @@ require("lazy").setup({
     {
         "zbirenbaum/copilot-cmp",
         config = function()
-            require("copilot_cmp").setup()
+            require("copilot_cmp").setup(
+            {
+                fix_pairs = true
+            }
+            )
         end
     },
     {
