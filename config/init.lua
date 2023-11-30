@@ -36,7 +36,7 @@ require("lazy").setup({
         dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function()
             require("oil").setup()
-            vim.keymap.set("n", "<leader>o", ":Oil --float<CR>", { silent=true, desc = "Send semantic unit to REPL" })
+            vim.keymap.set("n", "<leader>o", ":Oil --float<CR>", { silent = true, desc = "Send semantic unit to REPL" })
         end
     },
     {
@@ -665,6 +665,7 @@ require("lazy").setup({
             "hrsh7th/cmp-nvim-lsp-signature-help",
             "tamago324/cmp-zsh",
             "onsails/lspkind.nvim",
+            "zbirenbaum/copilot.lua"
         },
         ft = { "python", "lua", "sh", "r", "cpp", "tex" },
         config = function()
@@ -726,15 +727,16 @@ require("lazy").setup({
                     })
                 },
                 sources = cmp.config.sources({
-                    { name = "nvim_lsp", group_index=2 },
-                    { name = "vsnip", group_index=2 },
-                    { name = "copilot", group_index=2 },
-                    -- { name = "nvim_lsp_signature_help" },
-                    { name = "cmp-nvim-lua", group_index=2 },
-                    { name = "cmp-zsh", group_index=2 },
-                    { name = "path", group_index=2 }
+                    { name = "nvim_lsp", group_index = 2 },
+                    { name = "vsnip",    group_index = 2 },
                 }, {
-                    { name = "buffer", group_index=2 },
+                    -- { name = "copilot",      group_index = 2 },
+                    -- { name = "nvim_lsp_signature_help" },
+                    { name = "cmp-nvim-lua", group_index = 2 },
+                    { name = "cmp-zsh",      group_index = 2 },
+                    { name = "path",         group_index = 2 }
+                }, {
+                    { name = "buffer", group_index = 2 },
                 }),
             })
             cmp.setup.cmdline("/", {
@@ -1213,7 +1215,10 @@ require("lazy").setup({
         "zbirenbaum/copilot.lua",
         config = function()
             require("copilot").setup({
-                suggestion = { enabled = false },
+                suggestion = { enabled = true, auto_trigger= true, keymap= {
+                    accept = "<C-e>",
+                    next = "<C-]"
+                } },
                 panel = { enabled = false }
             })
         end
@@ -1222,9 +1227,9 @@ require("lazy").setup({
         "zbirenbaum/copilot-cmp",
         config = function()
             require("copilot_cmp").setup(
-            {
-                fix_pairs = true
-            }
+                {
+                    fix_pairs = true
+                }
             )
         end
     },
