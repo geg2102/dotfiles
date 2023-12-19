@@ -158,6 +158,7 @@ require("lazy").setup({
         "williamboman/mason.nvim",
         build = { ":MasonUpdate", ":MasonInstall debugpy" },
         lazy = true,
+        cmd = { "Mason" },
         config = function()
             require("mason").setup()
             local mason_post_install = function()
@@ -527,36 +528,6 @@ require("lazy").setup({
             }
         end
     },
-    -- {
-    --     "folke/flash.nvim",
-    --     event = "VeryLazy",
-    --     opts = {},
-    --     keys = {
-    --         { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-    --         {
-    --             "S",
-    --             mode = { "n", "o", "x" },
-    --             function() require("flash").treesitter() end,
-    --             desc =
-    --             "Flash Treesitter"
-    --         },
-    --         -- { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-    --         {
-    --             "R",
-    --             mode = { "o", "x" },
-    --             function() require("flash").treesitter_search() end,
-    --             desc =
-    --             "Treesitter Search"
-    --         },
-    --         {
-    --             "<c-s>",
-    --             mode = { "c" },
-    --             function() require("flash").toggle() end,
-    --             desc =
-    --             "Toggle Flash Search"
-    --         },
-    --     },
-    -- },
     {
         "machakann/vim-highlightedyank"
     },
@@ -1215,10 +1186,14 @@ require("lazy").setup({
         "zbirenbaum/copilot.lua",
         config = function()
             require("copilot").setup({
-                suggestion = { enabled = true, auto_trigger= true, keymap= {
-                    accept = "<C-e>",
-                    next = "<C-]"
-                } },
+                suggestion = {
+                    enabled = true,
+                    auto_trigger = true,
+                    keymap = {
+                        accept = "<C-e>",
+                        next = "<C-]"
+                    }
+                },
                 panel = { enabled = false }
             })
         end
@@ -1246,6 +1221,21 @@ require("lazy").setup({
             "nvim-lua/plenary.nvim",
             "nvim-telescope/telescope.nvim"
         }
+    },
+    {
+        "kndndrj/nvim-dbee",
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+        },
+        build = function()
+            -- Install tries to automatically detect the install method.
+            -- if it fails, try calling it with one of these parameters:
+            --    "curl", "wget", "bitsadmin", "go"
+            require("dbee").install()
+        end,
+        config = function()
+            require("dbee").setup( --[[optional config]])
+        end,
     },
 })
 
