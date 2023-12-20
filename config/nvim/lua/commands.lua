@@ -19,12 +19,17 @@ vim.api.nvim_create_autocmd("FileType", {
     group = colorcolumn
 })
 
-
 local jsonconceal = vim.api.nvim_create_augroup("JsonConceal", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "json" },
     command = "silent! set conceallevel=0",
     group = jsonconceal
+})
+
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = function()
+    vim.highlight.on_yank({ timeout = 200 })
+  end,
 })
 
 P = function(v)
