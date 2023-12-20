@@ -1,0 +1,5 @@
+return {
+    {
+        "unblevable/quick-scope"
+    }
+}
