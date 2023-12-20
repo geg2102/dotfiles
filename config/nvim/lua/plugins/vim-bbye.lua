@@ -1,0 +1,5 @@
+return {
+    {
+        "moll/vim-bbye"
+    }
+}

@@ -36,7 +36,7 @@ require("lazy").setup({
         dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function()
             require("oil").setup()
-            vim.keymap.set("n", "<leader>o", ":Oil --float<CR>", { silent = true, desc = "Send semantic unit to REPL" })
+            vim.keymap.set("n", "<leader>o", ":Oil --float<CR>", { silent = true, desc = "Open oil float" })
         end
     },
     {
@@ -92,7 +92,7 @@ require("lazy").setup({
         ft = { "python", "sh", "lua", "scala", "c", "cpp", "yaml", "json", "r", "markdown", "markdown_inline" },
         -- dependencies = "neovim/nvim-lspconfig",
         config = function()
-            require("nvim-navic").setup()
+            require("nvim-navic").setup({})
         end
     },
     {
@@ -928,9 +928,9 @@ require("lazy").setup({
             require("alpha").setup(require("alpha.themes.startify").config)
         end
     },
-    {
-        "romgrk/nvim-treesitter-context"
-    },
+    -- {
+    --     "romgrk/nvim-treesitter-context"
+    -- },
     {
         "anuvyklack/hydra.nvim",
         dependencies = "anuvyklack/keymap-layer.nvim",
