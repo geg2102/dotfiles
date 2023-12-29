@@ -20,10 +20,8 @@ return {
                 if client.server_capabilities.documentSymbolProvider then
                     require("nvim-navic").attach(client, bufnr)
                 end
-                require("lsp_signature").on_attach({ floating_window = false, timer_interval = 500 })
             end
             local servers = {
-                -- bashls = require("plugins.lsp.servers.bashls")(on_attach),
                 jedi_language_server = {},
                 lua_ls = require("plugins.lsp.servers.luals")(on_attach),
                 ruff_lsp = {},
@@ -33,7 +31,10 @@ return {
             for server_name, _ in pairs(servers) do
                 table.insert(server_names, server_name)
             end
-            require("mason-lspconfig").setup({ ensure_installed = server_names })
+            require("mason-lspconfig").setup({
+                ensure_installed = server_names,
+                automatic_installation = true
+            })
             local nvim_lsp = require("lspconfig")
             for _, server in ipairs(server_names) do
                 nvim_lsp[server].setup {

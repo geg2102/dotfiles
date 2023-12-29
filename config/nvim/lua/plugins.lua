@@ -32,6 +32,7 @@ lazy.setup({
         require("plugins.tint"),
         require("plugins.vim-illuminate"),
         require("plugins.vim-smoothie"),
+        require("plugins.noice"),
 
         -- lsp
         require("plugins.cmp"),
@@ -74,6 +75,7 @@ lazy.setup({
         require("plugins.wrapping"),
 
         -- coding
+        require("plugins.todo-comments"),
         require("plugins.comment"),
         require("plugins.copilot"),
         require("plugins.dadbod"),
