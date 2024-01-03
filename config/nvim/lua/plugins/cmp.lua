@@ -11,7 +11,8 @@ return {
             "hrsh7th/cmp-nvim-lsp-signature-help",
             "tamago324/cmp-zsh",
             "onsails/lspkind.nvim",
-            "zbirenbaum/copilot.lua"
+            "zbirenbaum/copilot.lua",
+            "zbirenbaum/copilot-cmp"
         },
         -- ft = { "python", "lua", "sh", "r", "cpp", "tex" },
         event = "InsertEnter",
@@ -36,7 +37,7 @@ return {
                     fallback()
                 end
             end
-
+            require("copilot_cmp").setup()
             lsp_kind.init()
             cmp.setup({
                 confirm_opts = {
@@ -75,6 +76,7 @@ return {
                     { name = "nvim_lsp",                max_item_count = 20, group_index = 1 },
                     { name = "nvim_lua",                group_index = 1 },
                     { name = "vim-dadbod-completion",   group_index = 1 },
+                    { name = "copilot",                 max_item_count = 5, group_index = 1},
                     { name = "path",                    group_index = 2 },
                     { name = "buffer",                  keyword_length = 2,  max_item_count = 5, group_index = 2 },
                 },
