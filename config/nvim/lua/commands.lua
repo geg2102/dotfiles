@@ -12,6 +12,8 @@ vim.keymap.set("t", "<C-k>", "<C-\\><C-n><C-w>k")
 
 vim.keymap.set("n", "<leader>p", "<Plug>PlenaryTestFile", { desc = "Run test file you are in" })
 
+vim.keymap.set("n", "<leader>s", ":SymbolsOutline<CR>", { desc = "Symbols outline"})
+
 local colorcolumn = vim.api.nvim_create_augroup("ColorColumn", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "python", "c", "cpp", "h", "lua", "scala" },
@@ -60,18 +62,20 @@ vim.api.nvim_create_autocmd({ "BufEnter" },
         pattern = "*",
         desc = "Disable syntax highlighting in files larger than 1MB",
         callback = function(args)
-            local highlighter = require "vim.treesitter.highlighter"
-            local ts_was_active = highlighter.active[args.buf]
-            local file_size = vim.fn.getfsize(args.file)
-            if (file_size > 1024 * 1024) then
-                vim.cmd("TSBufDisable highlight")
-                -- vim.cmd("syntax off")
-                -- vim.cmd("syntax clear")
-                vim.cmd("IlluminatePauseBuf")
-                vim.cmd("IndentBlanklineDisable")
-                vim.cmd("NoMatchParen")
-                if (ts_was_active) then
-                    vim.notify("File larger than 1MB, turned off syntax highlighting")
+            local success, highlighter = pcall(require "vim.treesitter.highlighter")
+            if success then
+                local ts_was_active = highlighter.active[args.buf]
+                local file_size = vim.fn.getfsize(args.file)
+                if (file_size > 1024 * 1024) then
+                    pcall(vim.cmd("TSBufDisable highlight"))
+                    -- vim.cmd("syntax off")
+                    -- vim.cmd("syntax clear")
+                    vim.cmd("IlluminatePauseBuf")
+                    vim.cmd("IndentBlanklineDisable")
+                    vim.cmd("NoMatchParen")
+                    if (ts_was_active) then
+                        vim.notify("File larger than 1MB, turned off syntax highlighting")
+                    end
                 end
             end
         end
