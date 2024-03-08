@@ -88,6 +88,7 @@ lazy.setup({
         require("plugins.toggleterm"),
         require("plugins.vim-doge"),
         require("plugins.vimtex"),
+        require("plugins.harpoon"),
         --
     },
     default = {

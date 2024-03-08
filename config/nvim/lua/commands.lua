@@ -14,7 +14,8 @@ vim.keymap.set("n", "<leader>p", "<Plug>PlenaryTestFile", { desc = "Run test fil
 vim.keymap.set("n", "<leader>s", ":SymbolsOutline<CR>", { desc = "Open symbols outline" })
 vim.keymap.set("n", "<leader>S", ":Navbuddy<CR>", { desc = "Open navbuddy" })
 
-vim.keymap.set("n", "<leader>s", ":SymbolsOutline<CR>", { desc = "Symbols outline"})
+vim.keymap.set("n", "<leader>s", ":SymbolsOutline<CR>", { desc = "Symbols outline" })
+
 
 local colorcolumn = vim.api.nvim_create_augroup("ColorColumn", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
@@ -31,9 +32,9 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function()
-    vim.highlight.on_yank({ timeout = 200 })
-  end,
+    callback = function()
+        vim.highlight.on_yank({ timeout = 200 })
+    end,
 })
 
 P = function(v)
