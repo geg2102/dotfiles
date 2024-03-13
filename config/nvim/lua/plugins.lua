@@ -55,6 +55,7 @@ lazy.setup({
         require("plugins.project"),
         require("plugins.telescope"),
         require("plugins.vim-tmux-navigator"),
+        require("plugins.mini"),
 
         -- convenience
         require("plugins.accelerated-jk"),
