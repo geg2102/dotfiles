@@ -12,13 +12,18 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.smarttab = true
 vim.opt.expandtab = true
-vim.opt.clipboard = "unnamedplus"
+-- vim.opt.clipboard = "unnamedplus"
+vim.g.clipboard = {
+  name = 'osc52',
+  copy = {['+'] = copy, ['*'] = copy},
+  paste = {['+'] = paste, ['*'] = paste},
+}
 vim.opt.autoindent = true
 vim.opt.incsearch = true
 vim.opt.hlsearch = true
 vim.opt.wrap = true
 vim.opt.linebreak = true
-vim.opt.pastetoggle = "<F10>"
+--vim.opt.pastetoggle = "<F10>"
 vim.opt.undofile = true
 vim.opt.scrolloff = 8
 vim.opt.swapfile = false
