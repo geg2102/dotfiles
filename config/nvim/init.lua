@@ -2,6 +2,7 @@ require("general")
 require("commands")
 if vim.g.noplugins == nil then
     require("plugins")
+
 else
     local colors = vim.fn.stdpath("data") .. "/lazy/kanagawa.nvim/colors/kanagawa.vim"
     if vim.fn.filereadable(colors) then
