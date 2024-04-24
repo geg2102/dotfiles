@@ -33,7 +33,7 @@ return {
                     require("null-ls").builtins.formatting.prettier.with({
                         filetypes = { "html", "json", "yaml", "graphql", "md", "txt", "css" }
                     }),
-                    require("null-ls").builtins.formatting.fixjson.with({}),
+                    -- require("null-ls").builtins.formatting.fixjson.with({}),
                     require("null-ls").builtins.diagnostics.sqlfluff.with({
                         extra_args = { "--dialect", "tsql" }, -- change to your dialect
                     }),

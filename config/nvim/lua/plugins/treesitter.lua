@@ -7,7 +7,7 @@ return {
         dependencies = {
             'nvim-treesitter/nvim-treesitter-textobjects',
         },
-        ft = { "python", "sh", "lua", "scala", "c", "cpp", "yaml", "json", "r", "vim", "md" },
+        ft = { "python", "sh", "lua", "scala", "c", "cpp", "yaml", "json", "r", "vim", "md" , "go"},
         config = function()
             local treesitter = require("nvim-treesitter.configs")
             treesitter.setup {

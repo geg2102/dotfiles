@@ -58,7 +58,7 @@ alias sus="sudo systemctl suspend"
 alias halt="sudo systemctl halt"
 
 # jupyter remote
-alias jlremote='f(){ jupyter lab --ip 0.0.0.0 --port=$1}; f'
+alias jlremote='f(){ jupyter lab --ip 0.0.0.0 --port=$1 --no-browser}; f'
 alias addenv='f(){ python -m ipykernel install --user --name=$1}; f'
 
 bindkey '^P' up-history
@@ -131,6 +131,7 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 export PATH="$PATH:/opt/mssql-tools18/bin"
+export PATH="$PATH:/usr/local/go/bin"
 #
 # export PYENV_ROOT="$HOME/.pyenv"
 # command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"

@@ -36,9 +36,9 @@ lazy.setup({
 
         -- lsp
         require("plugins.cmp"),
+        require("plugins.neodev"),
         require("plugins.lsp"),
         require("plugins.mason"),
-        require("plugins.neodev"),
         require("plugins.none-ls"),
         require("plugins.nvim-luaref"),
         require("plugins.nvim-navbuddy"),
@@ -69,6 +69,7 @@ lazy.setup({
         require("plugins.oil"),
         require("plugins.quick-scope"),
         require("plugins.trouble"),
+        require("plugins.suda"),
         -- require("plugins.vim-bbye"),
         require("plugins.vim-repeat"),
         require("plugins.vim-uppercase-sql"),

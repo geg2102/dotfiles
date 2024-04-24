@@ -25,7 +25,8 @@ return {
                 jedi_language_server = {},
                 lua_ls = require("plugins.lsp.servers.luals")(on_attach),
                 ruff_lsp = {},
-                texlab = {}
+                texlab = {},
+                gopls = {}
             }
             local server_names = {}
             for server_name, _ in pairs(servers) do
@@ -46,6 +47,13 @@ return {
                     }
                 }
             end
+            nvim_lsp.rust_analyzer.setup {
+                capabilities = capabilities,
+                on_attach = on_attach,
+                cmd = {
+                    "rustup", "run", "stable", "rust-analyzer"
+                }
+            }
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Goto definition" })
             vim.keymap.set("n", "gI", vim.lsp.buf.implementation, { desc = "Goto implementation" })
             vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, { desc = "Rename" })
@@ -57,6 +65,8 @@ return {
             vim.keymap.set("n", "go", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
             vim.keymap.set("n", "gj", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
             vim.keymap.set("n", "gk", vim.diagnostic.goto_prev, { desc = "Go to prev diagnostic" })
+            vim.keymap.set("n", "<leader>gw", vim.lsp.buf.add_workspace_folder, { desc = "Add workspace folder" })
+            vim.keymap.set("n", "<leader>gr", vim.lsp.buf.remove_workspace_folder, { desc = "Remove workspace folder" })
         end
     }
 }
