@@ -12,7 +12,7 @@ return {
             local treesitter = require("nvim-treesitter.configs")
             treesitter.setup {
                 ensure_installed = { "python", "bash", "lua", "scala", "c", "cpp", "vim", "yaml", "hcl",
-                    "terraform", "r", "markdown", "markdown_inline"},
+                    "terraform", "r", "markdown", "markdown_inline", "vimdoc"},
                 highlight = {
                     enable = true,
                     disable = function(_, bufnr) -- Disable in large buffers

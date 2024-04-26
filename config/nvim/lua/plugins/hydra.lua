@@ -1,7 +1,7 @@
 return {
     {
         "anuvyklack/hydra.nvim",
-        dependencies = { "anuvyklack/keymap-layer.nvim", "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui" },
+        dependencies = { "anuvyklack/keymap-layer.nvim", "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui", "nvim-neotest/nvim-nio"},
         keys = {
             { "<leader>dh", "", { desc = "Dap Hydra" } },
             { "<leader>g",  "", { desc = "Git Hydra" } },
