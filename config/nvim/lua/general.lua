@@ -13,11 +13,6 @@ vim.opt.shiftwidth = 4
 vim.opt.smarttab = true
 vim.opt.expandtab = true
 -- vim.opt.clipboard = "unnamedplus"
-vim.g.clipboard = {
-  name = 'osc52',
-  copy = {['+'] = copy, ['*'] = copy},
-  paste = {['+'] = paste, ['*'] = paste},
-}
 vim.opt.autoindent = true
 vim.opt.incsearch = true
 vim.opt.hlsearch = true
@@ -40,4 +35,15 @@ vim.g.nvim_system_wide = 1
 vim.g.vimtex_view_method = "skim"
 vim.g.db_ui_winwidth = 60
 vim.g.db_ui_use_nerd_fonts = 1
+vim.g.clipboard = {
+      name = 'OSC 52',
+      copy = {
+        ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+        ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+      },
+      paste = {
+        ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+        ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+      },
+    }
 

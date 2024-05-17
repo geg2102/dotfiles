@@ -31,11 +31,11 @@ return {
                         node_decremental = "<c-backspace>"
                     }
                 },
-                rainbow = {
-                    enable = true,
-                    query = 'rainbow-parens',
-                    strategy = require("ts-rainbow").strategy.global,
-                },
+                -- rainbow = {
+                --     enable = true,
+                --     query = 'rainbow-parens',
+                --     strategy = require("ts-rainbow").strategy.global,
+                -- },
                 autopairs = {
                     enable = true
                 },

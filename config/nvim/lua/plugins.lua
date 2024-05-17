@@ -49,6 +49,7 @@ lazy.setup({
         require("plugins.treesitter"),
         -- require("plugins.nvim-treesitter-textsubjects"),
         require("plugins.nvim-ts-rainbow2"),
+        require("plugins.rainbow-delimiters"),
 
         -- navigation
         require("plugins.hop"),
@@ -64,7 +65,7 @@ lazy.setup({
         require("plugins.diffview"),
         require("plugins.marks"),
         require("plugins.nvim-autopairs"),
-        require("plugins.nvim-osc52"),
+        -- require("plugins.nvim-osc52"),
         require("plugins.nvim-surround"),
         require("plugins.oil"),
         require("plugins.quick-scope"),
