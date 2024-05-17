@@ -79,7 +79,7 @@ lazy.setup({
 
         -- coding
         require("plugins.todo-comments"),
-        require("plugins.comment"),
+        -- require("plugins.comment"),
         require("plugins.copilot"),
         require("plugins.copilotchat"),
         require("plugins.dadbod"),
