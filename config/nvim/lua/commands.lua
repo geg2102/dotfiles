@@ -16,6 +16,10 @@ vim.keymap.set("n", "<leader>S", ":Navbuddy<CR>", { desc = "Open navbuddy" })
 
 vim.keymap.set("n", "<leader>s", ":SymbolsOutline<CR>", { desc = "Symbols outline" })
 
+vim.keymap.set("n", "yy", '"+yy', { desc = "Symbols outline" })
+vim.keymap.set("n", "y", '"+y', { desc = "Symbols outline" })
+vim.keymap.set("x", "y", '"+y', { desc = "Symbols outline" })
+
 local colorcolumn = vim.api.nvim_create_augroup("ColorColumn", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "python", "c", "cpp", "h", "lua", "scala" },
