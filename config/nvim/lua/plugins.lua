@@ -91,7 +91,8 @@ lazy.setup({
         require("plugins.nvim-python-repl"),
         require("plugins.nvim-r"),
         require("plugins.toggleterm"),
-        require("plugins.vim-doge"),
+        -- require("plugins.vim-doge"),
+        require("plugins.neogen"),
         require("plugins.vimtex"),
         require("plugins.harpoon"),
         --

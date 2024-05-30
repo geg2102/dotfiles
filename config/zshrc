@@ -113,6 +113,13 @@ cf() {
     cd $directory
 }
 
+ff() {
+    LAST_FILE="$(fzf --preview 'bat --style=numbers --color=always --line-range :500 {}')"
+    BASE64_ENCODED=$(echo "$LAST_FILE" | awk '{print | "base64"}')
+    NO_NEWLINES=$(echo "$BASE64_ENCODED" | tr -d '\n')
+    printf "\033]52;c;%s\a" "$NO_NEWLINES"
+}
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 

@@ -1,3 +1,4 @@
+vim.cmd("filetype plugin on")
 vim.g.mapleader = ","
 
 

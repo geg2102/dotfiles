@@ -20,6 +20,10 @@ vim.keymap.set("n", "yy", '"+yy', { desc = "Symbols outline" })
 vim.keymap.set("n", "y", '"+y', { desc = "Symbols outline" })
 vim.keymap.set("x", "y", '"+y', { desc = "Symbols outline" })
 
+vim.keymap.set("n", "<leader>df", "<cmd>lua require('neogen').generate()<CR>", { desc = "Generate function docstring" })
+vim.keymap.set("n", "<leader>dc", "<cmd>lua require('neogen').generate({type='class'})<CR>",
+    { desc = "Generate class docstring" })
+
 local colorcolumn = vim.api.nvim_create_augroup("ColorColumn", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "python", "c", "cpp", "h", "lua", "scala" },
