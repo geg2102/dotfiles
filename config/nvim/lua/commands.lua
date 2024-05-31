@@ -96,14 +96,16 @@ local function change_colorscheme()
     local filetype = vim.bo.filetype
     -- print("changing based on " .. filetype)
     -- Define color schemes for different filetypes
-    local colorscheme_js_ts = "kanagawa-lotus"
-    local colorscheme_other = "kanagawa"
+    local colorscheme_js_ts = "lotus"
+    local colorscheme_other = "wave"
 
     -- Check the filetype and set the appropriate color scheme
     if filetype == "javascript" or filetype == "typescript" or filetype == "typescriptreact" or filetype == "javascriptreact" then
-        vim.cmd("colorscheme " .. colorscheme_js_ts)
+        require("kanagawa").load("lotus")
+        -- vim.cmd("colorscheme " .. colorscheme_js_ts)
     else
-        vim.cmd("colorscheme " .. colorscheme_other)
+        require("kanagawa").load("wave")
+        -- vim.cmd("colorscheme " .. colorscheme_other)
     end
 end
 
