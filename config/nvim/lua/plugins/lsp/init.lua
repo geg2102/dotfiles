@@ -26,7 +26,8 @@ return {
                 lua_ls = require("plugins.lsp.servers.luals")(on_attach),
                 ruff_lsp = {},
                 texlab = {},
-                gopls = {}
+                gopls = {},
+                tsserver = {},
             }
             local server_names = {}
             for server_name, _ in pairs(servers) do

@@ -53,6 +53,7 @@
   "nvim-nio": { "branch": "master", "commit": "8765cbc4d0c629c8158a5341e1b4305fd93c3a90" },
   "nvim-notify": { "branch": "master", "commit": "5371f4bfc1f6d3adf4fe9d62cd3a9d44356bfd15" },
   "nvim-python-repl": { "branch": "main", "commit": "3d63e4f298233cb97e0fb2d8360857120235112f" },
+  "nvim-remote-containers": { "branch": "master", "commit": "73c2cbc59b69b4026682aea6bab225831fb8eaa4" },
   "nvim-surround": { "branch": "main", "commit": "79aaa42da1f698ed31bcbe7f83081f69dca7ba17" },
   "nvim-treesitter": { "branch": "master", "commit": "19ac9e8b5c1e5eedd2ae7957243e25b32e269ea7" },
   "nvim-treesitter-textobjects": { "branch": "master", "commit": "84cc9ed772f1fee2f47c1e076f518829583d8347" },

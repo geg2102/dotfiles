@@ -7,12 +7,12 @@ return {
         dependencies = {
             'nvim-treesitter/nvim-treesitter-textobjects',
         },
-        ft = { "python", "sh", "lua", "scala", "c", "cpp", "yaml", "json", "r", "vim", "md" , "go"},
+        ft = { "python", "sh", "lua", "scala", "c", "cpp", "yaml", "json", "r", "vim", "md", "go", "js", "tsx" },
         config = function()
             local treesitter = require("nvim-treesitter.configs")
             treesitter.setup {
                 ensure_installed = { "python", "bash", "lua", "scala", "c", "cpp", "vim", "yaml", "hcl",
-                    "terraform", "r", "markdown", "markdown_inline", "vimdoc"},
+                    "terraform", "r", "markdown", "markdown_inline", "vimdoc", "javascript"},
                 highlight = {
                     enable = true,
                     disable = function(_, bufnr) -- Disable in large buffers

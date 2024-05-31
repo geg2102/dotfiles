@@ -90,3 +90,30 @@ vim.api.nvim_create_autocmd({ "BufEnter" },
             end
         end
     })
+
+local function change_colorscheme()
+    -- Get the filetype of the current buffer
+    local filetype = vim.bo.filetype
+    -- print("changing based on " .. filetype)
+    -- Define color schemes for different filetypes
+    local colorscheme_js_ts = "kanagawa-lotus"
+    local colorscheme_other = "kanagawa"
+
+    -- Check the filetype and set the appropriate color scheme
+    if filetype == "javascript" or filetype == "typescript" or filetype == "typescriptreact" or filetype == "javascriptreact" then
+        vim.cmd("colorscheme " .. colorscheme_js_ts)
+    else
+        vim.cmd("colorscheme " .. colorscheme_other)
+    end
+end
+
+vim.api.nvim_create_augroup('ChangeColorscheme', { clear = true })
+
+-- Create an autocommand that runs the function when entering a buffer
+vim.api.nvim_create_autocmd({'FileType', 'BufEnter', 'BufLeave'}, {
+    group = 'ChangeColorscheme',
+    desc = "Change colorscheme based on filetype",
+    pattern = '*',
+    -- pattern = '*.js,*.ts,*.tsx,*.jsx',
+    callback = change_colorscheme,
+})
