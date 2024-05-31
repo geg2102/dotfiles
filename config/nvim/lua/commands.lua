@@ -99,6 +99,24 @@ local function change_colorscheme()
     local colorscheme_js_ts = "lotus"
     local colorscheme_other = "wave"
 
+    local exclude_filetypes = { "qf", "help", "TelescopePrompt", "noice", "cmdwin" }
+
+    -- Function to check if filetype is in the exclude list
+    local function is_excluded(ft)
+        for _, excluded in ipairs(exclude_filetypes) do
+            if ft == excluded then
+                return true
+            end
+        end
+        return false
+    end
+
+    -- Skip changing colorscheme if filetype is excluded
+    if is_excluded(filetype) then
+        print(filetype)
+        return
+    end
+
     -- Check the filetype and set the appropriate color scheme
     if filetype == "javascript" or filetype == "typescript" or filetype == "typescriptreact" or filetype == "javascriptreact" then
         require("kanagawa").load("lotus")
@@ -112,7 +130,7 @@ end
 vim.api.nvim_create_augroup('ChangeColorscheme', { clear = true })
 
 -- Create an autocommand that runs the function when entering a buffer
-vim.api.nvim_create_autocmd({'FileType', 'BufEnter', 'BufLeave'}, {
+vim.api.nvim_create_autocmd({ 'FileType', 'BufEnter', 'BufLeave' }, {
     group = 'ChangeColorscheme',
     desc = "Change colorscheme based on filetype",
     pattern = '*',
