@@ -16,6 +16,7 @@ return {
                 globalStatus = true,
                 dimInactive = true
             })
+            vim.cmd("colorscheme kanagawa")
         end
     },
 }

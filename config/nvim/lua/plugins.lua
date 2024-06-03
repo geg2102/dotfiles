@@ -21,12 +21,13 @@ end
 lazy.setup({
     spec = {
         -- ui
+        require("plugins.kanagawa"),
+        require("plugins.catppuccin"),
         require("plugins.barbar"),
         require("plugins.dressing"),
         require("plugins.focus"),
         require("plugins.gitsigns"),
         require("plugins.indent-blankline"),
-        require("plugins.kanagawa"),
         require("plugins.lualine"),
         require("plugins.nvim-ufo"),
         require("plugins.tint"),
@@ -95,6 +96,7 @@ lazy.setup({
         require("plugins.neogen"),
         require("plugins.vimtex"),
         require("plugins.harpoon"),
+        require("plugins.styler"),
         --
     },
     default = {
