@@ -26,7 +26,7 @@ vim.keymap.set("n", "<leader>dc", "<cmd>lua require('neogen').generate({type='cl
 
 local colorcolumn = vim.api.nvim_create_augroup("ColorColumn", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "python", "c", "cpp", "h", "lua", "scala" },
+    pattern = { "*.py", "*.c", "*.cpp", "*.h", "*.lua", "*.scala" },
     command = "silent! set colorcolumn=88",
     group = colorcolumn
 })
