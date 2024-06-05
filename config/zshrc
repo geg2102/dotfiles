@@ -129,13 +129,12 @@ sb() {
     local selected_blob
     selected_blob=$(az storage blob list --account-name "tdrdsblob" \
     --container-name "$container_name" --output tsv --query "[].{name:name}" \
-    2>/dev/null | awk '{print $1}' | 
-    \ fzf --header="Select a blob from the container: $container_name" --no-preview)
+    2>/dev/null | awk '{print $1}' | fzf --header="Select a blob from the container: $container_name" --no-preview)
 
     if [[ -n "$selected_blob" ]]; then
         # Copy the selected blob name to the clipboard using OSC52
         printf "\e]52;c;$(printf "%s/%s" "$container_name" "$selected_blob" | base64)\a"
-        echo "Selected blob '$selected_blob' has been copied to the clipboard."
+        echo "Selected blob '$container_name $selected_blob' has been copied to the clipboard."
     else
         echo "No blob selected."
     fi

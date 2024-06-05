@@ -31,7 +31,7 @@ return {
                     -- require("null-ls").builtins.diagnostics.ruff.with({}),
                     require("null-ls").builtins.formatting.isort.with({}),
                     require("null-ls").builtins.formatting.prettier.with({
-                        filetypes = { "html", "json", "yaml", "graphql", "md", "txt", "css" }
+                        filetypes = { "html", "json", "yaml", "graphql", "md", "txt", "css", "jsx", "tsx", "js", "ts" }
                     }),
                     -- require("null-ls").builtins.formatting.fixjson.with({}),
                     require("null-ls").builtins.diagnostics.sqlfluff.with({
