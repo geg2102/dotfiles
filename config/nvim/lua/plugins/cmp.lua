@@ -12,7 +12,15 @@ return {
             "tamago324/cmp-zsh",
             "onsails/lspkind.nvim",
             "zbirenbaum/copilot.lua",
-            "zbirenbaum/copilot-cmp"
+            "zbirenbaum/copilot-cmp",
+            {
+                "MattiasMTS/cmp-dbee",
+                dependencies = {
+                    { "kndndrj/nvim-dbee" }
+                },
+                ft = "sql", -- optional but good to have
+                opts = {}, -- needed
+            },
         },
         -- ft = { "python", "lua", "sh", "r", "cpp", "tex" },
         event = "InsertEnter",
@@ -72,14 +80,17 @@ return {
                 },
                 sources = {
                     -- { name = "nvim_lsp_signature_help", group_index = 1 },
-                    { name = "luasnip",                 max_item_count = 5,  group_index = 1 },
-                    { name = "nvim_lsp",                max_item_count = 20, group_index = 1 },
-                    { name = "nvim_lua",                group_index = 1 },
-                    { name = "vim-dadbod-completion",   group_index = 1 },
+                    { name = "luasnip",               max_item_count = 5,  group_index = 1 },
+                    { name = "nvim_lsp",              max_item_count = 20, group_index = 1 },
+                    { name = "nvim_lua",              group_index = 1 },
+                    { name = "vim-dadbod-completion", group_index = 1 },
                     -- { name = "copilot",                 max_item_count = 5, group_index = 1},
-                    { name = "path",                    group_index = 2 },
-                    { name = "buffer",                  keyword_length = 2,  max_item_count = 5, group_index = 2 },
-                    { name = "copilot",                 max_item_count = 5, group_index = 3},
+                    { name = "path",                  group_index = 2 },
+                    { name = "buffer",                keyword_length = 2,  max_item_count = 5, group_index = 2 },
+                    { name = "copilot",               max_item_count = 5,  group_index = 3 },
+                    { name = "cmdline",               group_index = 2 },
+                    { name = "zsh",                   group_index = 2 },
+                    { name = "cmp-dbee",              group_index = 2 },
                 },
             })
         end

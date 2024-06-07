@@ -64,8 +64,8 @@ return {
             vim.keymap.set("n", "gx", vim.lsp.buf.code_action, { desc = "Code action" })
             vim.keymap.set("v", "gx", vim.lsp.buf.code_action, { desc = "Code action" })
             vim.keymap.set("n", "go", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
-            vim.keymap.set("n", "gj", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
-            vim.keymap.set("n", "gk", vim.diagnostic.goto_prev, { desc = "Go to prev diagnostic" })
+            vim.keymap.set("n", "gl", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
+            vim.keymap.set("n", "gh", vim.diagnostic.goto_prev, { desc = "Go to prev diagnostic" })
             vim.keymap.set("n", "<leader>gw", vim.lsp.buf.add_workspace_folder, { desc = "Add workspace folder" })
             vim.keymap.set("n", "<leader>gr", vim.lsp.buf.remove_workspace_folder, { desc = "Remove workspace folder" })
         end
