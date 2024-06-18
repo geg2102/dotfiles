@@ -22,12 +22,14 @@ return {
                 end
             end
             local servers = {
-                jedi_language_server = {},
+                -- jedi_language_server = {},
                 lua_ls = require("plugins.lsp.servers.luals")(on_attach),
                 ruff_lsp = {},
                 texlab = {},
                 gopls = {},
                 tsserver = {},
+                pyright = {}
+
             }
             local server_names = {}
             for server_name, _ in pairs(servers) do
@@ -54,6 +56,28 @@ return {
                 cmd = {
                     "rustup", "run", "stable", "rust-analyzer"
                 }
+            }
+            nvim_lsp.pyright.setup {
+                capabilities = capabilities,
+                on_attach = on_attach,
+                before_init = function(_, config)
+                    config.settings.python.analysis.stubPath = vim.fs.joinpath(vim.fn.stdpath "data", "lazy",
+                        "python-type-stubs")
+                end,
+                settings = {
+                    pyright = {
+                        disableOrganizeImports = true,
+                        disableTaggedHints = true,
+                    },
+                    python = {
+                        analysis = {
+                            diagnosticSeverityOverrides = {
+                                -- https://github.com/microsoft/pyright/blob/main/docs/configuration.md#type-check-diagnostics-settings
+                                reportUndefinedVariable = "none",
+                            },
+                        },
+                    },
+                },
             }
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Goto definition" })
             vim.keymap.set("n", "gI", vim.lsp.buf.implementation, { desc = "Goto implementation" })

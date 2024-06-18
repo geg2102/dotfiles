@@ -98,7 +98,9 @@ lazy.setup({
         require("plugins.vimtex"),
         require("plugins.harpoon"),
         require("plugins.styler"),
+        { "microsoft/python-type-stubs" }
         --
+        -- require("plugins.telescope-azstorage")
     },
     default = {
         lazy = true
