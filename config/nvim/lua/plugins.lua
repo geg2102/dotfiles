@@ -91,7 +91,7 @@ lazy.setup({
         require("plugins.luasnip"),
         require("plugins.nvim-metals"),
         require("plugins.nvim-python-repl"),
-        require("plugins.nvim-r"),
+        -- require("plugins.nvim-r"),
         require("plugins.toggleterm"),
         -- require("plugins.vim-doge"),
         require("plugins.neogen"),

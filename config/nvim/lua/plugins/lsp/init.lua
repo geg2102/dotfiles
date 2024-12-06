@@ -26,7 +26,7 @@ return {
                 lua_ls = require("plugins.lsp.servers.luals")(on_attach),
                 ruff_lsp = {},
                 texlab = {},
-                gopls = {},
+                -- gopls = {},
                 tsserver = {},
                 pyright = {}
 

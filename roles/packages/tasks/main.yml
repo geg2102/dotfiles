@@ -1,4 +1,33 @@
 ---
+- name: Install packages for macOS/Darwin
+  become: no
+  homebrew:
+    name:
+      - bat
+      - curl
+      - cmake
+      - fd
+      - fzf
+      - htop
+      - jq
+      - node
+      - ripgrep
+      - tldr
+      - tmux
+      - wget
+      - zsh
+      - ninja
+      - gettext
+      - libtool
+      - autoconf
+      - automake
+      - pkg-config
+      - unzip
+      - lazygit
+  when: ansible_os_family == "Darwin"
+  tags:
+    - all packages
+
 - name: install debian tools
   become: yes
   apt: 
@@ -61,7 +90,7 @@
   tags: 
     - all packages
 
-- name: install lazygit 
+- name: install lazygit
   become: yes
   shell: |
     LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
@@ -69,7 +98,8 @@
     tar xf lazygit.tar.gz lazygit
     install lazygit /usr/local/bin
     rm -rf lazygit*
-  tags: 
+  when: ansible_os_family != "Darwin"   # Run only on non-macOS systems
+  tags:
     - lazygit
     - allpackages
 

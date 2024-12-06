@@ -2,3 +2,5 @@
 oh-my-zsh/
 config/github-copilot
 config/nvim/db_ui
+.aider*
+.env

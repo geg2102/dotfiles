@@ -20,11 +20,22 @@
     - allconfigs
     - zsh
 
-- name: Install oh-my-zsh
-  git: 
+- name: Install oh-my-zsh on macOS
+  shell: |
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  args:
+    executable: /bin/zsh
+  when:
+    - not oh_my_zsh_stat.stat.exists
+    - ansible_system == 'Darwin'
+
+- name: Install oh-my-zsh on Linux
+  git:
     repo: https://github.com/ohmyzsh/ohmyzsh.git
     dest: "{{ user_home }}/.oh-my-zsh"
-  when: not oh_my_zsh_stat.stat.exists
+  when:
+    - not oh_my_zsh_stat.stat.exists
+    - ansible_system != 'Darwin'
   tags: 
     - allconfigs
     - zsh
@@ -39,7 +50,7 @@
     - zsh
     - ohmyzsh
 
-- name: Zsh autosuggestions
+- name: Zsh powerlevel
   git: 
     repo: https://github.com/romkatv/powerlevel10k.git
     dest: "{{ user_home }}/.oh-my-zsh/custom/themes/powerlevel10k"
