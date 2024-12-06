@@ -16,23 +16,29 @@ return {
         event = { "BufReadPre", "BufNewFile" },
         config = function()
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
+            capabilities.offsetEncoding = { "utf-16" }
             local on_attach = function(client, bufnr)
                 if client.server_capabilities.documentSymbolProvider then
                     require("nvim-navic").attach(client, bufnr)
                 end
+                -- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(require("noice.lsp.hover").on_hover,
+                --     { border = "rounded" })
             end
             local servers = {
                 -- jedi_language_server = {},
                 lua_ls = require("plugins.lsp.servers.luals")(on_attach),
-                ruff_lsp = {},
                 texlab = {},
                 -- gopls = {},
-                tsserver = {},
-                pyright = {}
-
+                clangd = require("plugins.lsp.servers.clangd")(on_attach),
+                ruff = {},
+                -- tsserver = {},
+                -- basedpyright = {}
             }
             local server_names = {}
             for server_name, _ in pairs(servers) do
+                if server_name == "ts_ls" then
+                    server_name = "tsserver"
+                end
                 table.insert(server_names, server_name)
             end
             require("mason-lspconfig").setup({
@@ -50,39 +56,50 @@ return {
                     }
                 }
             end
-            nvim_lsp.rust_analyzer.setup {
+            nvim_lsp.ts_ls.setup {
                 capabilities = capabilities,
                 on_attach = on_attach,
-                cmd = {
-                    "rustup", "run", "stable", "rust-analyzer"
+                flags = {
+                    debounce_text_changes = 200,
+                    allow_incremental_sync = true
                 }
             }
-            nvim_lsp.pyright.setup {
+
+            nvim_lsp.basedpyright.setup({
                 capabilities = capabilities,
                 on_attach = on_attach,
-                before_init = function(_, config)
-                    config.settings.python.analysis.stubPath = vim.fs.joinpath(vim.fn.stdpath "data", "lazy",
-                        "python-type-stubs")
-                end,
                 settings = {
-                    pyright = {
-                        disableOrganizeImports = true,
-                        disableTaggedHints = true,
-                    },
-                    python = {
+                    basedpyright = {
                         analysis = {
+                            autoSearchPaths = true,
+                            diagnosticMode = "openFilesOnly",
+                            useLibraryCodeForTypes = true,
+                            stubPath = vim.fn.stdpath "data" .. "/lazy/python-type-stubs",
+                            disableTaggedHints = true,
+                            disableOrganizeImports = true, --using ruff
+                            reportUnkownVariableType = false,
+                            typeCheckingMode = "standard", -- using mypy
                             diagnosticSeverityOverrides = {
-                                -- https://github.com/microsoft/pyright/blob/main/docs/configuration.md#type-check-diagnostics-settings
                                 reportUndefinedVariable = "none",
                             },
+                            extraPaths = (function()
+                                local root_dir = vim.fn.getcwd()
+                                local extra_paths = {}
+                                for _, dir in ipairs(vim.fn.glob(root_dir .. "/*", 0, 1)) do
+                                    if vim.fn.isdirectory(dir) == 1 then
+                                        table.insert(extra_paths, dir)
+                                    end
+                                end
+                                return extra_paths
+                            end)(),
                         },
-                    },
+                    }
                 },
-            }
+            })
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Goto definition" })
             vim.keymap.set("n", "gI", vim.lsp.buf.implementation, { desc = "Goto implementation" })
             vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, { desc = "Rename" })
-            vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
+            vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, { desc = "Hover" })
             vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, { desc = "Signature Help" })
             vim.keymap.set("n", "gK", vim.lsp.buf.signature_help, { desc = "Signature Help" })
             vim.keymap.set("n", "gx", vim.lsp.buf.code_action, { desc = "Code action" })
@@ -90,8 +107,6 @@ return {
             vim.keymap.set("n", "go", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
             vim.keymap.set("n", "gl", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
             vim.keymap.set("n", "gh", vim.diagnostic.goto_prev, { desc = "Go to prev diagnostic" })
-            vim.keymap.set("n", "<leader>gw", vim.lsp.buf.add_workspace_folder, { desc = "Add workspace folder" })
-            vim.keymap.set("n", "<leader>gr", vim.lsp.buf.remove_workspace_folder, { desc = "Remove workspace folder" })
         end
     }
 }

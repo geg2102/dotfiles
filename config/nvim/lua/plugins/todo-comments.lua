@@ -2,7 +2,6 @@ return {
     {
         "folke/todo-comments.nvim",
         dependencies = "nvim-lua/plenary.nvim",
-        lazy = true,
         config = function()
             require("todo-comments").setup {
             }
@@ -14,6 +13,5 @@ return {
         vim.keymap.set("n", "[t", function()
             require("todo-comments").jump_prev()
         end, { desc = "Previous todo comment" })
- 
     }
 }

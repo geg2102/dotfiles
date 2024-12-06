@@ -18,9 +18,9 @@ return {
             require("null-ls").setup({
                 debug = true,
                 sources = {
-                    require("null-ls").builtins.formatting.black.with({
-                        extra_args = { "--preview", "--line-length=88" }
-                    }),
+                    -- require("null-ls").builtins.formatting.black.with({
+                    --     extra_args = { "--preview", "--line-length=88" }
+                    -- }),
                     -- require("null-ls").builtins.diagnostics.mypy.with({
                     --     extra_args = function()
                     --         local virtual = os.capture("which python", false)
@@ -28,8 +28,8 @@ return {
                     --             "--ignore-missing-imports" }
                     --     end,
                     -- }), --extra_args = "--ignore-missing-imports" }),
-                    -- require("null-ls").builtins.diagnostics.ruff.with({}),
-                    require("null-ls").builtins.formatting.isort.with({}),
+                    -- -- require("null-ls").builtins.diagnostics.ruff.with({}),
+                    -- require("null-ls").builtins.formatting.isort.with({}),
                     require("null-ls").builtins.formatting.prettier.with({
                         filetypes = { "html", "json", "yaml", "graphql", "md", "txt", "css", "jsx", "tsx", "js", "ts" }
                     }),

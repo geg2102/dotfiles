@@ -6,8 +6,11 @@ return {
                 themes = {
                     javascript = { colorscheme = "catppuccin-latte" },
                     typescript = { colorscheme = "catppuccin-latte" },
+                    html = { colorscheme = "catppuccin-latte" },
+                    css = { colorscheme = "catppuccin-latte" },
                     javascriptreact = { colorscheme = "catppuccin-latte" },
-                    typescriptreact = { colorscheme = "catppuccin-latte"}
+                    typescriptreact = { colorscheme = "catppuccin-latte" },
+                    rust = { colorscheme = "catppuccin-latte" },
                 }
             }
             )

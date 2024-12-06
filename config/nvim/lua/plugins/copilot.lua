@@ -13,7 +13,12 @@ return {
                         next = "<C-]"
                     }
                 },
-                panel = { enabled = false }
+                panel = { enabled = false },
+                server_opts_overrides = {
+                    capabilities = {
+                        offsetEncoding = { "utf-16" }
+                    },
+                }
             })
         end
     }

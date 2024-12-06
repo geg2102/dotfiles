@@ -19,7 +19,7 @@ return {
                     { "kndndrj/nvim-dbee" }
                 },
                 ft = "sql", -- optional but good to have
-                opts = {}, -- needed
+                opts = {},  -- needed
             },
         },
         -- ft = { "python", "lua", "sh", "r", "cpp", "tex" },
@@ -56,7 +56,7 @@ return {
                 window = {
                     completion = cmp.config.window.bordered({}),
                     documentation = cmp.config.window.bordered({}),
-                    hover = cmp.config.window.bordered(),
+                    -- hover = cmp.config.window.bordered(),
                 },
                 snippet = {
                     expand = function(args)
@@ -69,8 +69,24 @@ return {
                     ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
                     ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
                     ["<CR>"] = cmp.mapping.confirm({ select = false }),
-                    ["<Tab>"] = cmp_next,
-                    ["<S-Tab>"] = cmp_prev
+                    ["<Tab>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_next_item()
+                        elseif require("luasnip").expand_or_locally_jumpable() then
+                            require("luasnip").expand_or_jump()
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
+                    ["<S-Tab>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item()
+                        elseif require("luasnip").locally_jumpable(-1) then
+                            require("luasnip").jump(-1)
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
                 },
                 formatting = {
                     format = require("lspkind").cmp_format({
@@ -81,16 +97,16 @@ return {
                 sources = {
                     -- { name = "nvim_lsp_signature_help", group_index = 1 },
                     { name = "luasnip",               max_item_count = 5,  group_index = 1 },
-                    { name = "nvim_lsp",              max_item_count = 20, group_index = 1 },
+                    { name = "nvim_lsp",              max_item_count = 25, group_index = 1 },
                     { name = "nvim_lua",              group_index = 1 },
                     { name = "vim-dadbod-completion", group_index = 1 },
                     -- { name = "copilot",                 max_item_count = 5, group_index = 1},
                     { name = "path",                  group_index = 2 },
                     { name = "buffer",                keyword_length = 2,  max_item_count = 5, group_index = 2 },
-                    { name = "copilot",               max_item_count = 5,  group_index = 3 },
-                    { name = "cmdline",               group_index = 2 },
+                    -- { name = "copilot",               max_item_count = 5, group_index = 3 },
+                    -- { name = "cmdline",               group_index = 2 },
                     { name = "zsh",                   group_index = 2 },
-                    { name = "cmp-dbee",              group_index = 2 },
+                    -- { name = "cmp-dbee",              group_index = 2 },
                 },
             })
         end

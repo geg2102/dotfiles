@@ -1,12 +1,12 @@
 return {
     {
-        "anuvyklack/hydra.nvim",
-        dependencies = { "anuvyklack/keymap-layer.nvim", "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui", "nvim-neotest/nvim-nio"},
-        keys = {
-            { "<leader>dh", "", { desc = "Dap Hydra" } },
-            { "<leader>g",  "", { desc = "Git Hydra" } },
-            { "<leader>ht", "", { desc = "Telescope Hydra" } }
-        },
+        "nvimtools/hydra.nvim",
+        dependencies = { "anuvyklack/keymap-layer.nvim", "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui", "nvim-neotest/nvim-nio" },
+        -- keys = {
+        --     { "<leader>dh", "", { desc = "Dap Hydra" } },
+        --     { "<leader>g",  "", { desc = "Git Hydra" } },
+        --     { "<leader>ht", "", { desc = "Telescope Hydra" } }
+        -- },
         config = function()
             local Hydra = require('hydra')
             local dap = require 'dap'
@@ -27,7 +27,6 @@ return {
                     invoke_on_body = true,
                     hint = {
                         position = 'bottom',
-                        border = 'rounded'
                     },
                 },
                 name = 'dap',
@@ -77,7 +76,6 @@ return {
                     color = 'pink',
                     invoke_on_body = true,
                     hint = {
-                        border = 'rounded'
                     },
                     on_enter = function()
                         vim.cmd 'mkview'
@@ -159,7 +157,6 @@ return {
                     invoke_on_body = true,
                     hint = {
                         position = 'middle',
-                        border = 'rounded',
                     },
                 },
                 mode = 'n',

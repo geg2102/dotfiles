@@ -1,5 +1,6 @@
 require("general")
 require("commands")
+-- require("plugins.telescope-azstorage")
 if vim.g.noplugins == nil then
     require("plugins")
 else
