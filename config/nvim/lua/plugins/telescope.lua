@@ -14,6 +14,9 @@ return {
                     file_browser = {
                         hijack_netrw = true,
                     },
+                    az_storage = {
+                        account_name = "tdrdsblob"
+                    },
                     defaults = {
                         mappings = {
                             i = {
@@ -43,6 +46,13 @@ return {
             { '""',         "<cmd>Telescope registers<CR>",                                  desc = "Search registers" },
             { "gr",         "<cmd>Telescope lsp_references<CR>",                             desc = "Lsp references" },
         }
+    },
+    {
+        dir = "~/azstorage-browser",
+        dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+        config = function()
+            require("telescope").load_extension("az_storage")
+        end
     },
     {
         "nvim-telescope/telescope-file-browser.nvim",

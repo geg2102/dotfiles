@@ -197,3 +197,7 @@ export XDG_CONFIG_HOME=$HOME/dotfiles/config
 
 # To customize prompt, run `p10k configure` or edit ~/dotfiles/config/p10k.zsh.
 [[ ! -f ~/dotfiles/config/p10k.zsh ]] || source ~/dotfiles/config/p10k.zsh
+
+if [ -f ~/.env ]; then 
+    source ~/.env
+fi
