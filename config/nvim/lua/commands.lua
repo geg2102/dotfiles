@@ -177,25 +177,3 @@ vim.api.nvim_create_autocmd({ 'Filetype', 'BufEnter' }, {
     callback = change_colorscheme,
 })
 
--- you need to run this after the plugin runs.
-local buf = vim.api.nvim_get_current_buf()
-local group = 'jupyterrender_' .. buf
-
--- Clear the plugin’s autocmd
-vim.api.nvim_clear_autocmds({ group = group, buffer = buf })
-
--- Recreate it and include BufWritePre and BufWritePost calls
-vim.api.nvim_create_autocmd("BufWriteCmd", {
-    group = group,
-    buffer = buf,
-    callback = function()
-        vim.cmd('doautocmd <nomodeline> BufWritePre')
-        print("saving notebook") -- anything you want
-        local nb = require('nvim-jupyter-client').get_notebook()
-        if nb then
-            nb:save()
-            vim.bo[buf].modified = false
-        end
-        vim.cmd('doautocmd <nomodeline> BufWritePost')
-    end
-})
