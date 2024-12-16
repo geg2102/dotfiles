@@ -31,10 +31,10 @@ return {
             end
 
             require("lualine").setup {
-                options = {
-                    -- theme = "kanagawa",
-                    globalstatus = true,
-                },
+                -- options = {
+                --     -- theme = "kanagawa",
+                --     globalstatus = true,
+                -- },
                 sections = {
                     lualine_a = { "mode" },
                     lualine_b = { "branch" },
@@ -57,13 +57,13 @@ return {
                         },
                         { "filename", path = 1, symbols = { modified = "  ", readonly = "", unnamed = "" } },
                         -- stylua: ignore
-                        {
-                            function() return require("nvim-navic").get_location() end,
-                            cond = function()
-                                return package.loaded["nvim-navic"] and
-                                    require("nvim-navic").is_available()
-                            end,
-                        },
+                        -- {
+                        --     function() return require("nvim-navic").get_location() end,
+                        --     cond = function()
+                        --         return package.loaded["nvim-navic"] and
+                        --             require("nvim-navic").is_available()
+                        --     end,
+                        -- },
                     },
                     lualine_x = {
                         -- stylua: ignore

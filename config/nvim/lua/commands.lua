@@ -144,27 +144,45 @@ local function change_colorscheme()
 
     local exclude_filetypes = { "qf", "help", "TelescopePrompt", "noice", "cmdwin" }
     if is_special(exclude_filetypes, filetype) then
+        vim.cmd("hi clear")
+        vim.cmd.colorscheme(_G.current_colorscheme)
         return
     end
 
     local special_filetypes = { "rust", "javascript", "typescript", "javascriptreact", "typescriptreact" }
 
     if is_special(special_filetypes, filetype) then
-        _G.current_colorscheme = "catppuccin-latte"
-        vim.schedule(function()
-            vim.cmd.colorscheme(_G.current_colorscheme)
-            require("lualine").setup {
-                options = { theme = "catppuccin" }
-            }
-        end)
+        if _G.current_colorscheme ~= "catppucin-latte" then
+            vim.schedule(function()
+                _G.current_colorscheme = "catppuccin-latte"
+                vim.cmd.colorscheme(_G.current_colorscheme)
+                vim.go.background = "light"
+            end
+            )
+            -- require("lualine").setup({
+            --     options = {
+            --         theme = "catppuccin"
+            --     }
+            -- })
+        else
+            return
+        end
     else
-        _G.current_colorscheme = "kanagawa-wave"
-        vim.schedule(function()
-            vim.cmd.colorscheme(_G.current_colorscheme)
-            require("lualine").setup {
-                options = { theme = "kanagawa" }
-            }
-        end)
+        if _G.current_colorscheme ~= "kanagawa-wave" then
+            vim.schedule(function()
+                _G.current_colorscheme = "kanagawa-wave"
+                vim.cmd.colorscheme(_G.current_colorscheme)
+                vim.go.background = "dark"
+            end
+            )
+            -- require("lualine").setup({
+            --     options = {
+            --         theme = "kanagawa"
+            --     }
+            -- })
+        else
+            return
+        end
     end
 end
 
@@ -176,4 +194,3 @@ vim.api.nvim_create_autocmd({ 'Filetype', 'BufEnter' }, {
     pattern = '*',
     callback = change_colorscheme,
 })
-
