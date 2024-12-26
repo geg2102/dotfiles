@@ -108,6 +108,7 @@ lazy.setup({
         require("plugins.nvim-dap"),
         require("plugins.nvim-dap-ui"),
         require("plugins.sniprun"),
+        require("plugins.smear-cursor"),
         { "microsoft/python-type-stubs" }
         --
         -- require("plugins.telescope-azstorage")
