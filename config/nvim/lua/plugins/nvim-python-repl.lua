@@ -1,6 +1,7 @@
 return {
     {
-        dir = "~/nvim-python-repl",
+        -- dir = "~/nvim-python-repl",
+        "geg2102/nvim-python-repl",
         event = "InsertEnter", -- You might want to adjust this event for better plugin loading timing
         config = function()
             -- Setup the REPL plugin
