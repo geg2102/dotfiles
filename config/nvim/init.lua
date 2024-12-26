@@ -1,5 +1,6 @@
-require("general")
-require("commands")
+require("options")
+require("autocommands")
+require("keymaps")
 -- require("plugins.telescope-azstorage")
 if vim.g.noplugins == nil then
     require("plugins")
