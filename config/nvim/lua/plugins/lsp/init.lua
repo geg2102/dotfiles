@@ -15,7 +15,7 @@ return {
         },
         event = { "BufReadPre", "BufNewFile" },
         config = function()
-            local capabilities = require("cmp_nvim_lsp").default_capabilities()
+            local capabilities = require("blink.cmp").get_lsp_capabilities()
             capabilities.offsetEncoding = { "utf-16" }
             local on_attach = function(client, bufnr)
                 if client.server_capabilities.documentSymbolProvider then

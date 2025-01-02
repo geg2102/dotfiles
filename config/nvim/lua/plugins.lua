@@ -32,12 +32,14 @@ lazy.setup({
         require("plugins.nvim-ufo"),
         require("plugins.tint"),
         require("plugins.vim-illuminate"),
-        require("plugins.vim-smoothie"),
+        -- require("plugins.vim-smoothie"),
         require("plugins.noice"),
         require("plugins.markdown"),
+        require("plugins.smear-cursor"),
 
         -- lsp
-        require("plugins.cmp"),
+        -- require("plugins.cmp"),
+        require("plugins.blink"),
         require("plugins.neodev"),
         require("plugins.lsp"),
         require("plugins.mason"),
@@ -63,14 +65,14 @@ lazy.setup({
         require("plugins.mini"),
 
         -- convenience
-        require("plugins.accelerated-jk"),
+        -- require("plugins.accelerated-jk"),
         require("plugins.alpha-nvim"),
         require("plugins.barbecue"),
         require("plugins.diffview"),
         require("plugins.marks"),
         require("plugins.nvim-autopairs"),
         require("plugins.nvim-surround"),
-        require("plugins.oil"),
+        -- require("plugins.oil"),
         require("plugins.quick-scope"),
         require("plugins.trouble"),
         require("plugins.suda"),
@@ -108,7 +110,6 @@ lazy.setup({
         require("plugins.nvim-dap"),
         require("plugins.nvim-dap-ui"),
         require("plugins.sniprun"),
-        require("plugins.smear-cursor"),
         { "microsoft/python-type-stubs" }
         --
         -- require("plugins.telescope-azstorage")
