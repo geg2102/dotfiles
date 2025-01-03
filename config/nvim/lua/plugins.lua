@@ -90,7 +90,7 @@ lazy.setup({
         -- require("plugins.hydra"),
         require("plugins.lazygit"),
         require("plugins.neogit"),
-        require("plugins.luasnip"),
+        -- require("plugins.luasnip"),
         require("plugins.nvim-metals"),
         require("plugins.nvim-python-repl"),
         require("plugins.nvim-jupyter-client"),

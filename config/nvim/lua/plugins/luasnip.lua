@@ -22,12 +22,12 @@ return {
             if luasnip.jumpable(-1) then
                 luasnip.jump(-1)
             end
-        end, {desc = "Go to previous snippet", silent = true })
+        end, { desc = "Go to previous snippet", silent = true })
 
         vim.keymap.set("i", "<c-l>", function()
             if luasnip.choice_active() then
                 luasnip.change_choice(1)
             end
-        end, {desc = "Show list of options for snippets"})
+        end, { desc = "Show list of options for snippets" })
     end,
 }
