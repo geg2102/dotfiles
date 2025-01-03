@@ -1,8 +1,8 @@
 return {
     "tpope/vim-dadbod",
     dependencies = {
-        { 'kristijanhusak/vim-dadbod-ui' },
-        -- { "ctdunc/vim-dadbod-ui-snowflake",       branch = "snowflake" },
+        -- { 'kristijanhusak/vim-dadbod-ui' },
+        { "ctdunc/vim-dadbod-ui-snowflake",       branch = "snowflake" },
         { "kristijanhusak/vim-dadbod-completion", ft = { 'sql', 'mysql', 'plsql' }, lazy = true },
     },
     -- opts = {
