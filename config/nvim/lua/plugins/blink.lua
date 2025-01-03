@@ -19,7 +19,13 @@ return {
             -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
             -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
             -- See the full "keymap" documentation for information on defining your own keymap.
-            keymap = { preset = 'default' },
+            keymap = {
+                preset      = "default",
+                ["<C-y>"]   = { "select_and_accept" },
+                ["<Tab>"]   = { "select_next", "fallback" },
+                ["<S-Tab>"] = { "select_prev", "fallback" },
+            },
+            -- keymap = { preset = 'default' },
             sources = {
                 default = { "lsp", "path", "snippets", "buffer", "dadbod", },
                 providers = {
@@ -51,12 +57,17 @@ return {
             },
 
             completion = {
-                documentation = { auto_show = true, auto_show_delay_ms = 500 }
+                accept = {
+                    auto_brackets = { enabled = true },
+                },
+                menu = { draw = { treesitter = { "lsp" }, }, border = "single" },
+                documentation = { auto_show = true, auto_show_delay_ms = 200, window = { border = "single" } },
+                ghost_text = { enabled = vim.g.ai_cmp },
+                trigger = { show_on_insert_on_trigger_character = false }
 
             },
 
-            signature = { enabled = true }
-
+            signature = { enabled = false, window = { border = "single" } },
         },
         opts_extend = { "sources.default" }
     }

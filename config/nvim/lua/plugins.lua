@@ -54,7 +54,6 @@ lazy.setup({
         -- treesitter
         require("plugins.treesitter"),
         -- require("plugins.nvim-treesitter-textsubjects"),
-        require("plugins.nvim-ts-rainbow2"),
         require("plugins.rainbow-delimiters"),
 
         -- navigation
