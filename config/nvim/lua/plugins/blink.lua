@@ -22,7 +22,7 @@ return {
             keymap = {
                 -- preset      = "default",
                 ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
-                ['<C-e>']     = { 'hide' },
+                -- ['<C-e>']     = { 'hide' },
                 ["<C-y>"]     = { "select_and_accept" },
                 ["<Tab>"]     = { "select_next", "fallback" },
                 ["<S-Tab>"]   = { "select_prev", "fallback" },
@@ -75,6 +75,7 @@ return {
 
             signature = { enabled = false, window = { border = "single" } },
             snippets = {
+                preset = "luasnip",
                 expand = function(snippet) require('luasnip').lsp_expand(snippet) end,
                 active = function(filter)
                     if filter and filter.direction then
