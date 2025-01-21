@@ -99,7 +99,7 @@ lazy.setup({
         -- require("plugins.vim-doge"),
         require("plugins.neogen"),
         require("plugins.vimtex"),
-        require("plugins.harpoon"),
+        -- require("plugins.harpoon"),
         -- require("plugins.styler"),
         require("plugins.avante"),
         require("plugins.nvim-bqf"),

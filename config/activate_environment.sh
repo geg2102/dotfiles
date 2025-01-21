@@ -32,7 +32,7 @@ revert_to_base() {
 
 act() {
     conda activate $1
-    poetry config virtualenvs.path $(which python | sed 's|/bin/python||')
+    # poetry config virtualenvs.path $(which python | sed 's|/bin/python||')
 }
 
 check_name_against_envs() {

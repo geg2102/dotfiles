@@ -61,6 +61,12 @@ alias halt="sudo systemctl halt"
 alias jlremote='f(){ jupyter lab --ip 0.0.0.0 --port=$1 --no-browser}; f'
 alias addenv='f(){ python -m ipykernel install --user --name=$1}; f'
 
+function conuv() {
+    conda deactivate
+    conda deactivate
+    source .venv/bin/activate
+}
+
 bindkey '^P' up-history
 bindkey '^N' down-history
 bindkey '^?' backward-delete-char
