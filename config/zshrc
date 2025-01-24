@@ -207,3 +207,7 @@ export XDG_CONFIG_HOME=$HOME/dotfiles/config
 if [ -f ~/.env ]; then 
     source ~/.env
 fi
+
+# For vim-dadbod-ui it helps display
+export SQLCMDMAXVARTYPEWIDTH=36
+export SQLCMDMAXFIXEDTYPEWIDTH=36
