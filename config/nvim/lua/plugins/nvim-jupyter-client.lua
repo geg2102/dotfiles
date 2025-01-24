@@ -1,7 +1,7 @@
 return {
     {
-        -- dir = "~/nvim-jupyter-client",
-        "geg2102/nvim-jupyter-client",
+        dir = "~/nvim-jupyter-client",
+        -- "geg2102/nvim-jupyter-client",
         config = function()
             require("nvim-jupyter-client").setup({
                 -- cell_highlight_group = "Mycustomgroup",
@@ -23,6 +23,9 @@ return {
         vim.keymap.set("n", "<leader>jm", "<cmd>JupyterMergeCellAbove<CR>", { desc = "Merge with cell above" }),
         vim.keymap.set("n", "<leader>jM", "<cmd>JupyterMergeCellBelow<CR>", { desc = "Merge with cell below" }),
         vim.keymap.set("n", "<leader>jt", "<cmd>JupyterConvertCellType<CR>",
-            { desc = "Convert cell type (code/markdown)" })
+            { desc = "Convert cell type (code/markdown)" }),
+        vim.keymap.set("v", "<leader>jm", "<cmd>JupyterMergeVisual<CR>", { desc = "Merge selected cells" }),
+        vim.keymap.set("n", "<leader>jD", "<cmd>JupyterDeleteCell<CR>",
+            { desc = "Delete cell under cursor and store in register" }),
     }
 }
