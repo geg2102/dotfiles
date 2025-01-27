@@ -178,10 +178,10 @@ export PATH="$PATH:/usr/local/go/bin"
 # eval "$(pyenv init -)"
 #
 #
-act() {
-    conda activate $1
-    poetry config virtualenvs.path $(which python | sed 's|/bin/python||')
-}
+# act() {
+#     conda activate $1
+#     poetry config virtualenvs.path $(which python | sed 's|/bin/python||')
+# }
 
 cpgg() {
     BASE_DIR="/mnt/datascience-team-fileshare/Team/GG"

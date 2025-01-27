@@ -26,17 +26,40 @@ if [ "$TMUX_RUNNING" -eq 0 ]; then
 	fi
 fi
 
+
 revert_to_base() {
+    conda deactivate &>/dev/null || true # Ensure any active env is deactivated
     conda activate base
 }
 
+# Activate the appropriate environment
 act() {
-    conda activate $1
-    # poetry config virtualenvs.path $(which python | sed 's|/bin/python||')
+    local ENV_NAME=$1
+
+    # Check if a local `.venv` exists and activate it
+    if [ -d ".venv" ] && [ -f ".venv/bin/activate" ]; then
+        conda deactivate &>/dev/null || true # Ensure Conda envs are deactivated
+        source .venv/bin/activate
+    # Check if it's a Poetry project
+    elif [ -f "pyproject.toml" ]; then 
+        poetry config virtualenvs.path "$(which python | sed 's|/bin/python||')"
+        conda deactivate &>/dev/null || true # Ensure Conda envs are deactivated
+        conda activate "$ENV_NAME"
+    # Otherwise, activate the Conda environment
+    else
+        conda deactivate &>/dev/null || true # Ensure previous envs are deactivated
+        conda activate "$ENV_NAME"
+    fi
 }
+
 
 check_name_against_envs() {
     local NAME_TO_CHECK=$1
+
+    if [ -d ".venv" ] && [ -f ".venv/bin/activate" ]; then
+        return 0
+    fi
+
     for env in "${CONDA_ENVS[@]}"; do
         if [ "$NAME_TO_CHECK" = "$env" ]; then
             return 0
