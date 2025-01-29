@@ -139,3 +139,10 @@ vim.api.nvim_create_autocmd({ 'Filetype', 'BufEnter' }, {
     pattern = '*',
     callback = change_colorscheme,
 })
+
+vim.api.nvim_create_autocmd({ "FileType", "BufEnter" }, {
+    pattern = { "DiffviewFiles", "DiffviewFileHistory", "DiffviewFilePanel" },
+    callback = function()
+        vim.cmd("vert resize 30")
+    end,
+})
