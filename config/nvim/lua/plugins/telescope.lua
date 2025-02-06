@@ -48,7 +48,8 @@ return {
         }
     },
     {
-        dir = "~/azstorage-browser",
+        -- dir = "~/azstorage-browser",
+        "geg2102/telescope-azure-storage-browser",
         dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
         config = function()
             require("telescope").load_extension("az_storage")
