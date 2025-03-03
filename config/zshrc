@@ -211,3 +211,7 @@ fi
 # For vim-dadbod-ui it helps display
 export SQLCMDMAXVARTYPEWIDTH=36
 export SQLCMDMAXFIXEDTYPEWIDTH=36
+
+# if [[ -n $SSH_TTY && -z $TMUX ]]; then
+#     $HOME/scripts/recent_advisor_files.sh
+# fi

@@ -1,9 +1,17 @@
 return {
+    -- {
+    --     "saghen/blink.compat",
+    --     version = "*",
+    --     dependencies = { "mattiasmts/cmp-dbee" },
+    --     lazy = true,
+    --     opts = { impersonate_nvim_cmp = true, debug = true }
+    --
+    -- },
 
     {
         'saghen/blink.cmp',
         -- optional: provides snippets for the snippet source
-        dependencies = { 'rafamadriz/friendly-snippets', { 'L3MON4D3/LuaSnip', version = 'v2.*' } },
+        dependencies = { "mattiasmts/cmp-dbee", 'rafamadriz/friendly-snippets', { 'L3MON4D3/LuaSnip', version = 'v2.*' } },
 
         -- use a release tag to download pre-built binaries
         version = '*',
@@ -48,23 +56,12 @@ return {
 
             },
             sources = {
-                default = { "lsp", "path", "snippets", "buffer", "dadbod", },
+                default = { "lsp", "path", "snippets", "buffer", "dadbod" }, -- "dbee", },
                 providers = {
-                    dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" }
+                    dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+                    -- dbee = { name = "cmp-dbee", module = "blink.compat.source" }
                 },
 
-                -- cmdline = function()
-                --     local type = vim.fn.getcmdtype()
-                --     -- Search forward and backward
-                --     if type == "/" or type == "?" then
-                --         return { "buffer" }
-                --     end
-                --     -- Commands
-                --     if type == ":" then
-                --         return { "cmdline" }
-                --     end
-                --     return {}
-                -- end,
             },
 
             appearance = {
@@ -101,6 +98,6 @@ return {
                 jump = function(direction) require('luasnip').jump(direction) end,
             },
         },
-        opts_extend = { "sources.default" }
+        opts_extend = { "sources.default", "sources.providers" }
     }
 }

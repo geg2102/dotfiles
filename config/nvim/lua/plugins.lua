@@ -86,7 +86,7 @@ lazy.setup({
         require("plugins.copilot"),
         -- require("plugins.copilotchat"),
         require("plugins.dadbod"),
-        -- require("plugins.dbee"),
+        require("plugins.dbee"),
         -- require("plugins.hydra"),
         require("plugins.lazygit"),
         require("plugins.neogit"),
