@@ -3,6 +3,14 @@ return {
     event = "VeryLazy",
     lazy = "false",
     opts = {
+        provider = "claude",
+        claude = {
+            endpoint = "https://api.anthropic.com",
+            model = "claude-3-7-sonnet-20250219",
+            timeout = 30000, -- Timeout in milliseconds
+            temperature = 0,
+            max_tokens = 8000,
+        },
         behaviour = {
             enable_project_context_for_as = true,
         }

@@ -32,13 +32,8 @@ return {
                 ['<C-f>']     = { 'scroll_documentation_down', 'fallback' },
             },
             -- keymap = { preset = 'default' },
-            sources = {
-                default = { "lsp", "path", "snippets", "buffer", "dadbod", },
-                providers = {
-                    dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" }
-                },
-
-                cmdline = function()
+            cmdline = {
+                sources = function()
                     local type = vim.fn.getcmdtype()
                     -- Search forward and backward
                     if type == "/" or type == "?" then
@@ -50,6 +45,26 @@ return {
                     end
                     return {}
                 end,
+
+            },
+            sources = {
+                default = { "lsp", "path", "snippets", "buffer", "dadbod", },
+                providers = {
+                    dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" }
+                },
+
+                -- cmdline = function()
+                --     local type = vim.fn.getcmdtype()
+                --     -- Search forward and backward
+                --     if type == "/" or type == "?" then
+                --         return { "buffer" }
+                --     end
+                --     -- Commands
+                --     if type == ":" then
+                --         return { "cmdline" }
+                --     end
+                --     return {}
+                -- end,
             },
 
             appearance = {
