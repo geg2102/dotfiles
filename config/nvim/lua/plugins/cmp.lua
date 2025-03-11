@@ -22,8 +22,8 @@ return {
                 opts = {},  -- needed
             },
         },
-        -- ft = { "python", "lua", "sh", "r", "cpp", "tex" },
-        event = "InsertEnter",
+        ft = "sql",
+        -- event = "InsertEnter",
         config = function()
             local cmp = require("cmp")
             local lsp_kind = require("lspkind")
@@ -69,24 +69,24 @@ return {
                     ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
                     ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
                     ["<CR>"] = cmp.mapping.confirm({ select = false }),
-                    ["<Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_next_item()
-                        elseif require("luasnip").expand_or_locally_jumpable() then
-                            require("luasnip").expand_or_jump()
-                        else
-                            fallback()
-                        end
-                    end, { "i", "s" }),
-                    ["<S-Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_prev_item()
-                        elseif require("luasnip").locally_jumpable(-1) then
-                            require("luasnip").jump(-1)
-                        else
-                            fallback()
-                        end
-                    end, { "i", "s" }),
+                    -- ["<Tab>"] = cmp.mapping(function(fallback)
+                    --     if cmp.visible() then
+                    --         cmp.select_next_item()
+                    --     elseif require("luasnip").expand_or_locally_jumpable() then
+                    --         require("luasnip").expand_or_jump()
+                    --     else
+                    --         fallback()
+                    --     end
+                    -- end, { "i", "s" }),
+                    -- ["<S-Tab>"] = cmp.mapping(function(fallback)
+                    --     if cmp.visible() then
+                    --         cmp.select_prev_item()
+                    --     elseif require("luasnip").locally_jumpable(-1) then
+                    --         require("luasnip").jump(-1)
+                    --     else
+                    --         fallback()
+                    --     end
+                    -- end, { "i", "s" }),
                 },
                 formatting = {
                     format = require("lspkind").cmp_format({

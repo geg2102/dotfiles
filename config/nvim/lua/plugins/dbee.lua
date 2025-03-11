@@ -10,9 +10,9 @@ return {
             --    "curl", "wget", "bitsadmin", "go"
             require("dbee").install()
         end,
-        keys = {
-            "<leader>db",
-        },
+        -- keys = {
+        --     "<leader>db",
+        -- },
         config = function()
             require("dbee").setup({
                 sources = {
@@ -37,7 +37,7 @@ return {
             },
         },
         ft = { "sql" },
-        event = "InsertEnter",
+        -- event = "InsertEnter",
         config = function()
             local cmp = require("cmp")
             local lsp_kind = require("lspkind")
@@ -60,7 +60,7 @@ return {
                     end
                 },
                 mapping = {
-                    ["<C-e>"] = cmp.mapping.abort(),
+                    -- ["<C-e>"] = cmp.mapping.abort(),
                     ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
                     ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
                     ["<CR>"] = cmp.mapping.confirm({ select = false }),

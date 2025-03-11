@@ -10,15 +10,18 @@ return {
             timeout = 30000, -- Timeout in milliseconds
             temperature = 0,
             max_tokens = 8000,
+            disable_tools = true
         },
         behaviour = {
             enable_project_context_for_as = true,
-        }
+        },
+        file_selector = { provider = "telescope" }
     },
-    -- commit = "158170f9ed80631c7ee670b54e7f5c13403a8365",
+    -- commit = "284998a994c30535ecc43d4dcb859736309c7862",
     -- branch = "feat/repo-map",
     version = false,
-    build = "make BUILD_FROM_SOURCE=true",
+    -- build = "make BUILD_FROM_SOURCE=true",
+    build = "make",
     dependencies = {
         "stevearc/dressing.nvim",
         "nvim-lua/plenary.nvim",

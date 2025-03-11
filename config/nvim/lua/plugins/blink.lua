@@ -11,7 +11,7 @@ return {
     {
         'saghen/blink.cmp',
         -- optional: provides snippets for the snippet source
-        dependencies = { "mattiasmts/cmp-dbee", 'rafamadriz/friendly-snippets', { 'L3MON4D3/LuaSnip', version = 'v2.*' } },
+        dependencies = { "mattiasmts/cmp-dbee", 'rafamadriz/friendly-snippets', { 'L3MON4D3/LuaSnip', version = 'v2.*' }, "Kaiser-Yang/blink-cmp-avante" },
 
         -- use a release tag to download pre-built binaries
         version = '*',
@@ -56,9 +56,10 @@ return {
 
             },
             sources = {
-                default = { "lsp", "path", "snippets", "buffer", "dadbod" }, -- "dbee", },
+                default = { "avante", "lsp", "path", "snippets", "buffer", "dadbod" }, -- "dbee", },
                 providers = {
                     dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+                    avante = { name = "Avante", module = "blink-cmp-avante" },
                     -- dbee = { name = "cmp-dbee", module = "blink.compat.source" }
                 },
 
