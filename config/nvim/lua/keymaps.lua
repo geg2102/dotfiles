@@ -1,5 +1,9 @@
-vim.keymap.set("n", "<Space>", "za")
-vim.keymap.set("n", "<leader><Space>", "zA")
+vim.keymap.set('n', '<leader>U', function() vim.cmd([[%s/[^\x00-\x7F]//g]]) end, { desc = "Remove non-ascii characters" })
+
+vim.keymap.set("n", "<Space>", "za", { desc = "Toggle fold" })
+vim.keymap.set("n", "<leader><Space>", "zA", { desc = "Toggle all folds" })
+-- vim.keymap.set("n", "zR", require("ufo").openallFolds, { desc = "Open all folds" })
+-- vim.keymap.set("n", "zM", require("ufo").closeallFolds, { desc = "Close all folds" })
 
 -- vim.keymap.set("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format{async=true}<CR>")
 -- vim.keymap.set("i", "<leader>lf", "<cmd>lua vim.lsp.buf.format{async=true}<CR>")
@@ -9,6 +13,7 @@ vim.keymap.set("t", "<C-l>", "<C-\\><C-n><C-w>l")
 vim.keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h")
 vim.keymap.set("t", "<C-j>", "<C-\\><C-n><C-w>j")
 vim.keymap.set("t", "<C-k>", "<C-\\><C-n><C-w>k")
+vim.keymap.set("t", "<leader><Esc>", "<C-\\><C-n>")
 
 vim.keymap.set("n", "<leader>p", "<Plug>PlenaryTestFile", { desc = "Run test file you are in" })
 vim.keymap.set("n", "<leader>s", ":SymbolsOutline<CR>", { desc = "Open symbols outline" })
@@ -16,12 +21,12 @@ vim.keymap.set("n", "<leader>S", ":Navbuddy<CR>", { desc = "Open navbuddy" })
 
 vim.keymap.set("n", "<leader>s", ":SymbolsOutline<CR>", { desc = "Symbols outline" })
 
-vim.keymap.set("n", "yy", '"+yy', { desc = "Yanking" })
-vim.keymap.set("n", "y", '"+y', { desc = "Yanking" })
-vim.keymap.set("x", "y", '"+y', { desc = "Yanking" })
-vim.keymap.set("n", "Y", '"+y$', { desc = "Yanking" })
-vim.keymap.set("x", "Y", '"+Y', { desc = "Yanking" })
-
+-- vim.keymap.set("n", "yy", '"+yy', { desc = "Yanking" })
+-- vim.keymap.set("n", "y", '"+y', { desc = "Yanking" })
+-- vim.keymap.set("x", "y", '"+y', { desc = "Yanking" })
+-- vim.keymap.set("n", "Y", '"+y$', { desc = "Yanking" })
+-- vim.keymap.set("x", "Y", '"+Y', { desc = "Yanking" })
+--
 
 vim.keymap.set("n", "<C-i>", "<C-a>", { desc = "Increment number" })
 vim.keymap.set("x", "<C-i>", "g<C-a>", { desc = "Increment number" })

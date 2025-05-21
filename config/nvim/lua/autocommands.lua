@@ -32,14 +32,14 @@ R = function(name)
     return require(name)
 end
 
-vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
-    pattern = { "*.lua", "*.ipynb" },
-    group = vim.api.nvim_create_augroup("luabuffer", { clear = true }),
-    callback = function()
-        vim.keymap.set("n", "<leader>zz", function() R("nvim-jupyter-client") end, { desc = "Reload Lua File" })
-    end
-}
-)
+-- vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
+--     pattern = { "*.lua", "*.ipynb" },
+--     group = vim.api.nvim_create_augroup("luabuffer", { clear = true }),
+--     callback = function()
+--         vim.keymap.set("n", "<leader>zz", function() R("nvim-jupyter-client") end, { desc = "Reload Lua File" })
+--     end
+-- }
+-- )
 
 vim.api.nvim_create_autocmd({ "BufEnter" },
     {

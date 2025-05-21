@@ -48,7 +48,7 @@ lazy.setup({
         require("plugins.nvim-lint"),
         require("plugins.nvim-luaref"),
         require("plugins.nvim-navbuddy"),
-        require("plugins.nvim-navic"),
+        -- require("plugins.nvim-navic"),
         require("plugins.symbols-outline"),
 
         -- treesitter
@@ -102,6 +102,7 @@ lazy.setup({
         -- require("plugins.harpoon"),
         -- require("plugins.styler"),
         require("plugins.avante"),
+        -- require("plugins.goose"),
         -- require("plugins.codecompanion"),
         require("plugins.nvim-bqf"),
         require("plugins.which-key"),
@@ -109,8 +110,10 @@ lazy.setup({
         require("plugins.crates"),
         require("plugins.nvim-dap"),
         require("plugins.nvim-dap-ui"),
+        require("plugins.mssql"),
         -- require("plugins.sniprun"),
-        { "microsoft/python-type-stubs" }
+        { "microsoft/python-type-stubs" },
+        { "python/typeshed" }
         --
         -- require("plugins.telescope-azstorage")
     },

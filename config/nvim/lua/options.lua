@@ -25,9 +25,8 @@ vim.opt.scrolloff = 8
 vim.opt.swapfile = false
 vim.opt.splitbelow = true
 vim.opt.foldcolumn = "1"
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldlevelstart = 0
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
 vim.opt.foldenable = true
 vim.opt.completeopt = { "menuone", "noselect", "noinsert" }
 vim.opt.showmode = false
@@ -37,14 +36,15 @@ vim.g.vimtex_view_method = "skim"
 vim.g.db_ui_winwidth = 60
 vim.g.db_ui_use_nerd_fonts = 1
 vim.g.clipboard = {
-      name = 'OSC 52',
-      copy = {
+    name = 'OSC 52',
+    copy = {
         ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
         ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
-      },
-      paste = {
+    },
+    paste = {
         ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
         ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
-      },
-    }
+    },
+}
 
+vim.opt.clipboard:append("unnamedplus")

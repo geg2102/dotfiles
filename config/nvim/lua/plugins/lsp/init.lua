@@ -18,9 +18,9 @@ return {
             local capabilities = require("blink.cmp").get_lsp_capabilities()
             capabilities.offsetEncoding = { "utf-16" }
             local on_attach = function(client, bufnr)
-                if client.server_capabilities.documentSymbolProvider then
-                    require("nvim-navic").attach(client, bufnr)
-                end
+                -- if client.server_capabilities.documentSymbolProvider then
+                --     require("nvim-navic").attach(client, bufnr)
+                -- end
                 -- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(require("noice.lsp.hover").on_hover,
                 --     { border = "rounded" })
             end
@@ -49,7 +49,7 @@ return {
             for _, server in ipairs(server_names) do
                 nvim_lsp[server].setup {
                     capabilities = capabilities,
-                    on_attach = on_attach,
+                    -- on_attach = on_attach,
                     flags = {
                         debounce_text_changes = 200,
                         allow_incremental_sync = true
@@ -74,7 +74,9 @@ return {
                             autoSearchPaths = true,
                             diagnosticMode = "openFilesOnly",
                             useLibraryCodeForTypes = true,
-                            stubPath = vim.fn.stdpath "data" .. "/lazy/python-type-stubs",
+                            stubPath = vim.fn.stdpath "data" ..
+                                "/lazy/python-type-stubs" ..
+                                ":" .. vim.fn.stdpath "data" .. "/lazy/python-type-stubs/typings",
                             disableTaggedHints = true,
                             disableOrganizeImports = true, --using ruff
                             reportUnkownVariableType = false,
