@@ -1,3 +1,8 @@
+local lsp_utils = require("lsp_utils")
+
+vim.keymap.set("n", "<leader>ut", function() lsp_utils.toggle_basedpyright_settings() end,
+    { desc = "Toggle BasedPyright Settings" })
+
 vim.keymap.set('n', '<leader>U', function() vim.cmd([[%s/[^\x00-\x7F]//g]]) end, { desc = "Remove non-ascii characters" })
 
 vim.keymap.set("n", "<Space>", "za", { desc = "Toggle fold" })
@@ -30,7 +35,13 @@ vim.keymap.set("n", "<leader>s", ":SymbolsOutline<CR>", { desc = "Symbols outlin
 
 vim.keymap.set("n", "<C-i>", "<C-a>", { desc = "Increment number" })
 vim.keymap.set("x", "<C-i>", "g<C-a>", { desc = "Increment number" })
+vim.keymap.set("n", "\\c", function()
+    vim.cmd("/\\%" .. vim.fn.virtcol('.') .. "c\\S")
+end, { noremap = true })
 
+vim.keymap.set("n", "\\C", function()
+    vim.cmd("?\\%" .. vim.fn.virtcol('.') .. "c\\S")
+end, { noremap = true })
 -- vim.keymap.set("n", "cN", "<cmd>cnext<CR>zz", { desc = "Next quickfix" })
 -- vim.keymap.set("n", "cP", "<cmd>cprev<CR>zz", { desc = "Previous quickfix" })
 
@@ -57,3 +68,17 @@ vim.api.nvim_set_keymap('n', '<leader>sb', "<cmd>lua require('plugins.telescope-
     { noremap = true, silent = true })
 
 vim.keymap.set("n", "<leader>gf", ":Telescope git_file_history<CR>", { desc = "Github file history" })
+
+vim.keymap.set("n", "<leader>tc", function()
+    if _G.current_colorscheme == "kanagawa-wave" then
+        _G.current_colorscheme = "catppuccin-latte"
+        vim.cmd.colorscheme(_G.current_colorscheme)
+        vim.go.background = "light"
+        -- require("lualine").setup({ options = { theme = "catppuccin" } })
+    else
+        _G.current_colorscheme = "kanagawa-wave"
+        vim.cmd.colorscheme(_G.current_colorscheme)
+        vim.go.background = "dark"
+        -- require("lualine").setup({ options = { theme = "kanagawa" } })
+    end
+end, { desc = "Toggle colorscheme (kanagawa/catppuccin)" })

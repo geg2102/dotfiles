@@ -4,20 +4,27 @@ return {
     lazy = "false",
     opts = {
         provider = "claude",
-        claude = {
-            endpoint = "https://api.anthropic.com",
-            model = "claude-3-7-sonnet-20250219",
-            timeout = 30000, -- Timeout in milliseconds
-            temperature = 0,
-            max_tokens = 8000,
-            disable_tools = true
+        mode = "legacy",
+        providers = {
+            -- mode = "legacy",
+            claude = {
+                endpoint = "https://api.anthropic.com",
+                model = "claude-sonnet-4-20250514",
+                -- mode = "legacy",
+                timeout = 30000, -- Timeout in milliseconds
+                extra_request_body = {
+                    temperature = 0,
+                    max_tokens = 8000,
+                },
+                disable_tools = true
+            },
         },
-        behaviour = {
-            enable_project_context_for_as = true,
-        },
+        -- behaviour = {
+        --     enable_project_context_for_as = true,
+        -- },
         file_selector = { provider = "telescope" }
     },
-    -- commit = "284998a994c30535ecc43d4dcb859736309c7862",
+    -- commit = "87ea15bb94f0707a5fd154f11f5ed419c17392d1",
     -- branch = "feat/repo-map",
     version = false,
     -- build = "make BUILD_FROM_SOURCE=true",

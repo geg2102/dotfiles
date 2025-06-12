@@ -4,3 +4,12 @@ config/github-copilot
 config/nvim/db_ui
 .aider*
 .env
+config/browsh
+config/chromium/Crash Reports
+config/exercism
+config/htop
+config/ngrok
+config/pudb
+config/pypoetry
+config/google-chrome
+config/go/telemetry/local

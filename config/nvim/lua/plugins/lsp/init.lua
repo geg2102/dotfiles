@@ -3,7 +3,7 @@ return {
         "neovim/nvim-lspconfig",
         dependencies = {
             {
-                "williamboman/mason-lspconfig",
+                -- "williamboman/mason-lspconfig",
                 "williamboman/mason.nvim",
                 "SmiteshP/nvim-navbuddy",
                 dependencies = {
@@ -41,10 +41,10 @@ return {
                 end
                 table.insert(server_names, server_name)
             end
-            require("mason-lspconfig").setup({
-                ensure_installed = server_names,
-                automatic_installation = true
-            })
+            -- require("mason-lspconfig").setup({
+            --     ensure_installed = server_names,
+            --     automatic_installation = true
+            -- })
             local nvim_lsp = require("lspconfig")
             for _, server in ipairs(server_names) do
                 nvim_lsp[server].setup {
@@ -74,9 +74,7 @@ return {
                             autoSearchPaths = true,
                             diagnosticMode = "openFilesOnly",
                             useLibraryCodeForTypes = true,
-                            stubPath = vim.fn.stdpath "data" ..
-                                "/lazy/python-type-stubs" ..
-                                ":" .. vim.fn.stdpath "data" .. "/lazy/python-type-stubs/typings",
+                            stubPath = vim.fn.stdpath "data" .. "/lazy/python-type-stubs",
                             disableTaggedHints = true,
                             disableOrganizeImports = true, --using ruff
                             reportUnkownVariableType = false,
@@ -87,6 +85,7 @@ return {
                             extraPaths = (function()
                                 local root_dir = vim.fn.getcwd()
                                 local extra_paths = {}
+                                table.insert(extra_paths, vim.fn.stdpath "data" .. "/lazy/typeshed")
                                 for _, dir in ipairs(vim.fn.glob(root_dir .. "/*", 0, 1)) do
                                     if vim.fn.isdirectory(dir) == 1 then
                                         table.insert(extra_paths, dir)
