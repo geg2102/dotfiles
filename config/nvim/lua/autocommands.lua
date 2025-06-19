@@ -67,7 +67,7 @@ vim.api.nvim_create_autocmd({ "BufEnter" },
 
 
 -- Store the current colorscheme globally
-_G.current_colorscheme = _G.current_colorscheme or "kanagawa-wave"
+_G.current_colorscheme = _G.current_colorscheme or "nightfox"
 
 local function change_colorscheme()
     local filetype = vim.bo.filetype
@@ -97,9 +97,10 @@ local function change_colorscheme()
     local special_filetypes = { "rust", "javascript", "typescript", "javascriptreact", "typescriptreact" }
 
     if is_special(special_filetypes, filetype) then
-        if _G.current_colorscheme ~= "catppucin-latte" then
+        if _G.current_colorscheme ~= "dayfox" then
             vim.schedule(function()
-                _G.current_colorscheme = "catppuccin-latte"
+                -- _G.current_colorscheme = "kanagawa-wave"
+                _G.current_colorscheme = "dayfox"
                 vim.cmd.colorscheme(_G.current_colorscheme)
                 vim.go.background = "light"
             end
@@ -113,9 +114,9 @@ local function change_colorscheme()
             return
         end
     else
-        if _G.current_colorscheme ~= "kanagawa-wave" then
+        if _G.current_colorscheme ~= "nightfox" then
             vim.schedule(function()
-                _G.current_colorscheme = "kanagawa-wave"
+                _G.current_colorscheme = "nightfox"
                 vim.cmd.colorscheme(_G.current_colorscheme)
                 vim.go.background = "dark"
             end
@@ -133,7 +134,7 @@ end
 
 vim.api.nvim_create_augroup('ChangeColorscheme', { clear = true })
 
-vim.api.nvim_create_autocmd({ 'Filetype', 'BufEnter' }, {
+vim.api.nvim_create_autocmd({ 'Filetype', 'BufRead' }, {
     group = 'ChangeColorscheme',
     desc = "Change colorscheme based on filetype",
     pattern = '*',

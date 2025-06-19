@@ -70,15 +70,15 @@ vim.api.nvim_set_keymap('n', '<leader>sb', "<cmd>lua require('plugins.telescope-
 vim.keymap.set("n", "<leader>gf", ":Telescope git_file_history<CR>", { desc = "Github file history" })
 
 vim.keymap.set("n", "<leader>tc", function()
-    if _G.current_colorscheme == "kanagawa-wave" then
-        _G.current_colorscheme = "catppuccin-latte"
+    if _G.current_colorscheme == "nightfox" then
+        _G.current_colorscheme = "dayfox"
         vim.cmd.colorscheme(_G.current_colorscheme)
         vim.go.background = "light"
         -- require("lualine").setup({ options = { theme = "catppuccin" } })
     else
-        _G.current_colorscheme = "kanagawa-wave"
+        _G.current_colorscheme = "nightfox"
         vim.cmd.colorscheme(_G.current_colorscheme)
         vim.go.background = "dark"
         -- require("lualine").setup({ options = { theme = "kanagawa" } })
     end
-end, { desc = "Toggle colorscheme (kanagawa/catppuccin)" })
+end, { desc = "Toggle colorscheme " })

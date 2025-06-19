@@ -21,8 +21,10 @@ end
 lazy.setup({
     spec = {
         -- ui
-        require("plugins.kanagawa"),
-        require("plugins.catppuccin"),
+        -- require("plugins.kanagawa-paper"),
+        -- require("plugins.kanagawa"),
+        -- require("plugins.catppuccin"),
+        require("plugins.nightfox"),
         require("plugins.barbar"),
         require("plugins.dressing"),
         require("plugins.focus"),
@@ -103,7 +105,7 @@ lazy.setup({
         -- require("plugins.styler"),
         require("plugins.avante"),
         -- require("plugins.goose"),
-        -- require("plugins.codecompanion"),
+        require("plugins.codecompanion"),
         require("plugins.nvim-bqf"),
         require("plugins.which-key"),
         require("plugins.rustacean"),
@@ -111,6 +113,7 @@ lazy.setup({
         require("plugins.nvim-dap"),
         require("plugins.nvim-dap-ui"),
         require("plugins.mssql"),
+        require("plugins.claude"),
         -- require("plugins.sniprun"),
         { "microsoft/python-type-stubs" },
         { "python/typeshed" }
