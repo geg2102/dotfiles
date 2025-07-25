@@ -28,7 +28,7 @@ return {
                 -- jedi_language_server = {},
                 lua_ls = require("plugins.lsp.servers.luals")(on_attach),
                 texlab = {},
-                -- gopls = {},
+                gopls = {},
                 clangd = require("plugins.lsp.servers.clangd")(on_attach),
                 ruff = {},
                 -- tsserver = {},

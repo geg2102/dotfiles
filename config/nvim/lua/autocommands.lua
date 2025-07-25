@@ -94,7 +94,7 @@ local function change_colorscheme()
         return
     end
 
-    local special_filetypes = { "rust", "javascript", "typescript", "javascriptreact", "typescriptreact" }
+    local special_filetypes = { "rust", "javascript", "typescript", "javascriptreact", "typescriptreact", "go", "gomod" }
 
     if is_special(special_filetypes, filetype) then
         if _G.current_colorscheme ~= "dayfox" then

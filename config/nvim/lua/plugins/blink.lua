@@ -5,7 +5,7 @@ return {
         dependencies = { "mattiasmts/cmp-dbee" },
         lazy = true,
         -- opts = {}
-        opts = { impersonate_nvim_cmp = true, debug = true }
+        -- opts = { impersonate_nvim_cmp = true, debug = true }
 
 
     },
@@ -88,7 +88,8 @@ return {
                 },
                 menu = { draw = { treesitter = { "lsp" }, }, border = "single" },
                 documentation = { auto_show = true, auto_show_delay_ms = 200, window = { border = "single" } },
-                ghost_text = { enabled = vim.g.ai_cmp },
+                -- ghost_text = { enabled = vim.g.ai_cmp },
+                ghost_text = { enabled = false },
                 trigger = { show_on_insert_on_trigger_character = false }
 
             },

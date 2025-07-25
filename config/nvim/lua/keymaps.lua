@@ -26,6 +26,7 @@ vim.keymap.set("n", "<leader>S", ":Navbuddy<CR>", { desc = "Open navbuddy" })
 
 vim.keymap.set("n", "<leader>s", ":SymbolsOutline<CR>", { desc = "Symbols outline" })
 
+vim.keymap.set("n", "<leader>du", "<cmd>DBUIToggle<cr>", { desc = "Toggle Dadbod UI" })
 -- vim.keymap.set("n", "yy", '"+yy', { desc = "Yanking" })
 -- vim.keymap.set("n", "y", '"+y', { desc = "Yanking" })
 -- vim.keymap.set("x", "y", '"+y', { desc = "Yanking" })
@@ -82,3 +83,13 @@ vim.keymap.set("n", "<leader>tc", function()
         -- require("lualine").setup({ options = { theme = "kanagawa" } })
     end
 end, { desc = "Toggle colorscheme " })
+
+vim.b.inlay_hints_enabled = true -- initial state
+
+vim.keymap.set("n", "<leader>ih", function()
+    local current = vim.b.inlay_hints_enabled
+    local new_value = not current
+    vim.lsp.inlay_hint.enable(new_value)
+    vim.b.inlay_hints_enabled = new_value
+    print("Inlay hints " .. (new_value and "enabled" or "disabled"))
+end, { desc = "Toggle Inlay Hints" })
