@@ -10,6 +10,11 @@ return {
         config = function()
             local actions = require("telescope.actions")
             require("telescope").setup({
+                pickers = {
+                    find_files = {
+                        find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
+                    }
+                },
                 extensions = {
                     file_browser = {
                         hijack_netrw = true,
@@ -26,7 +31,7 @@ return {
                                 -- ["<ESC>"] = actions.close,
                             }
                         }
-                    }
+                    },
                 }
             })
 

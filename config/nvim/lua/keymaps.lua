@@ -12,7 +12,7 @@ vim.keymap.set("n", "<leader><Space>", "zA", { desc = "Toggle all folds" })
 
 -- vim.keymap.set("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format{async=true}<CR>")
 -- vim.keymap.set("i", "<leader>lf", "<cmd>lua vim.lsp.buf.format{async=true}<CR>")
-
+vim.keymap.set('n', '<leader>cc', '<cmd>ClaudeCode<CR>', { desc = 'Toggle Claude Code' })
 vim.keymap.set("t", "<A-[>", "<C-\\><C-n>")
 vim.keymap.set("t", "<C-l>", "<C-\\><C-n><C-w>l")
 vim.keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h")
@@ -64,6 +64,10 @@ vim.keymap.set(
 )
 vim.keymap.set("n", "<Leader>de", "<cmd>lua require'dap'.terminate()<CR>", { desc = "Debugger reset" })
 vim.keymap.set("n", "<Leader>dr", "<cmd>lua require'dap'.run_last()<CR>", { desc = "Debugger run last" })
+
+-- set gotest keymaps
+vim.keymap.set("n", "<leader>ct", "<cmd>GoTestFile -v<CR>", { desc = "Run go test file" })
+vim.keymap.set("n", "<leader>cf", "<cmd>GoTestFunc -v<CR>", { desc = "Run go test function" })
 
 vim.api.nvim_set_keymap('n', '<leader>sb', "<cmd>lua require('plugins.telescope-azstorage').search_blobs()<CR>",
     { noremap = true, silent = true })

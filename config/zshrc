@@ -41,7 +41,8 @@ alias tnew="tmux new-session -s"
 alias tls='tmux ls'
 alias tkill='tmux kill-session -t'
 alias tpane='echo $TMUX_PANE'
-
+alias claude="SHELL=/usr/bin/zsh $HOME/.claude/local/claude"
+alias sa="source .venv/bin/activate"
 # convenience aliases for editing configs
 alias ev='vim ~/.vimrc'
 alias et='vim ~/.tmux.conf'
@@ -66,6 +67,8 @@ function conuv() {
     conda deactivate
     source .venv/bin/activate
 }
+
+alias activ='source .venv/bin/activate'
 
 bindkey '^P' up-history
 bindkey '^N' down-history
@@ -109,9 +112,21 @@ EOF
 }
 
 vf() {
-    LAST_FILE="$(fzf --preview 'bat --style=numbers --color=always --line-range :500 {}')"
-    [[ -n $LAST_FILE ]] && echo "$LAST_FILE" && nvim "$LAST_FILE"
+  local base='fd --type f --exclude .git'
+  local hidden="$base -H"
+  local all="$base -H -I -L"
+
+  LAST_FILE="$(
+    eval "$base" \
+    | fzf --preview 'bat --style=numbers --color=always --line-range :500 {}' \
+          --header 'Ctrl-h: hidden | Ctrl-b: all (hidden + ignored + symlinks)' \
+          --prompt 'files> ' \
+          --bind "ctrl-h:reload($hidden)" \
+          --bind "ctrl-b:reload($all)"
+  )"
+  [[ -n $LAST_FILE ]] && echo "$LAST_FILE" && nvim "$LAST_FILE"
 }
+
 
 cf() {
     _VAR =$(fzf)
@@ -123,7 +138,7 @@ sb() {
     local container_name="$1"
 
     if [[ -z "$container_name" ]]; then
-        container_name=$(az storage container list --account-name "tdrdsblob" \
+        container_name=$(az storage container list --account-name $BLOB_NAME \
         --output tsv --query "[].{name:name}" 2>/dev/null | awk '{print $1}' \
         | fzf --header="Select a container" --no-preview)
         if [[ -z "$container_name" ]]; then
@@ -133,7 +148,7 @@ sb() {
     fi
 
     local selected_blob
-    selected_blob=$(az storage blob list --account-name "tdrdsblob" \
+    selected_blob=$(az storage blob list --account-name $BLOB_NAME \
     --container-name "$container_name" --output tsv --query "[].{name:name}" \
     2>/dev/null | awk '{print $1}' | fzf --header="Select a blob from the container: $container_name" --no-preview)
 
@@ -211,7 +226,12 @@ fi
 # For vim-dadbod-ui it helps display
 export SQLCMDMAXVARTYPEWIDTH=36
 export SQLCMDMAXFIXEDTYPEWIDTH=36
-
+export PATH=$PATH:$(go env GOPATH)/bin
 # if [[ -n $SSH_TTY && -z $TMUX ]]; then
 #     $HOME/scripts/recent_advisor_files.sh
 # fi
+#
+unset RCLONE_CONFIG
+export EDITOR="nvim"
+
+export PATH=$HOME/.opencode/bin:$PATH

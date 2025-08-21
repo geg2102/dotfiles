@@ -31,7 +31,8 @@ return {
             },
             javascript = { "prettierd", "prettier", stop_after_first = true },
             typescript = { "prettierd", "prettier", stop_after_first = true },
-            rust = { "rustfmt", lsp_format = "fallback" }
+            rust = { "rustfmt", lsp_format = "fallback" },
+            go = { "gofumpt", "goimports" },
         },
         -- Set default options
         default_format_opts = {

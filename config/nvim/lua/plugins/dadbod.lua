@@ -32,7 +32,7 @@ return {
         --     end,
         -- })
     end,
-    keys = {
-        { "<leader>du", "<cmd>DBUIToggle<cr>", desc = "Toggle Dadbod UI" },
-    },
+    -- keys = {
+    --     { "<leader>du", "<cmd>DBUIToggle<cr>", desc = "Toggle Dadbod UI" },
+    -- },
 }

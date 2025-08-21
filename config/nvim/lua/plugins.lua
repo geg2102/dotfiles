@@ -24,6 +24,7 @@ lazy.setup({
         -- require("plugins.kanagawa-paper"),
         -- require("plugins.kanagawa"),
         -- require("plugins.catppuccin"),
+        require("plugins.opencode"),
         require("plugins.nightfox"),
         require("plugins.barbar"),
         require("plugins.dressing"),
@@ -51,7 +52,7 @@ lazy.setup({
         require("plugins.nvim-luaref"),
         require("plugins.nvim-navbuddy"),
         -- require("plugins.nvim-navic"),
-        require("plugins.symbols-outline"),
+        -- require("plugins.symbols-outline"),
 
         -- treesitter
         require("plugins.treesitter"),
@@ -68,7 +69,7 @@ lazy.setup({
         -- convenience
         -- require("plugins.accelerated-jk"),
         require("plugins.alpha-nvim"),
-        require("plugins.barbecue"),
+        -- require("plugins.barbecue"),
         require("plugins.diffview"),
         require("plugins.marks"),
         require("plugins.nvim-autopairs"),
@@ -79,7 +80,7 @@ lazy.setup({
         require("plugins.suda"),
         require("plugins.vim-repeat"),
         require("plugins.vim-uppercase-sql"),
-        require("plugins.vim-visual-multi"),
+        -- require("plugins.vim-visual-multi"),
         require("plugins.wrapping"),
 
         -- coding
@@ -103,7 +104,7 @@ lazy.setup({
         require("plugins.vimtex"),
         -- require("plugins.harpoon"),
         -- require("plugins.styler"),
-        require("plugins.avante"),
+        -- require("plugins.avante"),
         -- require("plugins.goose"),
         require("plugins.go"),
         -- require("plugins.codecompanion"),
