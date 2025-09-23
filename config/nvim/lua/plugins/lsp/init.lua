@@ -45,27 +45,29 @@ return {
             --     ensure_installed = server_names,
             --     automatic_installation = true
             -- })
-            local nvim_lsp = require("lspconfig")
+
             for _, server in ipairs(server_names) do
-                nvim_lsp[server].setup {
+                vim.lsp.config(server, {
                     capabilities = capabilities,
                     -- on_attach = on_attach,
                     flags = {
                         debounce_text_changes = 200,
                         allow_incremental_sync = true
                     }
-                }
+                })
+                vim.lsp.enable(server)
             end
-            nvim_lsp.ts_ls.setup {
+            vim.lsp.config('ts_ls', {
                 capabilities = capabilities,
                 on_attach = on_attach,
                 flags = {
                     debounce_text_changes = 200,
                     allow_incremental_sync = true
                 }
-            }
+            })
+            vim.lsp.enable('ts_ls')
 
-            nvim_lsp.basedpyright.setup({
+            vim.lsp.config('basedpyright', {
                 capabilities = capabilities,
                 on_attach = on_attach,
                 settings = {
@@ -97,6 +99,7 @@ return {
                     }
                 },
             })
+            vim.lsp.enable("basedpyright")
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Goto definition" })
             vim.keymap.set("n", "gI", vim.lsp.buf.implementation, { desc = "Goto implementation" })
             vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, { desc = "Rename" })
