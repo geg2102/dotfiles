@@ -1,0 +1,3 @@
+URxvt.perl-ext-common: default, clipboard, url-select
+URxvt.keysym.M-C-c: perl:clipboard:copy
+URxvt.keysym.M-C-v: perl:clipboard:paste
