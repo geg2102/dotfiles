@@ -97,3 +97,16 @@ vim.keymap.set("n", "<leader>ih", function()
     vim.b.inlay_hints_enabled = new_value
     print("Inlay hints " .. (new_value and "enabled" or "disabled"))
 end, { desc = "Toggle Inlay Hints" })
+
+local function start_basedpyright()
+    vim.lsp.start({
+        name = "basedpyright",
+        cmd = { "basedpyright-langserver", "--stdio" },
+        root_dir = vim.fs.dirname(vim.fs.find(
+            { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", ".git" },
+            { upward = true }
+        )[1]),
+    })
+end
+
+vim.keymap.set("n", "<leader>bp", start_basedpyright, { desc = "Start BasedPyright LSP" })

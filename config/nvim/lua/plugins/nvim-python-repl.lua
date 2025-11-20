@@ -1,11 +1,11 @@
 return {
     {
-        -- dir = "~/nvim-python-repl",
-        "geg2102/nvim-python-repl",
+        dir = "~/nvim-python-repl",
+        -- "geg2102/nvim-python-repl",
         event = "InsertEnter", -- You might want to adjust this event for better plugin loading timing
         config = function()
             -- Setup the REPL plugin
-            require("nvim-python-repl").setup({ vsplit = true })
+            require("nvim-python-repl").setup({ split_dir = "left", vsplit = true, spawn_command = { python = "ipython" } })
         end,
         branch = "main",
         -- Define key mappings
