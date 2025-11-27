@@ -46,7 +46,7 @@ floating_modifier $mod
 
 bindsym Mod4+4 exec flameshot gui -c
 # start a terminal
-bindsym $mod+Return exec --no-startup-id kitty
+bindsym $mod+Return exec --no-startup-id alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill

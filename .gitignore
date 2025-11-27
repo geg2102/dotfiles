@@ -13,3 +13,5 @@ config/pudb
 config/pypoetry
 config/google-chrome
 config/go/telemetry/local
+config/GitHub/ActionsService/8.0/Cache
+config/claude
