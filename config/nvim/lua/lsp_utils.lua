@@ -31,13 +31,13 @@ function M.toggle_basedpyright_settings()
     end
 
     -- Initialize inlayHints if it doesn't exist
-    if not analysis.inlayHints then
-        analysis.inlayHints = {
-            variableTypes = true,
-            functionReturnTypes = true,
-            callArgumentNames = true
-        }
-    end
+    -- if not analysis.inlayHints then
+    --     analysis.inlayHints = {
+    --         variableTypes = true,
+    --         functionReturnTypes = true,
+    --         callArgumentNames = true
+    --     }
+    -- end
 
     -- Toggle the inlayHints settings
     local hints = analysis.inlayHints

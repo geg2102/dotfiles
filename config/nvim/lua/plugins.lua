@@ -39,7 +39,7 @@ lazy.setup({
         -- require("plugins.vim-smoothie"),
         -- require("plugins.noice"),
         require("plugins.markdown"),
-        require("plugins.smear-cursor"),
+        -- require("plugins.smear-cursor"),
 
         -- lsp
         -- require("plugins.cmp"),
@@ -51,7 +51,7 @@ lazy.setup({
         require("plugins.conform"),
         require("plugins.nvim-lint"),
         require("plugins.nvim-luaref"),
-        require("plugins.nvim-navbuddy"),
+        -- require("plugins.nvim-navbuddy"),
         -- require("plugins.nvim-navic"),
         -- require("plugins.symbols-outline"),
 

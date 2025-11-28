@@ -148,33 +148,29 @@ vim.api.nvim_create_autocmd({ "FileType", "BufEnter" }, {
     end,
 })
 
-local ignore_filetypes = { 'neo-tree', 'dbui' }
+local ignore_filetypes = { 'neo-tree', 'dbui', 'snacks_picker_list' }
 local ignore_buftypes = { 'nofile', 'prompt', 'popup' }
 
 local augroup =
     vim.api.nvim_create_augroup('FocusDisable', { clear = true })
 
-vim.api.nvim_create_autocmd('WinEnter', {
-    group = augroup,
-    callback = function(_)
-        if vim.tbl_contains(ignore_buftypes, vim.bo.buftype)
-        then
-            vim.w.focus_disable = true
-        else
-            vim.w.focus_disable = false
-        end
-    end,
-    desc = 'Disable focus autoresize for BufType',
-})
+-- Combined callback function for both checks
+local function set_focus_disable()
+    local is_ignored_buftype = vim.tbl_contains(ignore_buftypes, vim.bo.buftype)
+    local is_ignored_filetype = vim.tbl_contains(ignore_filetypes, vim.bo.filetype)
 
-vim.api.nvim_create_autocmd('FileType', {
+    local disable_focus = is_ignored_buftype or is_ignored_filetype
+
+    -- We set both the window-local and buffer-local variables
+    -- This ensures both are set when you enter the buffer/window.
+    vim.w.focus_disable = disable_focus
+    vim.b.focus_disable = disable_focus
+end
+
+-- Use BufWinEnter to catch both when a window is entered AND when a buffer is loaded/changed in that window.
+-- This is often more reliable than separate WinEnter and FileType events.
+vim.api.nvim_create_autocmd({ 'WinEnter', 'BufWinEnter' }, {
     group = augroup,
-    callback = function(_)
-        if vim.tbl_contains(ignore_filetypes, vim.bo.filetype) then
-            vim.b.focus_disable = true
-        else
-            vim.b.focus_disable = false
-        end
-    end,
-    desc = 'Disable focus autoresize for FileType',
+    callback = set_focus_disable,
+    desc = 'Disable focus autoresize for ignored buffer/filetypes',
 })
