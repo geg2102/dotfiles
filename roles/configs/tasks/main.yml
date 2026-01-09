@@ -186,12 +186,123 @@
     - lazygit 
 
 - name: Symlink lazygit config
-  file: 
+  file:
     src: "{{ dotfiles_home }}/config/lazygit_config.yml"
     dest: "{{ user_home }}/.config/lazygit/config.yml"
     state: link
     force: yes
-  tags: 
+  tags:
     - allconfigs
-    - lazygit 
+    - lazygit
+
+- name: Check if alacritty config directory exists
+  stat: "path={{ user_home }}/.config/alacritty"
+  register: alacritty_config
+  tags:
+    - allconfigs
+    - alacritty
+
+- name: Create alacritty config directory
+  file:
+    path: "{{ user_home }}/.config/alacritty"
+    state: directory
+    mode: 0755
+  when: not alacritty_config.stat.exists
+  tags:
+    - allconfigs
+    - alacritty
+
+- name: Symlink alacritty.toml
+  file:
+    src: "{{ dotfiles_home }}/config/alacritty.toml"
+    dest: "{{ user_home }}/.config/alacritty/alacritty.toml"
+    state: link
+    force: yes
+  tags:
+    - allconfigs
+    - alacritty
+
+- name: Check if i3 config directory exists
+  stat: "path={{ user_home }}/.config/i3"
+  register: i3_config
+  tags:
+    - allconfigs
+    - i3
+
+- name: Create i3 config directory
+  file:
+    path: "{{ user_home }}/.config/i3"
+    state: directory
+    mode: 0755
+  when: not i3_config.stat.exists
+  tags:
+    - allconfigs
+    - i3
+
+- name: Symlink i3 config
+  file:
+    src: "{{ dotfiles_home }}/config/i3/config"
+    dest: "{{ user_home }}/.config/i3/config"
+    state: link
+    force: yes
+  tags:
+    - allconfigs
+    - i3
+
+- name: Symlink i3 startwm.sh
+  file:
+    src: "{{ dotfiles_home }}/config/i3/startwm.sh"
+    dest: "{{ user_home }}/.config/i3/startwm.sh"
+    state: link
+    force: yes
+  tags:
+    - allconfigs
+    - i3
+
+- name: Check if i3status-rust config directory exists
+  stat: "path={{ user_home }}/.config/i3status-rust"
+  register: i3status_rust_config
+  tags:
+    - allconfigs
+    - i3
+
+- name: Create i3status-rust config directory
+  file:
+    path: "{{ user_home }}/.config/i3status-rust"
+    state: directory
+    mode: 0755
+  when: not i3status_rust_config.stat.exists
+  tags:
+    - allconfigs
+    - i3
+
+- name: Symlink i3status-rust config
+  file:
+    src: "{{ dotfiles_home }}/config/i3status-rust/config.toml"
+    dest: "{{ user_home }}/.config/i3status-rust/config.toml"
+    state: link
+    force: yes
+  tags:
+    - allconfigs
+    - i3
+
+- name: Symlink i3status-rust themes directory
+  file:
+    src: "{{ dotfiles_home }}/config/i3status-rust/themes"
+    dest: "{{ user_home }}/.config/i3status-rust/themes"
+    state: link
+    force: yes
+  tags:
+    - allconfigs
+    - i3
+
+- name: Symlink i3status-rust icons directory
+  file:
+    src: "{{ dotfiles_home }}/config/i3status-rust/icons"
+    dest: "{{ user_home }}/.config/i3status-rust/icons"
+    state: link
+    force: yes
+  tags:
+    - allconfigs
+    - i3
 

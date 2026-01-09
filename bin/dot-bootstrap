@@ -20,10 +20,35 @@ fi
 # Install Ansible if not present
 if ! [ -x "$(command -v ansible)" ]; then
     if [ "$OS_TYPE" == "linux" ]; then
-        sudo apt update
-        sudo apt install -y software-properties-common
-        sudo apt-add-repository --yes --update ppa:ansible/ansible
-        sudo apt install -y ansible
+        # Detect Linux distribution
+        if [ -f /etc/os-release ]; then
+            . /etc/os-release
+            DISTRO=$ID
+        fi
+
+        case "$DISTRO" in
+            ubuntu|debian)
+                echo "Installing Ansible on Debian/Ubuntu..."
+                sudo apt update
+                sudo apt install -y software-properties-common
+                sudo apt-add-repository --yes --update ppa:ansible/ansible
+                sudo apt install -y ansible
+                ;;
+            fedora)
+                echo "Installing Ansible on Fedora..."
+                sudo dnf install -y ansible
+                ;;
+            centos|rhel|rocky|almalinux)
+                echo "Installing Ansible on RHEL/CentOS..."
+                sudo dnf install -y epel-release
+                sudo dnf install -y ansible
+                ;;
+            *)
+                echo "Unsupported Linux distribution: $DISTRO"
+                echo "Please install Ansible manually and re-run this script."
+                exit 1
+                ;;
+        esac
     elif [ "$OS_TYPE" == "macos" ]; then
         # Install Homebrew if not installed
         if ! [ -x "$(command -v brew)" ]; then

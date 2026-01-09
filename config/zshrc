@@ -63,12 +63,6 @@ alias halt="sudo systemctl halt"
 alias jlremote='f(){ jupyter lab --ip 0.0.0.0 --port=$1 --no-browser --NotebookApp.allow_origin="*" --NotebookApp.allow_remote_access=True}; f'
 alias addenv='f(){ python -m ipykernel install --user --name=$1}; f'
 
-function conuv() {
-    conda deactivate
-    conda deactivate
-    source .venv/bin/activate
-}
-
 alias activ='source .venv/bin/activate'
 
 bindkey '^P' up-history
@@ -234,34 +228,8 @@ ff() {
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/geoff/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/geoff/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/geoff/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/geoff/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
 export PATH="$PATH:/opt/mssql-tools18/bin"
 export PATH="$PATH:/usr/local/go/bin"
-#
-# export PYENV_ROOT="$HOME/.pyenv"
-# command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-# eval "$(pyenv init -)"
-#
-#
-# act() {
-#     conda activate $1
-#     poetry config virtualenvs.path $(which python | sed 's|/bin/python||')
-# }
-
 cpgg() {
     BASE_DIR="/mnt/datascience-team-fileshare/Team/GG"
 

@@ -5,5 +5,5 @@
     - fonts
     - configs
     - neovim
-    - miniconda
+    - uv
     - docker

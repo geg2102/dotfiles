@@ -1,10 +1,5 @@
 #!/bin/bash
-# List python environments
-CONDA_ENVS=()
-while IFS= read -r line; do
-    CONDA_ENVS+=("$line")
-done < <(conda env list | grep -E '^[^#]' | awk '{print $1}')
-
+# Activate Python virtual environment based on tmux session/pane context or current directory
 
 # determine if the tmux server is running
 if tmux list-sessions &>/dev/null; then
@@ -26,59 +21,48 @@ if [ "$TMUX_RUNNING" -eq 0 ]; then
 	fi
 fi
 
-
-revert_to_base() {
-    conda deactivate &>/dev/null || true # Ensure any active env is deactivated
-    conda activate base
-}
-
-# Activate the appropriate environment
-act() {
-    local ENV_NAME=$1
-
-    # Check if a local `.venv` exists and activate it
+# Activate virtual environment if it exists in current directory
+activate_venv() {
     if [ -d ".venv" ] && [ -f ".venv/bin/activate" ]; then
-        conda deactivate &>/dev/null || true # Ensure Conda envs are deactivated
         source .venv/bin/activate
-    # Check if it's a Poetry project
-    elif [ -f "pyproject.toml" ]; then 
-        poetry config virtualenvs.path "$(which python | sed 's|/bin/python||')"
-        conda deactivate &>/dev/null || true # Ensure Conda envs are deactivated
-        conda activate "$ENV_NAME"
-    # Otherwise, activate the Conda environment
-    else
-        conda deactivate &>/dev/null || true # Ensure previous envs are deactivated
-        conda activate "$ENV_NAME"
-    fi
-}
-
-
-check_name_against_envs() {
-    local NAME_TO_CHECK=$1
-
-    if [ -d ".venv" ] && [ -f ".venv/bin/activate" ]; then
         return 0
     fi
+    return 1
+}
 
-    for env in "${CONDA_ENVS[@]}"; do
-        if [ "$NAME_TO_CHECK" = "$env" ]; then
+# Try to find and activate venv based on session/pane name as directory
+activate_by_name() {
+    local NAME=$1
+    local SEARCH_PATHS=("$HOME/projects" "$HOME/work" "$HOME")
+
+    for base_path in "${SEARCH_PATHS[@]}"; do
+        local target_dir="$base_path/$NAME"
+        if [ -d "$target_dir/.venv" ] && [ -f "$target_dir/.venv/bin/activate" ]; then
+            source "$target_dir/.venv/bin/activate"
             return 0
         fi
     done
     return 1
 }
 
-case $T_RUNTYPE in 
+case $T_RUNTYPE in
     attached)
         SESSION_NAME=$(tmux display-message -p '#{session_name}')
         PANE_NAME="$(tmux display-message -p '#{pane_title}')"
 
-        if check_name_against_envs "$SESSION_NAME"; then
-            act "$SESSION_NAME"
-        elif check_name_against_envs "$PANE_NAME"; then
-            act "$PANE_NAME"
-        else
-            revert_to_base
+        # First try current directory
+        if activate_venv; then
+            :
+        # Then try session name as project directory
+        elif activate_by_name "$SESSION_NAME"; then
+            :
+        # Then try pane name as project directory
+        elif activate_by_name "$PANE_NAME"; then
+            :
         fi
+        ;;
+    *)
+        # Outside tmux, just try to activate local .venv
+        activate_venv
         ;;
 esac

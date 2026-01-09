@@ -1,3 +1,2 @@
 user_home: "{{ '~' | expanduser }}"
 dotfiles_home: "{{ user_home }}/dotfiles"
-miniconda_home: "{{ user_home }}/miniconda3"

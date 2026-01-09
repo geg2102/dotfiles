@@ -1,0 +1,12 @@
+- name: Check uv installed
+  stat: path="{{ user_home }}/.local/bin/uv"
+  register: bin_uv
+  changed_when: bin_uv.stat.exists == False
+  tags: uv
+
+- name: Install uv
+  shell: "curl -LsSf https://astral.sh/uv/install.sh | sh"
+  args:
+    creates: "{{ user_home }}/.local/bin/uv"
+  when: not bin_uv.stat.exists
+  tags: uv

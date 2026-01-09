@@ -24,18 +24,20 @@
       - pkg-config
       - unzip
       - lazygit
+      - alacritty
+      - git
+      - zoxide
   when: ansible_os_family == "Darwin"
   tags:
-    - all packages
+    - allpackages
 
 - name: install debian tools
   become: yes
-  apt: 
+  apt:
     name:
       - bat
       - curl
       - fd-find
-      # - fzf
       - htop
       - jq
       - nodejs
@@ -44,29 +46,53 @@
       - tmux
       - wget
       - zsh
-      - ninja-build 
-      - gettext 
-      - libtool 
-      - libtool-bin 
-      - autoconf 
-      - automake 
-      - cmake 
-      - g++ 
-      - pkg-config 
-      - unzip 
+      - ninja-build
+      - gettext
+      - libtool
+      - libtool-bin
+      - autoconf
+      - automake
+      - cmake
+      - g++
+      - pkg-config
+      - unzip
       - doxygen
+      - git
   when: ansible_os_family == "Debian"
-  tags: 
-    - all packages
+  tags:
+    - allpackages
+
+- name: install i3wm and desktop tools (Debian)
+  become: yes
+  apt:
+    name:
+      - i3
+      - i3lock
+      - i3status
+      - xss-lock
+      - rofi
+      - flameshot
+      - network-manager-gnome
+      - pulseaudio-utils
+      - alacritty
+      - x11-xserver-utils
+      - xclip
+      - arandr
+      - lxappearance
+      - picom
+      - dunst
+      - feh
+  when: ansible_os_family == "Debian"
+  tags:
+    - allpackages
+    - i3
+    - desktop
 
 - name: install redhat tools
   become: yes
-  yum: 
+  dnf:
     name:
-      # - bat
       - curl
-      # - fd-find
-      # - fzf
       - htop
       - jq
       - nodejs
@@ -74,21 +100,40 @@
       - tmux
       - wget
       - zsh
-      - ninja-build 
-      - libtool 
-      - autoconf 
-      - automake 
-      - cmake 
-      - gcc 
-      - gcc-c++ 
-      - make 
-      - pkgconfig 
-      - unzip 
-      - patch 
-      - gettext 
+      - ninja-build
+      - libtool
+      - autoconf
+      - automake
+      - cmake
+      - gcc
+      - gcc-c++
+      - make
+      - pkgconfig
+      - unzip
+      - patch
+      - gettext
+      - git
   when: ansible_os_family == "RedHat"
-  tags: 
-    - all packages
+  tags:
+    - allpackages
+
+- name: install i3wm and desktop tools (RedHat)
+  become: yes
+  dnf:
+    name:
+      - i3
+      - i3lock
+      - i3status
+      - rofi
+      - network-manager-applet
+      - pulseaudio-utils
+      - xclip
+      - picom
+  when: ansible_os_family == "RedHat"
+  tags:
+    - allpackages
+    - i3
+    - desktop
 
 - name: install lazygit
   become: yes
@@ -161,8 +206,57 @@
     tar -xvzf {{ user_home }}/fd-v8.3.1-x86_64-unknown-linux-musl.tar.gz
     mv {{ user_home }}/fd-v8.3.1-x86_64-unknown-linux-musl/fd /usr/local/bin/fd
     rm -rf {{ user_home }}/fd-v8*
-  tags: 
-    # - allpackages
+  tags:
     - fd-source
+
+- name: Check if Rust is installed
+  stat: path="{{ user_home }}/.cargo/bin/rustc"
+  register: rust_installed
+  tags:
+    - rust
+    - i3-tools
+
+- name: Install Rust
+  shell: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
+  when: not rust_installed.stat.exists
+  tags:
+    - rust
+    - i3-tools
+
+- name: Check if i3status-rs is installed
+  stat: path="{{ user_home }}/.cargo/bin/i3status-rs"
+  register: i3status_rs_installed
+  tags:
+    - i3-tools
+
+- name: Install i3status-rs
+  shell: "{{ user_home }}/.cargo/bin/cargo install i3status-rs"
+  when: not i3status_rs_installed.stat.exists
+  tags:
+    - i3-tools
+
+- name: Check if i3-autolayout is installed
+  stat: path="{{ user_home }}/.cargo/bin/i3-autolayout"
+  register: i3_autolayout_installed
+  tags:
+    - i3-tools
+
+- name: Install i3-autolayout
+  shell: "{{ user_home }}/.cargo/bin/cargo install i3-autolayout"
+  when: not i3_autolayout_installed.stat.exists
+  tags:
+    - i3-tools
+
+- name: Check if i3wsr is installed
+  stat: path="{{ user_home }}/.cargo/bin/i3wsr"
+  register: i3wsr_installed
+  tags:
+    - i3-tools
+
+- name: Install i3wsr
+  shell: "{{ user_home }}/.cargo/bin/cargo install i3wsr"
+  when: not i3wsr_installed.stat.exists
+  tags:
+    - i3-tools
 
 
