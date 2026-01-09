@@ -83,6 +83,7 @@ lazy.setup({
         require("plugins.nvim-dap-ui"),
         require("plugins.claudecode"),
         require("plugins.snacks"),
+        require("plugins.venvselector"),
         { "microsoft/python-type-stubs" },
         { "python/typeshed" }
         --
