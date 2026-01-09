@@ -21,7 +21,6 @@ end
 lazy.setup({
     spec = {
         -- ui
-        require("plugins.neotree"),
         require("plugins.orgmode"),
         require("plugins.nightfox"),
         require("plugins.barbar"),
