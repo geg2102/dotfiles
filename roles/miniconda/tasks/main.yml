@@ -1,0 +1,20 @@
+- name: check miniconda installed
+  stat: path="{{ miniconda_home }}/bin/conda"
+  register: bin_conda 
+  changed_when: bin_conda.stat.exists == False
+  tags: miniconda
+
+- name: download miniconda
+  get_url:
+    url="https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
+    dest="/tmp/miniconda.sh"
+    mode=0744
+  register: miniconda_downloaded
+  when: not bin_conda.stat.exists
+  tags: miniconda
+
+- name: install miniconda
+  shell: "/tmp/miniconda.sh -b -p {{ miniconda_home }} creates={{ miniconda_home }} executable=/bin/bash"
+  register: miniconda_installed
+  when: miniconda_downloaded is success or bin_conda.exists
+  tags: miniconda

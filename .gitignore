@@ -1,0 +1,23 @@
+
+oh-my-zsh/
+config/github-copilot
+config/nvim/db_ui
+.aider*
+.env
+config/browsh
+config/chromium/Crash Reports
+config/exercism
+config/htop
+config/ngrok
+config/pudb
+config/pypoetry
+config/google-chrome
+config/go/telemetry/local
+config/GitHub/ActionsService/8.0/Cache
+config/claude
+config/obsidian
+config/pulse
+config/copyq
+config/nextjs-nodejs
+config/rclone
+config/xfce4/panel

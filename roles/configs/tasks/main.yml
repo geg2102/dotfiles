@@ -1,0 +1,197 @@
+- name: Find config files
+  find: 
+    paths: ~/dotfiles/config/
+    recurse: no
+    file_type: any
+    hidden: yes
+  register: dot_config
+  tags: 
+    - allconfigs
+    - zsh
+    - tmux 
+    - neovim
+    - lazygit
+    - ipython
+
+- name: Check for oh-my-zsh installation
+  stat: "path={{ user_home }}/.oh-my-zsh"
+  register: oh_my_zsh_stat
+  tags: 
+    - allconfigs
+    - zsh
+
+- name: Install oh-my-zsh on macOS
+  shell: |
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  args:
+    executable: /bin/zsh
+  when:
+    - not oh_my_zsh_stat.stat.exists
+    - ansible_system == 'Darwin'
+
+- name: Install oh-my-zsh on Linux
+  git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: "{{ user_home }}/.oh-my-zsh"
+  when:
+    - not oh_my_zsh_stat.stat.exists
+    - ansible_system != 'Darwin'
+  tags: 
+    - allconfigs
+    - zsh
+    - ohmyzsh
+
+- name: Zsh autosuggestions
+  git: 
+    repo: https://github.com/zsh-users/zsh-autosuggestions
+    dest: "{{ user_home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+  tags: 
+    - allconfigs
+    - zsh
+    - ohmyzsh
+
+- name: Zsh powerlevel
+  git: 
+    repo: https://github.com/romkatv/powerlevel10k.git
+    dest: "{{ user_home }}/.oh-my-zsh/custom/themes/powerlevel10k"
+    depth: 1
+  tags: 
+    - allconfigs
+    - zsh
+    - ohmyzsh
+
+- name: Check for .zshrc
+  stat: path="{{user_home}}/.zshrc"
+  register: zshrc_stat
+  tags: 
+    - allconfigs
+    - zsh
+
+- name: Symlink .zshrc
+  file:
+    src: "{{ dotfiles_home }}/config/zshrc"
+    dest: "{{ user_home }}/.zshrc"
+    state: link
+    force: yes
+  tags: 
+    - allconfigs
+    - zsh
+
+- name: Symlink p10k.zsh
+  file:
+    src: "{{ dotfiles_home }}/config/p10k.zsh"
+    dest: "{{ user_home }}/.p10k.zsh"
+    state: link
+    force: yes
+  tags: 
+    - allconfigs
+    - zsh
+
+- name: Append to bash profile
+  lineinfile:
+    path: "{{ user_home}}/.bash_profile"
+    line: "/usr/bin/zsh"
+    create: yes
+  tags: 
+    - allconfigs
+    - zsh
+
+- name: Symlink tmux.conf
+  file:
+    src: "{{ dotfiles_home }}/config/tmux.conf"
+    dest: "{{ user_home }}/.tmux.conf"
+    state: link
+    force: yes
+  tags: 
+    - allconfigs
+    - tmux
+
+- name: Check if nvim config directory exists
+  stat: "path={{ user_home }}/.config/nvim"
+  register: nvim_config
+  tags: 
+    - allconfigs
+    - neovim 
+
+- name: Create nvim config directory 
+  file: 
+    path: "{{ user_home }}/.config/nvim"
+    state: directory
+    mode: 0755
+  when: not nvim_config.stat.exists
+  tags: 
+    - allconfigs
+    - neovim 
+
+- name: Symlink init.lua
+  file: 
+    src: "{{ dotfiles_home }}/config/init.lua"
+    dest: "{{ user_home }}/.config/nvim/init.lua"
+    state: link
+    force: yes
+  tags: 
+    - allconfigs
+    - neovim 
+
+- name: Remove old ipython config
+  file: 
+    path: "{{ user_home }}/.ipython/profile_default/ipython_config.py"
+    state: absent
+  tags: 
+    - allconfigs
+    - ipython 
+
+- name: Check if ipython config directory exists
+  stat: "path={{ user_home }}/.ipython/profile_default"
+  register: ipython_config
+  tags: 
+    - allconfigs
+    - ipython 
+
+- name: Create ipython config directory
+  file: 
+    path: "{{ user_home }}/.ipython/profile_default"
+    state: directory
+    mode: 0755
+  when: not ipython_config.stat.exists
+  tags: 
+    - allconfigs
+    - ipython 
+
+- name: Symlink ipython_config
+  file: 
+    src: "{{ dotfiles_home }}/config/ipython_config.py"
+    dest: "{{ user_home }}/.ipython/profile_default/ipython_config.py"
+    state: link
+    force: yes
+  tags: 
+    - allconfigs
+    - ipython 
+
+- name: Check if lazygit config directory exists
+  stat: "path={{ user_home }}/.config/lazygit"
+  register: lazygit_config
+  tags: 
+    - allconfigs
+    - lazygit 
+
+- name: Create lazygit config directory 
+  file: 
+    path: "{{ user_home }}/.config/lazygit"
+    state: directory
+    mode: 0755
+  when: not lazygit_config.stat.exists
+  tags: 
+    - allconfigs
+    - lazygit 
+
+- name: Symlink lazygit config
+  file: 
+    src: "{{ dotfiles_home }}/config/lazygit_config.yml"
+    dest: "{{ user_home }}/.config/lazygit/config.yml"
+    state: link
+    force: yes
+  tags: 
+    - allconfigs
+    - lazygit 
+

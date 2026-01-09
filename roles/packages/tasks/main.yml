@@ -1,0 +1,168 @@
+---
+- name: Install packages for macOS/Darwin
+  become: no
+  homebrew:
+    name:
+      - bat
+      - curl
+      - cmake
+      - fd
+      - fzf
+      - htop
+      - jq
+      - node
+      - ripgrep
+      - tldr
+      - tmux
+      - wget
+      - zsh
+      - ninja
+      - gettext
+      - libtool
+      - autoconf
+      - automake
+      - pkg-config
+      - unzip
+      - lazygit
+  when: ansible_os_family == "Darwin"
+  tags:
+    - all packages
+
+- name: install debian tools
+  become: yes
+  apt: 
+    name:
+      - bat
+      - curl
+      - fd-find
+      # - fzf
+      - htop
+      - jq
+      - nodejs
+      - ripgrep
+      - tldr
+      - tmux
+      - wget
+      - zsh
+      - ninja-build 
+      - gettext 
+      - libtool 
+      - libtool-bin 
+      - autoconf 
+      - automake 
+      - cmake 
+      - g++ 
+      - pkg-config 
+      - unzip 
+      - doxygen
+  when: ansible_os_family == "Debian"
+  tags: 
+    - all packages
+
+- name: install redhat tools
+  become: yes
+  yum: 
+    name:
+      # - bat
+      - curl
+      # - fd-find
+      # - fzf
+      - htop
+      - jq
+      - nodejs
+      - ripgrep
+      - tmux
+      - wget
+      - zsh
+      - ninja-build 
+      - libtool 
+      - autoconf 
+      - automake 
+      - cmake 
+      - gcc 
+      - gcc-c++ 
+      - make 
+      - pkgconfig 
+      - unzip 
+      - patch 
+      - gettext 
+  when: ansible_os_family == "RedHat"
+  tags: 
+    - all packages
+
+- name: install lazygit
+  become: yes
+  shell: |
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+    tar xf lazygit.tar.gz lazygit
+    install lazygit /usr/local/bin
+    rm -rf lazygit*
+  when: ansible_os_family != "Darwin"   # Run only on non-macOS systems
+  tags:
+    - lazygit
+    - allpackages
+
+- name: download fzf 
+  # become: yes 
+  git: 
+    repo: "https://github.com/junegunn/fzf.git"
+    dest: "{{ user_home }}/.fzf"
+    version: HEAD # latest
+  tags: 
+    - fzf
+    - allpackages
+
+- name: install fzf 
+  # become: yes
+  shell: "{{ user_home }}/.fzf/install --all"
+  tags: 
+    - fzf 
+    - allpackages
+
+- name: install zoxide
+  shell: "curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"
+  tags: 
+    - zoxide
+    - allpackages
+
+- name: link fdfind to fd
+  become: yes
+  file:
+    src: "/usr/bin/fdfind"
+    dest: "/usr/local/bin/fd"
+    state: link
+    force: yes
+  tags: 
+    - allpackages
+    - fd
+
+- name: link batcat to bat
+  become: yes
+  file:
+    src: "/usr/bin/batcat"
+    dest: "/usr/local/bin/bat"
+    state: link
+    force: yes
+  tags: 
+    - allpackages
+    - bat
+
+- name: download fd-find
+  get_url: 
+    url: https://github.com/sharkdp/fd/releases/download/v8.3.1/fd-v8.3.1-x86_64-unknown-linux-musl.tar.gz
+    dest: "{{ user_home }}/fd-v8.3.1-x86_64-unknown-linux-musl.tar.gz"
+  tags: 
+    # - allpackages
+    - fd-source
+
+- name: install fd-find
+  shell: |
+    tar -xvzf {{ user_home }}/fd-v8.3.1-x86_64-unknown-linux-musl.tar.gz
+    mv {{ user_home }}/fd-v8.3.1-x86_64-unknown-linux-musl/fd /usr/local/bin/fd
+    rm -rf {{ user_home }}/fd-v8*
+  tags: 
+    # - allpackages
+    - fd-source
+
+

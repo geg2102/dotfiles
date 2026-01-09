@@ -1,0 +1,313 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+#
+export PATH=$HOME/.local/bin:$PATH
+export GIT_EDITOR='nvim'
+export HISTFILESIZE=1000000000
+export HISTSIZE=1000000000
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+if [ -z "$TMUX" ]; then 
+    export TERM=xterm-256color
+else 
+    export TERM=screen-256color
+fi
+
+# Path to oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+export ZSH_THEME="powerlevel10k/powerlevel10k"
+
+## Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git brew zsh-autosuggestions vi-mode)
+
+source $ZSH/oh-my-zsh.sh
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+
+
+alias vim='nvim'
+# alias tmux='tmux-non-dead.tmux'
+# alias tmux='tmux -2'
+alias ta='tmux attach -t'
+alias tnew="tmux new-session -s"
+alias tls='tmux ls'
+alias tkill='tmux kill-session -t'
+alias tpane='echo $TMUX_PANE'
+alias claude="SHELL=/usr/bin/zsh $HOME/.claude/local/claude"
+alias sa="source .venv/bin/activate"
+# convenience aliases for editing configs
+alias ev='vim ~/.vimrc'
+alias et='vim ~/.tmux.conf'
+alias ez='vim ~/.zshrc'
+alias ei='vim ~/dotfiles/config/nvim/init.lua'
+alias ec='nvim --cmd ":lua vim.g.noplugins=1" '
+alias vimdiff="nvim -d --cmd ':lua vim.g.noplugins=1'"
+alias ea='vim ~/dotfiles/config/alacritty.toml'
+alias el='vim ~/dotfiles/config/lazygit_config.yml'
+alias ep='vim ~/dotfiles/config/ipython_config.py'
+alias e3='vim /home/geoff/dotfiles/config/i3/config'
+alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
+# for suspend
+alias sus="sudo systemctl suspend"
+alias halt="sudo systemctl halt"
+
+# jupyter remote
+alias jlremote='f(){ jupyter lab --ip 0.0.0.0 --port=$1 --no-browser --NotebookApp.allow_origin="*" --NotebookApp.allow_remote_access=True}; f'
+alias addenv='f(){ python -m ipykernel install --user --name=$1}; f'
+
+function conuv() {
+    conda deactivate
+    conda deactivate
+    source .venv/bin/activate
+}
+
+alias activ='source .venv/bin/activate'
+
+bindkey '^P' up-history
+bindkey '^N' down-history
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
+bindkey '^w' backward-kill-word
+bindkey '^r' history-incremental-search-backward
+
+export KEYTIMEOUT=1
+
+setopt rm_star_silent
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+alias fzf="fzf --preview 'bat --color=always {}' --preview-window '~3'"
+# Function for creating directories
+function make_directories () {
+    mkdir $1 
+    mkdir -p $1/build
+    mkdir -p $1/include 
+    mkdir -p $1/src
+}
+
+function cpp_project() {
+    pwd=$PWD
+    mkdir $1 
+    cd $1 
+    mkdir src include 
+    touch CMakeLists.txt
+    touch src/main.cpp
+    cat << EOF > CMakeLists.txt
+cmake_minimum_required(VERSION 3.17.5)
+project($1)
+set(CMAKE_CXX_STANDARD 17 VERSION 0.0.1 LANGUAGES CXX)
+set(SRC_FILES src/main.cpp)
+add_executable(${PROJECT_NAME} ${SRC_FILES})
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_BUILD_TYPE RelWithDebInfo)
+EOF
+}
+
+vf() {
+  local base='fd --type f --exclude .git'
+  local hidden="$base -H"
+  local all="$base -H -I -L"
+
+  LAST_FILE="$(
+    eval "$base" \
+    | fzf --preview 'bat --style=numbers --color=always --line-range :500 {}' \
+          --header 'Ctrl-h: hidden | Ctrl-b: all (hidden + ignored + symlinks)' \
+          --prompt 'files> ' \
+          --bind "ctrl-h:reload($hidden)" \
+          --bind "ctrl-b:reload($all)"
+  )"
+  [[ -n $LAST_FILE ]] && echo "$LAST_FILE" && nvim "$LAST_FILE"
+}
+
+# Function to select and switch/attach to a tmux session using fzf
+tf() {
+  local session_name
+  
+  # 1. Get the list of existing tmux session names
+  local sessions
+  sessions=$(tmux ls -F '#{session_name}' 2>/dev/null)
+
+  if [[ -z "$sessions" ]]; then
+    # No sessions exist, prompt to create a new one
+    echo "No existing tmux sessions found. Enter a name for a new session:"
+    read -r session_name
+    if [[ -z "$session_name" ]]; then
+      echo "New session creation aborted."
+      return 1
+    fi
+    # Create and attach to the new session
+    tmux new-session -s "$session_name"
+    return 0
+  fi
+
+  # 2. Use fzf to select a session (no preview)
+  session_name=$(echo "$sessions" | \
+    fzf --prompt 'tmux sessions> ' \
+        --header 'Select session (or type a new name to attach/switch):' \
+        --no-preview) # <-- Removed the preview here
+
+  # 3. Check if a session was selected/entered
+  if [[ -z "$session_name" ]]; then
+    echo "No tmux session selected."
+    return 1
+  fi
+  
+  # Check if the selection already exists in the sessions list
+  local is_existing_session
+  is_existing_session=$(echo "$sessions" | grep -w "^$session_name$")
+
+  # 4. Determine action based on TMUX status and selection
+  if [[ -n "$TMUX" ]]; then
+    # Already inside tmux
+    if [[ -n "$is_existing_session" ]]; then
+      # Session exists, so switch to it
+      echo "Switching to existing session: $session_name"
+      tmux switch-client -t "$session_name"
+    else
+      # Session doesn't exist, create it and switch to it
+      echo "Creating and switching to new session: $session_name"
+      tmux new-session -d -s "$session_name" # Create in background
+      tmux switch-client -t "$session_name"
+    fi
+  else
+    # Outside tmux
+    if [[ -n "$is_existing_session" ]]; then
+      # Session exists, so attach to it
+      echo "Attaching to existing session: $session_name"
+      tmux attach-session -t "$session_name"
+    else
+      # Session doesn't exist, create it and attach to it
+      echo "Creating and attaching to new session: $session_name"
+      tmux new-session -s "$session_name"
+    fi
+  fi
+}
+
+cf() {
+    _VAR =$(fzf)
+    _directory="$(dirname $_VAR)"
+    cd $directory
+}
+
+sb() {
+    local container_name="$1"
+
+    if [[ -z "$container_name" ]]; then
+        container_name=$(az storage container list --account-name $BLOB_NAME \
+        --output tsv --query "[].{name:name}" 2>/dev/null | awk '{print $1}' \
+        | fzf --header="Select a container" --no-preview)
+        if [[ -z "$container_name" ]]; then
+            echo "No container selected."
+            return 1
+        fi
+    fi
+
+    local selected_blob
+    selected_blob=$(az storage blob list --account-name $BLOB_NAME \
+    --container-name "$container_name" --output tsv --query "[].{name:name}" \
+    2>/dev/null | awk '{print $1}' | fzf --header="Select a blob from the container: $container_name" --no-preview)
+
+    if [[ -n "$selected_blob" ]]; then
+        # Copy the selected blob name to the clipboard using OSC52
+        printf "\e]52;c;$(printf "%s/%s" "$container_name" "$selected_blob" | base64)\a"
+        echo "Selected blob '$container_name $selected_blob' has been copied to the clipboard."
+    else
+        echo "No blob selected."
+    fi
+}
+
+ff() {
+    LAST_FILE="$(fzf --preview 'bat --style=numbers --color=always --line-range :500 {}')"
+    BASE64_ENCODED=$(echo "$LAST_FILE" | awk '{print | "base64"}')
+    NO_NEWLINES=$(echo "$BASE64_ENCODED" | tr -d '\n')
+    printf "\033]52;c;%s\a" "$NO_NEWLINES"
+}
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/geoff/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/geoff/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/geoff/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/geoff/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+export PATH="$PATH:/opt/mssql-tools18/bin"
+export PATH="$PATH:/usr/local/go/bin"
+#
+# export PYENV_ROOT="$HOME/.pyenv"
+# command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init -)"
+#
+#
+# act() {
+#     conda activate $1
+#     poetry config virtualenvs.path $(which python | sed 's|/bin/python||')
+# }
+
+cpgg() {
+    BASE_DIR="/mnt/datascience-team-fileshare/Team/GG"
+
+    if [ -n "$2" ]; then
+        mkdir -p "${BASE_DIR}/$2"
+        cp "$1" "${BASE_DIR}/$2"
+    else
+        cp "$1" "${BASE_DIR}"
+    fi
+}
+
+eval "$(zoxide init zsh)"
+
+# Check if inside tmux
+source $HOME/dotfiles/config/activate_environment.sh
+
+export XDG_CONFIG_HOME=$HOME/dotfiles/config
+
+# To customize prompt, run `p10k configure` or edit ~/dotfiles/config/p10k.zsh.
+[[ ! -f ~/dotfiles/config/p10k.zsh ]] || source ~/dotfiles/config/p10k.zsh
+
+if [ -f ~/.env ]; then 
+    source ~/.env
+fi
+
+# For vim-dadbod-ui it helps display
+export SQLCMDMAXVARTYPEWIDTH=36
+export SQLCMDMAXFIXEDTYPEWIDTH=36
+export PATH=$PATH:$(go env GOPATH)/bin
+# if [[ -n $SSH_TTY && -z $TMUX ]]; then
+#     $HOME/scripts/recent_advisor_files.sh
+# fi
+#
+unset RCLONE_CONFIG
+export EDITOR="nvim"
+
+
+# Tmux Auto-start
+# Check if not inside a tmux session ($TMUX is unset)
+# if [ -z "$TMUX" ]; then
+#     # Attach to the session named 'main' if it exists, otherwise create a new one
+#     tmux attach-session -t main 2>/dev/null || tmux new-session -s main
+# fi
+# export PYENV_ROOT="$HOME/.pyenv"
+# [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init - bash)"
+
+export PATH=~/.npm-global/bin:$PATH
+export ANTHROPIC_MODEL=claude-opus-4-5-20251101

@@ -1,0 +1,12 @@
+! 1) Clear the target modifiers
+clear lock
+clear mod3
+
+! 2) Make sure CapsLock keycode (usually 66) produces Hyper_L
+keycode 66 = Hyper_L Hyper_L Hyper_L
+
+! 3) Remove Hyper_L from any other modifiers (esp. mod4) before adding
+remove mod4 = Hyper_L
+
+! 4) Finally add Hyper_L to mod3
+add mod3 = Hyper_L

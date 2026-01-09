@@ -1,0 +1,9 @@
+- name: Setup Linux Workstation
+  hosts: local
+  roles:
+    - packages
+    - fonts
+    - configs
+    - neovim
+    - miniconda
+    - docker

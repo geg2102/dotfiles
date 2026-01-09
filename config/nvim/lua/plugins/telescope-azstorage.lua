@@ -1,0 +1,226 @@
+-- -- ~/.config/nvim/lua/telescope-azstorage.lua
+-- local pickers = require('telescope.pickers')
+-- local finders = require('telescope.finders')
+-- local sorters = require('telescope.sorters')
+-- local actions = require('telescope.actions')
+-- local action_state = require('telescope.actions.state')
+-- local Job = require('plenary.job')
+--
+-- local M = {}
+--
+-- local function list_blobs(container_name, opts, prefix)
+--     Job:new({
+--         command = 'az',
+--         args = {
+--             'storage', 'blob', 'list',
+--             '--account-name', opts.account_name,
+--             '--container-name', container_name,
+--             '--prefix', prefix or '',
+--             '--delimiter', '/',
+--             '--output', 'json'
+--         },
+--         on_exit = function(j, return_val)
+--             vim.schedule(function()
+--                 if return_val == 0 then
+--                     local result = table.concat(j:result(), '')
+--                     local blobs_info = vim.fn.json_decode(result)
+--
+--                     local entries = {}
+--
+--                     if blobs_info['virtualDirectories'] then
+--                         for _, dir in ipairs(blobs_info['virtualDirectories']) do
+--                             table.insert(entries, {
+--                                 name = dir['name'],
+--                                 type = 'directory'
+--                             })
+--                         end
+--                     end
+--
+--                     if blobs_info['segments'] and blobs_info['segments']['blobItems'] then
+--                         for _, blob in ipairs(blobs_info['segments']['blobItems']) do
+--                             table.insert(entries, {
+--                                 name = blob['name'],
+--                                 type = 'blob'
+--                             })
+--                         end
+--                     end
+--
+--                     pickers.new({}, {
+--                         prompt_title = 'Select a blob from the container: ' .. container_name,
+--                         finder = finders.new_table {
+--                             results = entries,
+--                             entry_maker = function(entry)
+--                                 return {
+--                                     value = entry.name,
+--                                     display = entry.type == 'directory' and (entry.name .. '/') or entry.name,
+--                                     ordinal = entry.name,
+--                                     type = entry.type,
+--                                 }
+--                             end,
+--                         },
+--                         sorter = sorters.get_generic_fuzzy_sorter(),
+--                         attach_mappings = function(prompt_bufnr, map)
+--                             actions.select_default:replace(function()
+--                                 local selection = action_state.get_selected_entry()
+--                                 actions.close(prompt_bufnr)
+--                                 if selection.type == 'directory' then
+--                                     local new_prefix = (prefix or '') .. selection.value
+--                                     list_blobs(container_name, opts, new_prefix)
+--                                 else
+--                                     local blob_path = container_name .. '/' .. selection.value
+--                                     vim.fn.setreg('"', blob_path)
+--                                     print("Selected blob path saved to register: " .. blob_path)
+--                                 end
+--                             end)
+--                             map('i', '<C-u>', function()
+--                                 actions.close(prompt_bufnr)
+--                                 upload_blob(container_name, opts, prefix)
+--                             end)
+--                             map('i', '<C-d>', function()
+--                                 local selection = action_state.get_selected_entry()
+--                                 actions.close(prompt_bufnr)
+--                                 if selection.type == 'directory' then
+--                                     local confirm = vim.fn.confirm(
+--                                     'Delete directory "' .. selection.value .. '" and all its contents?', '&Yes\n&No', 2)
+--                                     if confirm == 1 then
+--                                         delete_blobs_in_prefix(container_name, selection.value, opts)
+--                                     end
+--                                 else
+--                                     local confirm = vim.fn.confirm('Delete blob "' .. selection.value .. '"?',
+--                                         '&Yes\n&No', 2)
+--                                     if confirm == 1 then
+--                                         delete_blob(container_name, selection.value, opts)
+--                                     end
+--                                 end
+--                             end)
+--                             return true
+--                         end,
+--                     }):find()
+--                 else
+--                     print('Failed to list blobs in container: ' .. container_name)
+--                 end
+--             end)
+--         end
+--     }):start()
+-- end
+--
+-- M.search_blobs = function()
+--     Job:new({
+--         command = 'az',
+--         args = { 'storage', 'container', 'list', '--account-name', 'tdrdsblob', '--output', 'tsv', '--query', '[].{name:name}' },
+--         on_exit = function(j, return_val)
+--             vim.schedule(function()
+--                 if return_val == 0 then
+--                     local containers = {}
+--                     for _, v in pairs(j:result()) do
+--                         table.insert(containers, v:match("%S+"))
+--                     end
+--
+--                     pickers.new({}, {
+--                         prompt_title = 'Select a container',
+--                         finder = finders.new_table {
+--                             results = containers,
+--                         },
+--                         sorter = sorters.get_generic_fuzzy_sorter(),
+--                         attach_mappings = function(prompt_bufnr, map)
+--                             actions.select_default:replace(function()
+--                                 actions.close(prompt_bufnr)
+--                                 local container_name = action_state.get_selected_entry()[1]
+--                                 list_blobs(container_name)
+--                             end)
+--                             return true
+--                         end,
+--                     }):find()
+--                 else
+--                     print('Failed to list containers')
+--                 end
+--             end)
+--         end
+--     }):start()
+-- end
+--
+-- local function upload_blob(container_name, opts, prefix)
+--     local file_path = vim.fn.input('Path to local file: ', '', 'file')
+--     if file_path == '' then return end
+--     local blob_name = vim.fn.input('Blob name (relative to current directory): ', '')
+--     if blob_name == '' then return end
+--
+--     local full_blob_name = (prefix or '') .. blob_name
+--
+--     Job:new({
+--         command = 'az',
+--         args = {
+--             'storage', 'blob', 'upload',
+--             '--account-name', opts.account_name,
+--             '--container-name', container_name,
+--             '--name', full_blob_name,
+--             '--file', file_path
+--         },
+--         on_exit = function(j, return_val)
+--             vim.schedule(function()
+--                 if return_val == 0 then
+--                     print('Uploaded blob: ' .. full_blob_name)
+--                 else
+--                     print('Failed to upload blob: ' .. full_blob_name)
+--                 end
+--             end)
+--         end
+--     }):start()
+-- end
+-- local function delete_blob(container_name, blob_name, opts)
+--     Job:new({
+--         command = 'az',
+--         args = {
+--             'storage', 'blob', 'delete',
+--             '--account-name', opts.account_name,
+--             '--container-name', container_name,
+--             '--name', blob_name,
+--             '--yes'
+--         },
+--         on_exit = function(j, return_val)
+--             vim.schedule(function()
+--                 if return_val == 0 then
+--                     print('Deleted blob: ' .. blob_name)
+--                     list_blobs(container_name, opts, prefix)
+--                 else
+--                     print('Failed to delete blob: ' .. blob_name)
+--                 end
+--             end)
+--         end
+--     }):start()
+-- end
+--
+-- local function delete_blobs_in_prefix(container_name, prefix, opts)
+--     Job:new({
+--         command = 'az',
+--         args = {
+--             'storage', 'blob', 'delete-batch',
+--             '--account-name', opts.account_name,
+--             '--source', container_name,
+--             '--pattern', prefix .. '*',
+--             '--yes'
+--         },
+--         on_exit = function(j, return_val)
+--             vim.schedule(function()
+--                 if return_val == 0 then
+--                     print('Deleted all blobs under: ' .. prefix)
+--                     list_blobs(container_name, opts, parent_prefix(prefix))
+--                 else
+--                     print('Failed to delete blobs under: ' .. prefix)
+--                 end
+--             end)
+--         end
+--     }):start()
+-- end
+-- local function parent_prefix(prefix)
+--     if not prefix or prefix == '' then return nil end
+--     local dirs = vim.split(prefix, '/', true)
+--     table.remove(dirs)
+--     if #dirs == 0 then
+--         return nil
+--     else
+--         return table.concat(dirs, '/') .. '/'
+--     end
+-- end
+--
+-- return M

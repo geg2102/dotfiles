@@ -1,0 +1,34 @@
+lastupdatecheck: 0
+recentrepos:
+- /home/geoff/dotfiles
+- /home/geoff/henriupdates
+- /home/geoff/pdfparser
+- /home/geoff/cbdesk
+- /home/geoff/acqua
+- /home/geoff/scripts
+- /home/geoff/.local/share/nvim/lazy/rainbow-delimiters.nvim
+- /home/geoff/i3
+- /home/geoff/popeyesfrance
+- /home/geoff/tdrforge
+- /home/geoff/escode
+- /home/geoff/nvim-python-repl
+- /home/geoff/whitespaceutils
+- /home/geoff
+- /home/geoff/bauto
+- /home/geoff/Banker-MCP-Data
+- /home/geoff/Portfolio-MCP-Data
+- /home/geoff/thesislib
+- /home/geoff/forgeapi
+- /home/geoff/forgebackend
+- /home/geoff/teamsbot
+- /home/geoff/nvim-jupyter-client
+- /home/geoff/tdrgpt
+- /home/geoff/jollyes_turnover_model
+- /home/geoff/flat-ai
+- /home/geoff/henridb_utils
+- /home/geoff/azstorage-browser
+startuppopupversion: 5
+customcommandshistory:
+- q
+hidecommandlog: false
+ignorewhitespaceindiffview: false

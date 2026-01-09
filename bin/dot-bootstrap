@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -e
+
+tags="$1"
+
+if [ -z "$tags" ]; then
+  tags="all"
+fi
+
+# Determine the OS type
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    OS_TYPE="linux"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    OS_TYPE="macos"
+else
+    echo "Unsupported OS: $OSTYPE"
+    exit 1
+fi
+
+# Install Ansible if not present
+if ! [ -x "$(command -v ansible)" ]; then
+    if [ "$OS_TYPE" == "linux" ]; then
+        sudo apt update
+        sudo apt install -y software-properties-common
+        sudo apt-add-repository --yes --update ppa:ansible/ansible
+        sudo apt install -y ansible
+    elif [ "$OS_TYPE" == "macos" ]; then
+        # Install Homebrew if not installed
+        if ! [ -x "$(command -v brew)" ]; then
+            echo "Homebrew not found. Installing Homebrew..."
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        fi
+        echo "Installing Ansible with Homebrew..."
+        brew update
+        brew install ansible
+    fi
+fi
+
+# Run the Ansible playbook
+ansible_playbook="$HOME/dotfiles/linux.yml"
+inventory_file="$HOME/dotfiles/hosts"
+
+ansible-playbook -i "$inventory_file" "$ansible_playbook" --ask-become-pass --tags "$tags"
+
+if command -v terminal-notifier 1>/dev/null 2>&1; then
+  terminal-notifier -title "dotfiles: Bootstrap complete" -message "Successfully set up dev environment."
+fi

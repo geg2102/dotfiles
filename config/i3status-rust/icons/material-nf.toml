@@ -1,0 +1,134 @@
+# Material from NerdFont
+# https://www.nerdfonts.com/cheat-sheet
+backlight = [
+    "\ue38d", # nf-weather-moon_new
+    "\ue3d4", # nf-weather-moon_alt_waxing_gibbous_6
+    "\ue3d3", # nf-weather-moon_alt_waxing_gibbous_5
+    "\ue3d2", # nf-weather-moon_alt_waxing_gibbous_4
+    "\ue3d1", # nf-weather-moon_alt_waxing_gibbous_3
+    "\ue3d0", # nf-weather-moon_alt_waxing_gibbous_2
+    "\ue3cf", # nf-weather-moon_alt_waxing_gibbous_1
+    "\ue3ce", # nf-weather-moon_alt_first_quarter
+    "\ue3cd", # nf-weather-moon_alt_waxing_crescent_6
+    "\ue3cc", # nf-weather-moon_alt_waxing_crescent_5
+    "\ue3cb", # nf-weather-moon_alt_waxing_crescent_4
+    "\ue3ca", # nf-weather-moon_alt_waxing_crescent_3
+    "\ue3c9", # nf-weather-moon_alt_waxing_crescent_2
+    "\ue3c8", # nf-weather-moon_alt_waxing_crescent_1
+    "\ue39b", # nf-weather-moon_full
+]
+bat_charging = "\U000f0084" # nf-md-battery_charging
+bat_not_available = "\U000f0091" # nf-md-battery_unknown
+bat = [
+    "\U000f007a", # nf-md-battery_10
+    "\U000f007b", # nf-md-battery_20
+    "\U000f007c", # nf-md-battery_30
+    "\U000f007d", # nf-md-battery_40
+    "\U000f007e", # nf-md-battery_50
+    "\U000f007f", # nf-md-battery_60
+    "\U000f0080", # nf-md-battery_70
+    "\U000f0081", # nf-md-battery_80
+    "\U000f0082", # nf-md-battery_90
+    "\U000f0079", # nf-md-battery
+]
+bell = "\U000f009c" # nf-md-bell_outline
+bell-slash = "\U000f009b" # nf-md-bell_off
+bluetooth = "\U000f00af" # nf-md-bluetooth
+calendar = "\U000f00ed" # nf-md-calendar
+cogs = "\U000f0493" # nf-md-cog
+cpu = [
+	"\U000F0F86", # nf-md-speedometer_slow
+	"\U000F0F85", # nf-md-speedometer_medium
+	"\U000F04C5", # nf-md-speedometer
+]
+cpu_boost_on = "\U000f0521" # nf-md-toggle_switch
+cpu_boost_off = "\U000f0a19" # nf-md-toggle_switch_off_outline
+disk_drive = "\U000f02ca" # nf-md-harddisk
+docker = "\uf308" # nf-linux-docker
+github = "\U000f02a4" # nf-md-github
+gpu = "\U000f0379" # nf-md-monitor
+headphones = "\U000f02cb" # nf-md-headphones
+hueshift = "\U000f0336" # nf-md-lightbulb_outline
+joystick = "\U000f0297" # nf-md-gamepad_variant
+keyboard = "\U000f030c" # nf-md-keyboard
+mail = "\U000f01ee" # nf-md-email
+memory_mem = "\U000f035b" # nf-md-memory
+memory_swap = "\U000f02ca" # nf-md-harddisk
+mouse = "\U000f037d" # nf-md-mouse
+music = "\U000f075a" # nf-md-music
+music_next = "\U000f04ad" # nf-md-skip_next
+music_pause = "\U000f03e4" # nf-md-pause
+music_play = "\U000f040a" # nf-md-play
+music_prev = "\U000f04ae" # nf-md-skip_previous
+net_bridge = "\U000f04aa" # nf-md-sitemap
+net_down = "\U000f01da" # nf-md-download
+net_loopback = "\U000f006f" # nf-md-backup_restore
+net_modem = "\U000f03f2" # nf-md-phone
+net_cellular = [
+        "\U000F08FD", # nf-md-network_strength_off_outline
+        "\U000F08FE", # nf-md-network_strength_outline
+        "\U000F08F4", # nf-md-network_strength_1
+        "\U000F08F6", # nf-md-network_strength_2
+        "\U000F08F8", # nf-md-network_strength_3
+        "\U000F08FA", # nf-md-network_strength_4
+]
+net_up = "\U000f0552" # nf-md-upload
+net_vpn = "\U000f0582" # nf-md-vpn
+net_wired = "\U000f0200" # nf-md-ethernet
+net_wireless = [
+	"\U000F092F", # nf-md-wifi_strength_outline
+	"\U000F091F", # nf-md-wifi_strength_1
+	"\U000F0922", # nf-md-wifi_strength_2
+	"\U000F0925", # nf-md-wifi_strength_3
+	"\U000F0928", # nf-md-wifi_strength_4
+]
+notification = "\U000f009c" # nf-md-bell_outline
+phone = "\U000f03f2" # nf-md-phone
+phone_disconnected = "\U000f0658" # nf-md-phone_minus
+ping = "\U000f051f" # nf-md-timer_sand
+pomodoro = "\ue001" # nf-pom-pomodoro_done
+pomodoro_break = "\U000f0176" # nf-md-coffee
+pomodoro_paused = "\U000f03e4" # nf-md-pause
+pomodoro_started = "\U000f040a" # nf-md-play
+pomodoro_stopped = "\U000f04db" # nf-md-stop
+resolution = "\U000f0293" # nf-md-fullscreen
+scratchpad = "\U000f05b2" # nf-md-window_restore
+tasks = "\U000f05c7" # nf-md-playlist_check
+tea = "\U000f0d9e" # nf-md-tea
+thermometer = [
+    "\U000f10c3", # nf-md-thermometer_low
+    "\U000f050f", # nf-md-thermometer
+    "\U000f10c2", # nf-md-thermometer_high
+]
+time = "\U000f0150" # nf-md-clock_outline
+toggle_off = "\U000f0a19" # nf-md-toggle_switch_off_outline
+toggle_on = "\U000f0521" # nf-md-toggle_switch
+unknown = "\U000f0186" # nf-md-comment_question_outline | TODO: Make default?
+update = "\U000f03d5" # nf-md-package_up
+uptime = "\U000f0153" # nf-md-clock_in
+volume_muted = "\U000f075f" # nf-md-volume_mute
+volume = [
+    "\U000f057f", # nf-md-volume_low
+    "\U000f0580", # nf-md-volume_medium
+    "\U000f057e", # nf-md-volume_high
+]
+microphone_muted = "\U000f036d" # nf-md-microphone_off
+microphone = [
+	"\U000f036e", # nf-md-microphone_outline
+    "\U000f036c", # nf-md-microphone
+    "\U000f036c", # nf-md-microphone
+]
+weather_clouds = "\ue33d" # nf-weather-cloud
+weather_clouds_night = "\ue37e" # nf-weather-night_alt_cloudy
+weather_default = "\ue33d" # Cloud symbol as default
+weather_fog = "\ue313" # nf-weather-fog
+weather_fog_night = "\ue346" # nf-weather-night_fog
+weather_moon = "\uf186" # nf-fa-moon_o
+weather_rain = "\ue371" # nf-weather-raindrop
+weather_rain_night = "\ue325" # nf-weather-night_alt_rain
+weather_snow = "\ue36f" # nf-weather-snowflake_cold
+weather_sun = "\ue30d" # nf-weather-day_sunny
+weather_thunder = "\ue31d" # nf-weather-thunderstorm
+weather_thunder_night = "\ue32a" # nf-weather-night_alt_thunderstorm
+webcam = "\U000f0567" # nf-md-video
+xrandr = "\U000f037a" # nf-md-monitor_multiple
