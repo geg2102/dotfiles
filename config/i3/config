@@ -8,13 +8,14 @@
 # i3 config file (v4)
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
-exec --no-startup-id xmodmap ~/.Xmodmap
+# exec --no-startup-id xmodmap ~/.Xmodmap
 # exec --no-startup-id clipit
 # exec --no-startup-id /usr/local/bin/picom --experimental-backends --config /home/geoff/.config/picom/picom.conf
 
 # exec --no-startup-id /usr/local/bin/picom --config /home/geoff/.config/picom/picom.conf
 
-bindsym Print exec --no-startup-id xmodmap ~/.Xmodmap
+bindsym Print exec --no-startup-id "if xset q | grep -q 'Caps Lock:\s*on'; then xdotool key Caps_Lock; sleep 0.05; xmodmap ~/.Xmodmap; fi"
+
 
 set $mod Mod3
 exec_always --no-startup-id /home/geoff/.cargo/bin/i3-autolayout autolayout
@@ -241,3 +242,10 @@ client.focused          #007acc #005f87 #ffffff #00afff #007acc
 
 # enable window icons for all windows with extra horizontal padding of 1px
 for_window [all] title_window_icon padding 1px
+
+# Move current workspace to the right/left monitor
+bindsym $mod+Control+greater move workspace to output right
+bindsym $mod+Control+less move workspace to output left
+
+bindsym $mod+Shift+greater move container to output right
+bindsym $mod+Shift+less move container to output left
