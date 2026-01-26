@@ -1,7 +1,7 @@
 return {
     {
-        dir = "~/nvim-jupyter-client",
-        -- "geg2102/nvim-jupyter-client",
+        -- dir = "~/nvim-jupyter-client",
+        "geg2102/nvim-jupyter-client",
         config = function()
             require("nvim-jupyter-client").setup({
                 -- cell_highlight_group = "Mycustomgroup",
