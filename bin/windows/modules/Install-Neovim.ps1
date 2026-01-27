@@ -107,9 +107,9 @@ function Install-Neovim {
     }
 
     # Clean up temp file (non-critical, ignore errors)
-    if (Test-Path $tempZip) {
-        Remove-Item -Path $tempZip -Force -ErrorAction SilentlyContinue
-    }
+    # if (Test-Path $tempZip) {
+    #     Remove-Item -Path $tempZip -Force -ErrorAction SilentlyContinue
+    # }
 
     # The zip extracts to nvim-win64 subfolder
     $nvimBinDir = Join-Path $installDir "nvim-win64\bin"

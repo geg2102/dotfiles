@@ -61,7 +61,7 @@ function Test-PackageInstalled {
         [string]$PackageId
     )
 
-    $result = winget list --id $PackageId --exact 2>$null
+    $result = winget list --id $PackageId --exact 2>$null --accept-source-agreements --accept-package-agreements
     # winget list returns the package info if found, check if the ID appears in output
     return ($result -match [regex]::Escape($PackageId))
 }
