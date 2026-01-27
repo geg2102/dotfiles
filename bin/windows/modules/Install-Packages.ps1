@@ -15,6 +15,8 @@
     - JesseDuffield.lazygit (lazygit) - Terminal UI for git
     - ajeetdsouza.zoxide (zoxide) - Smarter cd command
     - Git.Git (git) - Version control
+    - mingw-w64.mingw-w64-ucrt-x86_64-toolchain - GCC compiler (MinGW-w64)
+    - OpenJS.NodeJS.LTS - Node.js runtime (LTS)
 
 .NOTES
     Author: Dotfiles automation
@@ -37,6 +39,8 @@ $Packages = @(
     @{ Id = "JesseDuffield.lazygit"; Name = "lazygit" }
     @{ Id = "ajeetdsouza.zoxide"; Name = "zoxide" }
     @{ Id = "Git.Git"; Name = "Git" }
+    @{ Id = "mingw-w64.mingw-w64-ucrt-x86_64-toolchain"; Name = "MinGW-w64 GCC" }
+    @{ Id = "OpenJS.NodeJS.LTS"; Name = "Node.js LTS" }
 )
 
 function Test-WingetInstalled {
