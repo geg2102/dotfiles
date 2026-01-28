@@ -15,7 +15,7 @@
     - JesseDuffield.lazygit (lazygit) - Terminal UI for git
     - ajeetdsouza.zoxide (zoxide) - Smarter cd command
     - Git.Git (git) - Version control
-    - MartinStorsjo.LLVM-MinGW.UCRT - LLVM/Clang compiler (MinGW-w64)
+    - zig.zig - Zig programming language and C/C++ toolchain
     - OpenJS.NodeJS.LTS - Node.js runtime (LTS)
 
 .NOTES
@@ -39,7 +39,7 @@ $Packages = @(
     @{ Id = "JesseDuffield.lazygit"; Name = "lazygit" }
     @{ Id = "ajeetdsouza.zoxide"; Name = "zoxide" }
     @{ Id = "Git.Git"; Name = "Git" }
-    @{ Id = "MartinStorsjo.LLVM-MinGW.UCRT"; Name = "LLVM-MinGW (Clang)" }
+    @{ Id = "zig.zig"; Name = "Zig" }
     @{ Id = "OpenJS.NodeJS.LTS"; Name = "Node.js LTS" }
 )
 
